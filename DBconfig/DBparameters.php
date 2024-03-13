@@ -13,7 +13,7 @@ function getDBUser($userNameDB){
         "root" => "",
         "insegnanteSupervisore" => "",
         "insegnante" => "",
-        "user" => "",
+        "user" => ""
     };
 
     return [
