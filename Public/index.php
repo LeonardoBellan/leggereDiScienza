@@ -13,6 +13,7 @@ $controllerName = null;
 $controllerName = null;
 $action = null;
 $DBuser = getDBUser("root");     //#TODO gestione utentiDB
+$connectionChanged = false;
 
 if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //User logged in
@@ -27,7 +28,7 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
         break;
 
         case 'logout':
-
+            $connectionChanged = true;
         break;
         //ecc...
     }
@@ -36,6 +37,7 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //$DBuser = getDBUser("user");
     switch($routeAction){
         case 'login':
+            $connectionChanged = true;
             $controllerName = 'account_controller';
             $action = 'login';
         break;
@@ -53,15 +55,19 @@ require "../src/models/book_model.php";
 require "../src/models/account_model.php";
 
 //Connessione al DB
-$db = new dbManager($DBuser);             #IDEA: la connessione si salva nella sessione e non si effettua ogni volta, si cambia quando si effettua il login/logout
-$dbConnection = null;
-if($db){
-    $dbConnection = $db->getConnection();
+if(!isset($_SESSION["connection"]) || $connectionChanged = true){
+    $db = new dbManager($DBuser);             #IDEA: la connessione si salva nella sessione e non si effettua ogni volta, si cambia quando si effettua il login/logout
+    $dbConnection = null;
+    if($db){
+        $dbConnection = $db->getConnection();
+    }
+    $_SESSION["connection"] = $dbConnection;
 }
 
+
 //Inizializzazione dei modelli
-$accountModel = new accountManager($db);      #TODO creazione di diverse connessioni tramite utenti SQL con poteri limitati*/
-$bookModel = new bookManager($db);
+$accountModel = new account_model();      #TODO creazione di diverse connessioni tramite utenti SQL con poteri limitati
+$bookModel = new book_model();
 
 $controller = new $controllerName($accountModel, $bookModel);       //Il controller esegue le azioni
 
