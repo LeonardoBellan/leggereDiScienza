@@ -1,11 +1,12 @@
 <?php
-session_start();
 
-class account_model{
-    private $dbConnection;
+require_once("model.php");
+require_once("dbManager.php");
+
+class account_model extends model{
 
     function __construct(){
-        $this->dbConnection = $_SESSION["connection"];
+        parent::__construct();
     }
 
     function login($username, $password){
@@ -13,8 +14,8 @@ class account_model{
                     FROM account
                     WHERE username = '$username'
                     AND password = md5('$password')";
-        $result = mysqli_query($$this->dbConnection, $query);
-        $row = $result->fetch_array();
+
+        $row = $_SESSION["connection"]->query($query);
         if($row == NULL){
             
         }

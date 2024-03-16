@@ -1,48 +1,39 @@
 <?php
 session_start();
 
-require "../DBconfig/DBparameters.php";
+//Connessione al DB
+require_once("../src/models/dbManager.php");
 
-$routeAction = $_SERVER['REQUEST_URI']; //TODO ottenere le risorse corrette
-if(isset($_GET['action'])){
-    $routeAction = $_GET['action'];
+if (!isset($_SESSION["connection"])){
+    $_SESSION["connection"] = new dbManager("root"); //Da cambiare con USER
 }
+
+$route = $_SERVER['REQUEST_URI'];
+$temp = explode("/",$route);
+$routeAction = $temp[sizeof($temp)-1]; //TODO ottenere le risorse corrette
+
+echo "Resource: " . $routeAction;
 
 //routing
 $controllerName = null;
-$controllerName = null;
 $action = null;
-$DBuser = getDBUser("root");     //#TODO gestione utentiDB
 $connectionChanged = false;
 
 if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //User logged in
-    switch($routeAction){
-        case 'addBook':
-            $controllerName = 'book_controller';
-            $action = 'addBook';
-        break;
-        case 'adduser':
-            $controllerName = 'account_controller';
-            $action = 'addUser';
-        break;
+    //$_SESSION["connection"].connect("insegnante/insegnanteSupervisore");
 
-        case 'logout':
-            $connectionChanged = true;
-        break;
+    switch($routeAction){
+
         //ecc...
     }
 }else{
     //User not logged in
-    //$DBuser = getDBUser("user");
+    //$_SESSION["connection"].connect("user");
     switch($routeAction){
-        case 'login':
-            $connectionChanged = true;
-            $controllerName = 'account_controller';
-            $action = 'login';
-        break;
         case 'home':
-
+            $controllerName = 'general_controller';
+            $action = 'homeAction';
         break;
     
         //ecc...
@@ -50,27 +41,15 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
 }
 
 require "../src/controllers/" . $controllerName . ".php";       //Seleziona il controller da utilizzare
-require "../src/models/dbManager.php";
-require "../src/models/book_model.php";
-require "../src/models/account_model.php";
-
-//Connessione al DB
-if(!isset($_SESSION["connection"]) || $connectionChanged = true){
-    $db = new dbManager($DBuser);             #IDEA: la connessione si salva nella sessione e non si effettua ogni volta, si cambia quando si effettua il login/logout
-    $dbConnection = null;
-    if($db){
-        $dbConnection = $db->getConnection();
-    }
-    $_SESSION["connection"] = $dbConnection;
-}
-
+require_once "../src/models/book_model.php";
+require_once "../src/models/account_model.php";
 
 //Inizializzazione dei modelli
 $accountModel = new account_model();      #TODO creazione di diverse connessioni tramite utenti SQL con poteri limitati
-$bookModel = new book_model();
+//$bookModel = new book_model();
 
 $controller = new $controllerName($accountModel, $bookModel);       //Il controller esegue le azioni
-
+$controller->$action($_REQUEST);
 
 /*Non completata
 * Gestione utenti

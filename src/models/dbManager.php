@@ -1,5 +1,7 @@
 <?php
 
+require_once "../DBconfig/DBparameters.php";
+
 class dbManager{
     private $connParameters= [
         'host' => "",
@@ -8,10 +10,10 @@ class dbManager{
         'password'=> "",
         'dbName'=> ""];        //Informazioni per connettersi al DB [host,porta,user,dbName]
     private $db;                    //Connessione mysqli
-
-    public function __construct($user = null){
-        $this->connParameters = $user;
-        $this->db = $this->connect();
+    
+    public function __construct($user){
+        $this->connParameters = getDBUser($user);
+        $this->connect($user);
 
         //Controlla se la connessione è avvenuta con successo
         if($this->db->connect_error){
@@ -23,24 +25,31 @@ class dbManager{
     *Si connette al DB
     *@return mysqli
     */
-    private function connect(){
+    public function connect($user){
+        $this->setConnParameters($user);
 
-        echo $this->connParameters['host'] .
-        $this->connParameters['user'] . 
-        $this->connParameters['password']. 
-        $this->connParameters['dbName'];
-        $conn=new mysqli(
+        $this->db=new mysqli(
             $this->connParameters['host'],
             $this->connParameters['user'],
             $this->connParameters['password'],
             $this->connParameters['dbName']);
 
-        return $conn;
+        return $this->db;
+    }
+
+    public function setConnParameters($user){
+        $this->connParameters = getDBUser( $user);
     }
 
     //Ritorna la connessione al DB corrente
     public function getConnection(){
         return $this->db;
+    }
+
+    public function query($sql){
+        $result = mysqli_query($$this->dbConnection, $sql);
+        $row = $result->fetch_array();
+        return $row;
     }
 }
 
