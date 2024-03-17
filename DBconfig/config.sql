@@ -106,6 +106,17 @@ CREATE TABLE paroleChiave(
 );
 
 /*
+--Parole chiave per libro
+--PK: libro, parola
+*/
+DROP TABLE IF EXISTS paroleLibro;
+CREATE TABLE paroleLibro(
+    libro int, FOREIGN KEY(libro) REFERENCES libri(idLibro),
+    parola int, FOREIGN KEY(parola) REFERENCES paroleChiave(idParola),
+    PRIMARY KEY(libro,parola)
+);
+
+/*
 --Recensioni
 --PK: libro, professore
 */
