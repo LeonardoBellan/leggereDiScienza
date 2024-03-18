@@ -1,0 +1,26 @@
+<?php
+
+require_once("model.php");
+require_once("dbManager.php");
+
+class account_model extends model{
+
+    function __construct(){
+        parent::__construct();
+    }
+
+    function login($username, $password){
+        $query = "SELECT * 
+                    FROM account
+                    WHERE username = '$username'
+                    AND password = md5('$password')";
+
+        $row = $_SESSION["connection"]->query($query);
+        if($row == NULL){
+            
+        }
+    }
+    function userExists($user){
+
+    }
+}
