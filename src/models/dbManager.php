@@ -12,6 +12,7 @@ class dbManager{
     private $db;                    //Connessione mysqli
     
     public function __construct($user){
+
         $this->connParameters = getDBUser($user);
         $this->connect($user);
 
@@ -47,7 +48,7 @@ class dbManager{
     }
 
     public function query($sql){
-        $result = mysqli_query($$this->dbConnection, $sql);
+        $result = mysqli_query($this->db, $sql);
         $row = $result->fetch_array();
         return $row;
     }
