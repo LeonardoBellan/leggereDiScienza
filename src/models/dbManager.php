@@ -47,8 +47,8 @@ class dbManager{
         return $this->db;
     }
 
-    public function query($sql){
-        return mysqli_query($this->db, $sql);
+    public function performQuery($sql){
+        return $this->db->query($sql);
     }
 }
 

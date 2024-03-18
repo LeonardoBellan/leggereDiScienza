@@ -9,17 +9,24 @@ class book_model extends model{
         parent::__construct();
     }
 
-    function search($titolo){
+    function getAllBooks(){
+        $query = "SELECT *
+                    FROM libri";
+    }
+
+    function searchBookByTitle($titolo){
         $query = "SELECT *
                     FROM libri
                     WHERE titolo = '$titolo'";
 
-        $result = $_SESSION["connection"]->query($query);
-        if($row == NULL){
-            
+        $result = $_SESSION["connection"]->performQuery($query);
+        if($result == NULL){
+            return NULL;
         }
     }
-    function userExists($user){
 
+    function getParoleChiaveByBook($ID) {
+        $query = "SELECT *
+                    FROM paroleLibro";
     }
 }
