@@ -17,7 +17,6 @@ echo "Resource: " . $routeAction;
 //routing
 $controllerName = null;
 $action = null;
-$connectionChanged = false;
 
 if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //User logged in
@@ -45,9 +44,10 @@ require_once "../src/models/book_model.php";
 require_once "../src/models/account_model.php";
 
 //Inizializzazione dei modelli
-$accountModel = new account_model();      #TODO creazione di diverse connessioni tramite utenti SQL con poteri limitati
+$accountModel = new account_model();
 //$bookModel = new book_model();
 
+//Gestione delle action
 $controller = new $controllerName($accountModel, $bookModel);       //Il controller esegue le azioni
 $controller->$action($_REQUEST);
 
@@ -56,6 +56,5 @@ $controller->$action($_REQUEST);
 * Gestione utenti DB
 * Creazione delle diverse action
 * Salvataggio nella sessione
-* Capire come utilizzare le risorse dell'URL
 */
 
