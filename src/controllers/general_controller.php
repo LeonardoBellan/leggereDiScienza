@@ -14,14 +14,18 @@ class General_controller {
     }
 
     public function homeAction($request) {
-
         //query
         $result = $this->bookmanager->getAllBooks();
 
         //Preparazione array associativo
+        $books = array();
+        $i = 0;
+        while ($row = mysqli_fetch_array($result)) {
+            $books[$i] = $row;
+        }
         $vars = [
-            "queryResult" => $result
+            "books" => $books
         ];
-        renderView("home", $vars);
+        renderView("home_view.phtml", $vars);
     }
 }

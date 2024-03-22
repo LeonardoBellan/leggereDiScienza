@@ -11,11 +11,7 @@
 
     <p>Libri:</p>
 
-    <?php
-        //Esempio
-        $row = mysqli_fetch_array($vars["queryResult"]);
-        print_r($row["titolo"]);
-    ?>
+    <?= $vars["books"][0]["titolo"]; ?>
 </body>
 
 </html>
