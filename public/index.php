@@ -1,35 +1,27 @@
 <?php
-session_start();
 
 //Connessione al DB
 require_once("../src/models/dbManager.php");
+session_start();
 
-if (!isset($_SESSION["connection"])){
-    $_SESSION["connection"] = new dbManager("root"); //Da cambiare con USER
-}
+$resource = getResource($_SERVER['REQUEST_URI']);
 
-$route = $_SERVER['REQUEST_URI'];
-$temp = explode("/",$route);
-$routeAction = $temp[sizeof($temp)-1]; //TODO ottenere le risorse corrette
-
-echo "Resource: " . $routeAction;
+echo "Resource: " . $resource . "</br>";
 
 //routing
+$DBuser;
 $controllerName = null;
 $action = null;
 
 if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //User logged in
-    //$_SESSION["connection"].connect("insegnante/insegnanteSupervisore");
-
-    switch($routeAction){
+    switch($resource){
 
         //ecc...
     }
 }else{
     //User not logged in
-    //$_SESSION["connection"].connect("user");
-    switch($routeAction){
+    switch($resource){
         case 'home':
             $controllerName = 'general_controller';
             $action = 'homeAction';
@@ -39,17 +31,26 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     }
 }
 
-require "../src/controllers/" . $controllerName . ".php";       //Seleziona il controller da utilizzare
+require "../src/controllers/" . $controllerName . ".php";       //Selezione del controller da utilizzare
 require_once "../src/models/book_model.php";
 require_once "../src/models/account_model.php";
 
 //Inizializzazione dei modelli
-$accountModel = new account_model();
-//$bookModel = new book_model();
+$DBuser = "root";
+$bookModel = new book_model($DBuser);
+$accountModel = new account_model($DBuser);
 
 //Gestione delle action
-$controller = new $controllerName($accountModel, $bookModel);       //Il controller esegue le azioni
+$controller = new $controllerName($bookModel, $accountModel);       //Il controller esegue le azioni
 $controller->$action($_REQUEST);
+
+//TODO ottenere le risorse corrette
+function getResource($URI){
+    $temp = explode("/",$URI);
+    $resource = $temp[sizeof($temp)-1]; 
+
+    return $resource;
+}
 
 /*Non completata
 * Gestione utenti
@@ -57,4 +58,3 @@ $controller->$action($_REQUEST);
 * Creazione delle diverse action
 * Salvataggio nella sessione
 */
-

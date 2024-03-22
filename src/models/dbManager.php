@@ -27,6 +27,10 @@ class dbManager{
     *@return mysqli
     */
     public function connect($user){
+
+        if($this->db != null){
+            mysqli_close($this->db);
+        }
         $this->setConnParameters($user);
 
         $this->db=new mysqli(
@@ -45,10 +49,6 @@ class dbManager{
     //Ritorna la connessione al DB corrente
     public function getConnection(){
         return $this->db;
-    }
-
-    public function query($sql){
-        return mysqli_query($this->db, $sql);
     }
 }
 

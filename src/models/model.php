@@ -1,8 +1,13 @@
 <?php
 class model{
-    protected $dbConnection;
+    private $dbConnection;
 
-    public function __construct(){
-        $this->dbConnection = $_SESSION["connection"];
+    public function __construct($user){
+        $this->dbConnection = new dbManager($user);
+    }
+
+    protected function query($sql){
+        echo "Query: " . $sql . "</br>";
+        return $this->dbConnection->getConnection()->query($sql);
     }
 }
