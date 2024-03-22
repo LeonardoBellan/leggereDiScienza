@@ -50,11 +50,6 @@ class dbManager{
     public function getConnection(){
         return $this->db;
     }
-
-    public function performQuery($sql){
-        echo $sql . "</br>";
-        print_r( $this->db->query($sql));
-    }
 }
 
 //Non completata

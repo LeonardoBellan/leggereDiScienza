@@ -1,14 +1,21 @@
 <html>
-    <head>
-        <title>Home</title>
-    </head>
-    <body>
-        <h1>Benvenuti nel sito</h1>
-        <a href="login">Effettua il login</a>
-        <br>
 
-        <p>Libri:</p>
+<head>
+    <title>Home</title>
+</head>
 
-        <?= $vars[0]["titolo"]?>
-    </body>
+<body>
+    <h1>Benvenuti nel sito</h1>
+    <a href="login">Effettua il login</a>
+    <br>
+
+    <p>Libri:</p>
+
+    <?php
+        //Esempio
+        $row = mysqli_fetch_array($vars["queryResult"]);
+        print_r($row["titolo"]);
+    ?>
+</body>
+
 </html>

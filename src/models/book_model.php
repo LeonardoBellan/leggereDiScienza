@@ -5,14 +5,14 @@ require_once("dbManager.php");
 
 class book_model extends model{
 
-    function __construct(){
-        parent::__construct();
+    function __construct($user){
+        parent::__construct($user);
     }
 
     public function getAllBooks(){
         $query = "SELECT *
                     FROM libri";
-        return $_SESSION["connection"]->performQuery($query);
+        return $this->query($query);
     }
 
     public function searchBookByTitle($titolo){
@@ -20,7 +20,7 @@ class book_model extends model{
                     FROM libri
                     WHERE titolo = '$titolo'";
 
-        $result = $this->dbConnection->performQuery($query);
+        $result = $this->query($query);
         if($result == NULL){
             return NULL;
         }
