@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -6,12 +7,23 @@
 
 <body>
     <h1>Benvenuti nel sito</h1>
-    <a href="login">Effettua il login</a>
-    <br>
+    <?php 
+        if(!isset($_SESSION["logged"])){
+            
+            echo "<a href='login'>Effettua il login</a><br>";
+        }else{
+            echo "Benvenuto " . $_SESSION["username"] . "</br>";
+            echo "<a href='logout'>Effettua il logout</a><br>";
+        }
+    ?>
 
     <p>Libri:</p>
 
-    <?= $vars["books"][0]["titolo"]; ?>
+    <?php
+        foreach($vars["books"] as $book){
+            echo $book["titolo"];
+        }
+    ?>
 </body>
 
 </html>

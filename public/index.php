@@ -1,7 +1,12 @@
 <?php
 
+/* Variabili della sessione:
+*   $_SESSION["logged"] - booleano che indica se l'utente ha fatto l'accesso
+*   $_SESSION["username"] - nome dell'utente
+*   
+*/
+
 //Connessione al DB
-require_once("../src/models/dbManager.php");
 session_start();
 
 $resource = getResource($_SERVER['REQUEST_URI']);
@@ -15,19 +20,47 @@ $action = null;
 
 if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //User logged in
-    switch($resource){
-
-        //ecc...
-    }
-}else{
-    //User not logged in
+    echo "Logged: true </br>";
     switch($resource){
         case 'home':
             $controllerName = 'general_controller';
             $action = 'homeAction';
         break;
-    
+        case 'logout':
+            $controllerName = 'account_controller';
+            $action = 'logout';
+            break;
+
         //ecc...
+
+        default:
+            $controllerName = 'error_controller';
+            $action = 'error404';
+            break;
+    }
+}else{
+    //User not logged in
+    echo "Logged: False </br>";
+    switch($resource){
+        case 'home':
+        case '':
+            $controllerName = 'general_controller';
+            $action = 'homeAction';
+            break;
+        case 'login':
+            $controllerName = 'account_controller';
+            $action = 'login';
+        case 'register':
+            $controllerName = 'account_controller';
+            $action = 'register';
+            break;
+
+        //ecc...
+
+        default:
+            $controllerName = 'error_controller';
+            $action = 'error404';
+            break;
     }
 }
 
@@ -46,15 +79,10 @@ $controller->$action($_REQUEST);
 
 //TODO ottenere le risorse corrette
 function getResource($URI){
-    $temp = explode("/",$URI);
+
+    $url_parts = parse_url($URI);
+    $temp = explode("/",$url_parts["path"]);
     $resource = $temp[sizeof($temp)-1]; 
 
     return $resource;
 }
-
-/*Non completata
-* Gestione utenti
-* Gestione utenti DB
-* Creazione delle diverse action
-* Salvataggio nella sessione
-*/

@@ -15,12 +15,11 @@ class account_model extends model{
                     WHERE username = '$username'
                     AND password = md5('$password')";
 
-        $row = $this->query($query);
-        if($row == NULL){
-            
-        }
+        //$row = $this->query($query);
+        //return ($row != NULL) ? true : false;
+        return true;
     }
-    function userExists($user){
-
-    }
+    /*function register($username, $password){
+        $query = "INSERT INTO account"
+    }*/
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrati</title>
+</head>
+<body>
+    <form method="post" action = "register">
+        <input type="hidden" name="register" value="true">
+        <label for="password">username: </label>
+        <input type="email" name="username"><br>
+        <label for="password">Password: </label>
+        <input type="password" name="password"><br>
+        <!--Inserire gli altri campi necessari alla registrazione-->
+        <input type="submit" value="Registrati">
+    </form>
+    <a href="home">Torna indietro</a>
+
+    <?php
+        if(isset($vars["failed"])){
+            echo "Login failed";
+        }
+    ?>
+</body>
+</html>

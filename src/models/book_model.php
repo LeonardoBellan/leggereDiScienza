@@ -12,10 +12,15 @@ class book_model extends model{
     public function getAllBooks(){
         $query = "SELECT *
                     FROM libri";
-        return $this->query($query);
+        $result =  $this->query($query);
+        $books = array();
+        while ($row = mysqli_fetch_array($result)) {
+            $books[] = $row;
+        }
+        return $books;
     }
 
-    public function searchBookByTitle($titolo){
+    /*public function searchBookByTitle($titolo){
         $query = "SELECT *
                     FROM libri
                     WHERE titolo = '$titolo'";
@@ -29,5 +34,5 @@ class book_model extends model{
     public function getParoleChiaveByBook($ID) {
         $query = "SELECT *
                     FROM paroleLibro";
-    }
+    }*/
 }
