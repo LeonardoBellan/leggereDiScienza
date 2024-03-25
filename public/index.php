@@ -10,13 +10,17 @@
 session_start();
 
 $resource = getResource($_SERVER['REQUEST_URI']);
-
 echo "Resource: " . $resource . "</br>";
 
 //routing
 $DBuser;
 $controllerName = null;
 $action = null;
+
+if($resource == ''){
+    header("Location: home");
+    return;
+}
 
 if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     //User logged in
@@ -31,6 +35,10 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
             $action = 'logout';
             break;
 
+        case 'visualizzaLibro':
+            $controllerName = 'book_controller';
+            $action = 'visualizzaLibro';
+            break;
         //ecc...
 
         default:
@@ -43,22 +51,26 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
     echo "Logged: False </br>";
     switch($resource){
         case 'home':
-        case '':
             $controllerName = 'general_controller';
             $action = 'homeAction';
             break;
         case 'login':
             $controllerName = 'account_controller';
             $action = 'login';
+            break;
         case 'register':
             $controllerName = 'account_controller';
             $action = 'register';
+            break;
+        case 'visualizzaLibro':
+            $controllerName = 'book_controller';
+            $action = 'visualizzaLibro';
             break;
 
         //ecc...
 
         default:
-            $controllerName = 'error_controller';
+            $controllerName = 'general_controller';
             $action = 'error404';
             break;
     }

@@ -10,4 +10,11 @@ class model{
         echo "Query: " . $sql . "</br>";
         return $this->dbConnection->getConnection()->query($sql);
     }
+
+    /*
+    protected function changeConnection($username){
+        
+    }
+
+    */
 }

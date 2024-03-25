@@ -20,8 +20,10 @@
     <p>Libri:</p>
 
     <?php
-        foreach($vars["books"] as $book){
-            echo $book["titolo"];
+        foreach($attributes["books"] as $book){
+            $idLibro = $book["idLibro"];
+            $titoloLibro = $book["titolo"];
+            echo "<a href='visualizzaLibro?idLibro=$idLibro'>$titoloLibro</a><br>";
         }
     ?>
 </body>

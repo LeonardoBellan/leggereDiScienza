@@ -16,7 +16,7 @@ class account_controller extends controller{
     public function login($request){
         //Quando si arriva dalla home
         if(!isset($request["login"])){
-            renderView("login_view.phtml", null);
+            $this->renderView("login_view.phtml", null);
             return;
         }
 
@@ -28,24 +28,30 @@ class account_controller extends controller{
             header("Location: home");
         }else{
             //Credenziali errate
-            renderView("login_view.phtml", ["failed" => true]);
+            $this->renderView("login_view.phtml", ["failed" => true]);
         }
     }
 
     public function logout(){
         unset($_SESSION["logged"]);
+        unset($_SESSION["username"]);
         header("Location: home");
     }
 
     public function register($request) {
         //Quando si arriva dalla home
         if(!isset($request["register"])){
-            renderView("register_view.phtml", null);
+            $this->renderView("register_view.phtml", null);
             return;
         }
 
         //Registrazione
-        if($this->accountmanager->register($request["username"], $request["password"])){
+        $username = $request["username"];
+        $password = $request["password"];
+        $nome = $request["nomeProfessore"];
+        $cognome = $request["cognomeProfessore"];
+        $numeroTelefono = $request["numTelefono"];
+        if($this->accountmanager->register($username, $password, $nome, $cognome, $numeroTelefono)){
             //Registrazione avvenuta con successo
             $_SESSION["logged"] = true;
             $_SESSION["username"] = $request["username"];

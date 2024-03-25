@@ -15,10 +15,6 @@
     <a href="register">Non hai un account? Registrati ora</a>
     <br>
     <a href="home">Torna indietro</a>
-    <?php
-        if(isset($vars["failed"])){
-            echo "Login failed";
-        }
-    ?>
+    <?= (isset($attributes["failed"])) ? "Login failed" : ''; ?>
 </body>
 </html>

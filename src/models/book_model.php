@@ -20,19 +20,19 @@ class book_model extends model{
         return $books;
     }
 
-    /*public function searchBookByTitle($titolo){
+    public function informazioniLibro($idLibro){
         $query = "SELECT *
                     FROM libri
-                    WHERE titolo = '$titolo'";
-
-        $result = $this->query($query);
-        if($result == NULL){
-            return NULL;
-        }
+                    WHERE idLibro = '$idLibro'";
+        $result =  $this->query($query);
+        return mysqli_fetch_array($result);
     }
 
-    public function getParoleChiaveByBook($ID) {
-        $query = "SELECT *
-                    FROM paroleLibro";
-    }*/
+    public function getIdByTitle($titolo){
+        $query = "SELECT idLibro
+                    FROM libri
+                    WHERE titolo = '$titolo'";
+        $result =  $this->query($query);
+        return mysqli_fetch_array($result)["idLibro"];
+    }
 }

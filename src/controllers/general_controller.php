@@ -12,8 +12,21 @@ class General_controller extends controller{
         $books = $this->bookmanager->getAllBooks();
 
         //Preparazione array associativo
-        $vars = [
+        $attributes = [
             "books" => $books];
-        renderView("home_view.phtml", $vars);
+        $this->renderView("home_view.phtml", $attributes);
+    }
+
+    public function error404($request){
+
+        $attributes= [
+            "error" => 404,
+            "message" => "Impossibile trovare la pagina " . $_SERVER["REQUEST_URI"]
+        ];
+        /*$attributes["message"] = match($errorCode){
+            404 => "La pagina  " . $request["URI"] . " non è stata trovata"
+        };*/
+
+        $this->renderView("error_view.phtml", $attributes);
     }
 }
