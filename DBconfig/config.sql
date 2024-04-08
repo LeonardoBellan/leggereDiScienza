@@ -1,5 +1,48 @@
+START TRANSACTION;
+
+
 /*
---TODO Creazione tabelle ed utenti (user,insegnante,insegnanteSupervisore)
+--Account
+--PK: idAccount
+*/
+DROP TABLE IF EXISTS account;
+CREATE TABLE account (
+    idAccount int primary key auto_increment,
+    username varchar(30) NOT NULL,
+    password varchar(30) NOT NULL,
+    attivo bit NOT NULL default 0,
+    supervisore bit NOT NULL default 0,
+    dataCreazione date DEFAULT CURRENT_TIMESTAMP
+);
+
+/*
+--Professori
+--PK: idProfessore
+*/
+DROP TABLE IF EXISTS professori;
+CREATE TABLE professori(
+    idAccount int PRIMARY KEY,
+        FOREIGN KEY (idAccount)
+        REFERENCES account(idAccount);
+    idAccount int,
+        FOREIGN KEY(idAccount) 
+        REFERENCES account(idAccount),
+    cognome varchar(20) NOT NULL,
+    nome varchar(20) NOT NULL,
+    numeroTelefono char(10)
+);
+
+/*
+--Autori
+--PK: idAutore
+*/
+DROP TABLE IF EXISTS autori;
+CREATE TABLE autori(
+    idAutore int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(40)
+);
+
+/*
 --Case editrici
 --PK: idCasaEditrice
 */
@@ -20,61 +63,6 @@ CREATE TABLE tipologie(
 );
 
 /*
---Professori
---PK: idProfessore
-*/
-DROP TABLE IF EXISTS professori;
-CREATE TABLE professori(
-    idProfessore int PRIMARY KEY AUTO_INCREMENT,
-    cognome varchar(20) NOT NULL,
-    nome varchar(20) NOT NULL,
-    numeroTelefono varchar(10)
-);
-
-/*
---Libri
---PK: idLibro
-*/
-DROP TABLE IF EXISTS libri;
-CREATE TABLE libri (
-    idLibro int PRIMARY KEY AUTO_INCREMENT,
-    ISBN int(13) NOT NULL,
-    titolo varchar(25) NOT NULL,
-    copertina varchar(40) NOT NULL,           /*path of the image*/
-    casaEditrice int, FOREIGN KEY(casaEditrice) REFERENCES caseEditrici(idCasaEditrice),
-    trama varchar(200),
-    tipologia int, FOREIGN KEY(tipologia) REFERENCES tipologie(idTipologia),
-    dataPubblicazione date,
-    disponibilita bit NOT NULL,                /*disponibilità in biblioteca (Per la futura biblioteca del Kennedy)*/
-
-    professore int, FOREIGN KEY(professore) REFERENCES professori(idProfessore)   /*Professore che ha inserito il libro*/
-);
-
-/*
---Autori
---PK: idAutore
-*/
-DROP TABLE IF EXISTS autori;
-CREATE TABLE autori(
-    idAutore int PRIMARY KEY AUTO_INCREMENT,
-    cognome varchar(20) NOT NULL,
-    nome varchar(20) NOT NULL,
-    alias varchar(20),
-    dataMorte date
-);
-
-/*
---AutoriLibro
---PK: libro,autore
-*/
-DROP TABLE IF EXISTS autoriLibro;
-CREATE TABLE autoriLibro(
-    libro int, FOREIGN KEY(libro) REFERENCES libri(idLibro),
-    autore int, FOREIGN KEY(autore) REFERENCES autori(idAutore),
-    PRIMARY KEY(libro,autore)
-);
-
-/*
 --Generi
 --PK: idGenere
 */
@@ -82,17 +70,6 @@ DROP TABLE IF EXISTS generi;
 CREATE TABLE generi(
     idGenere int PRIMARY KEY AUTO_INCREMENT,
     descrizione varchar(20) NOT NULL
-);
-
-/*
---GeneriLibro
---PK: libro, genere
-*/
-DROP TABLE IF EXISTS generiLibro;
-CREATE TABLE generiLibro(
-    libro int, FOREIGN KEY(libro) REFERENCES libri(idLibro),
-    genere int, FOREIGN KEY(genere) REFERENCES generi(idGenere),
-    PRIMARY KEY(libro,genere)
 );
 
 /*
@@ -106,13 +83,91 @@ CREATE TABLE paroleChiave(
 );
 
 /*
+--Libri
+--PK: idLibro
+*/
+DROP TABLE IF EXISTS libri;
+CREATE TABLE libri (
+    idLibro int PRIMARY KEY AUTO_INCREMENT,
+    ISBN varchar(13) NOT NULL,
+    titolo varchar(40) NOT NULL,
+    copertina varchar(40) NOT NULL,           /*path of the image*/
+    casaEditrice int, 
+        FOREIGN KEY(casaEditrice) 
+        REFERENCES caseEditrici(idCasaEditrice) 
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+    trama text,
+    tipologia int, 
+        FOREIGN KEY(tipologia) 
+        REFERENCES tipologie(idTipologia) 
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+    dataPubblicazione date,
+    disponibilita bit NOT NULL,                /*disponibilità in biblioteca (Per la futura biblioteca del Kennedy)*/
+
+    professore int,                            /*Professore che ha inserito il libro*/
+        FOREIGN KEY(professore) 
+        REFERENCES professori(idProfessore)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+
+/*
+--AutoriLibro
+--PK: libro,autore
+*/
+DROP TABLE IF EXISTS autoriLibro;
+CREATE TABLE autoriLibro(
+    libro int, 
+        FOREIGN KEY(libro) 
+        REFERENCES libri(idLibro) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    autore int, 
+        FOREIGN KEY(autore) 
+        REFERENCES autori(idAutore) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    PRIMARY KEY(libro,autore)
+);
+
+/*
+--GeneriLibro
+--PK: libro, genere
+*/
+DROP TABLE IF EXISTS generiLibro;
+CREATE TABLE generiLibro(
+    libro int, 
+        FOREIGN KEY(libro) 
+        REFERENCES libri(idLibro) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    genere int, 
+        FOREIGN KEY(genere) 
+        REFERENCES generi(idGenere) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    PRIMARY KEY(libro,genere)
+);
+
+/*
 --Parole chiave per libro
 --PK: libro, parola
 */
 DROP TABLE IF EXISTS paroleLibro;
 CREATE TABLE paroleLibro(
-    libro int, FOREIGN KEY(libro) REFERENCES libri(idLibro),
-    parola int, FOREIGN KEY(parola) REFERENCES paroleChiave(idParola),
+    libro int, 
+        FOREIGN KEY(libro) 
+        REFERENCES libri(idLibro) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    parola int, 
+        FOREIGN KEY(parola) 
+        REFERENCES paroleChiave(idParola) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
     PRIMARY KEY(libro,parola)
 );
 
@@ -122,21 +177,18 @@ CREATE TABLE paroleLibro(
 */
 DROP TABLE IF EXISTS recensioni;
 CREATE TABLE recensioni(
-    libro int NOT NULL, FOREIGN KEY(libro) REFERENCES libri(idLibro),
-    professore int NOT NULL, FOREIGN KEY(professore) REFERENCES professori(idProfessore),
+    libro int NOT NULL, 
+        FOREIGN KEY(libro) 
+        REFERENCES libri(idLibro)
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+    professore int NOT NULL, 
+        FOREIGN KEY(professore) 
+        REFERENCES professori(idProfessore)
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
     PRIMARY KEY(libro, professore),
-    recensione varchar(400) NOT NULL
+    recensione text NOT NULL
 );
 
-
-
-/*
---TODO
-DROP TABLE IF EXISTS account;
-CREATE TABLE account (
-
-);
-
---Non completato
---Creazione di tutte le tabelle necessarie
-*/
+COMMIT;

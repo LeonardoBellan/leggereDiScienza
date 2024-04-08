@@ -1,7 +1,6 @@
 <?php
 
 require_once("model.php");
-require_once("dbManager.php");
 
 class account_model extends model{
 
@@ -10,14 +9,15 @@ class account_model extends model{
     }
 
     public function login($username, $password){
-        $query = "SELECT * 
+        $query = "SELECT idAccount 
                     FROM account
                     WHERE username = '$username'
-                    AND password = md5('$password')";
-
-        //$result = $this->query($query);
-        //return ($result != NULL) ? true : false;
-        return true;
+                    AND password = '$password'
+                    AND attivo = 1";
+        
+        $result = $this->query($query);
+        $row = mysqli_fetch_array($result);
+        return ($result != NULL) ? $row["idAccount"] : false;
     }
     /*
     function register($username, $password, $nome, $cognome, $numeroTelefono){
@@ -40,5 +40,14 @@ class account_model extends model{
         $result = $this->query($query);
         $row = mysqli_fetch_array($result);
         return $row["idAccount"];
+    }
+
+    public function getLevel( $idAccount){
+        $query = "SELECT supervisore
+                    FROM account
+                    WHERE idAccount = '$idAccount'";
+        $result = $this->query($query);
+        $row = mysqli_fetch_array($result);
+        return $row["supervisore"];
     }
 }

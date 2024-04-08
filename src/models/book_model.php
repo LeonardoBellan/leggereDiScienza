@@ -1,7 +1,6 @@
 <?php
 
 require_once("model.php");
-require_once("dbManager.php");
 
 class book_model extends model{
 
@@ -20,7 +19,7 @@ class book_model extends model{
         return $books;
     }
 
-    public function informazioniLibro($idLibro){
+    public function getBook($idLibro){
         $query = "SELECT *
                     FROM libri
                     WHERE idLibro = '$idLibro'";
@@ -34,5 +33,13 @@ class book_model extends model{
                     WHERE titolo = '$titolo'";
         $result =  $this->query($query);
         return mysqli_fetch_array($result)["idLibro"];
+    }
+
+    public function insertBook($ISBN, $titolo, $copertina, $idCasaEditrice, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore){
+        $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
+                VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)";
+        $result = $this->query($query);
+        
+        return ($result) ? true : false;
     }
 }

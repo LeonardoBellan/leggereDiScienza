@@ -7,7 +7,7 @@
     <form method="post" action = "login">
         <input type="hidden" name="login" value="true">
         <label for="password">username: </label>
-        <input type="email" name="username"><br>
+        <input type="text" name="username"><br>
         <label for="password">Password: </label>
         <input type="password" name="password"><br>
         <input type="submit" value="Accedi">
@@ -15,6 +15,6 @@
     <a href="register">Non hai un account? Registrati ora</a>
     <br>
     <a href="home">Torna indietro</a>
-    <?= (isset($attributes["failed"])) ? "Login failed" : ''; ?>
+    <?= (isset($data["failed"])) ? "Login failed" : ''; ?>
 </body>
 </html>

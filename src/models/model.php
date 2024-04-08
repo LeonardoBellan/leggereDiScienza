@@ -1,4 +1,7 @@
 <?php
+
+require_once("dbManager.php");
+
 class model{
     private $dbConnection;
 
@@ -7,14 +10,7 @@ class model{
     }
 
     protected function query($sql){
-        echo "Query: " . $sql . "</br>";
-        return $this->dbConnection->getConnection()->query($sql);
+        $result = $this->dbConnection->getConnection()->query($sql);
+        return $result;
     }
-
-    /*
-    protected function changeConnection($username){
-        
-    }
-
-    */
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inserimento di un nuovo libro</title>
+</head>
+<body>
+    <form method="post" action = "inserisciLibro">
+        <input type="hidden" name="insertBook" value="true">
+        
+        <!-- Titolo -->
+        <label for="titolo">Titolo: </label>
+        <input type="text" name="titolo" required>
+        <br>
+        
+        <!-- ISBN -->
+        <label for="ISBN">ISBN: </label>
+        <input type="text" name="ISBN">
+        <br>
+
+        <!-- Inserimento copertina-->
+        <label for="copertina">Inserisci un'immagine di copertina:</label>
+        <input type="file" name="copertina" accept="image/png, image/jpeg"/>
+        <br>
+
+        <!-- Autori -->
+
+        <!-- Casa editrice -->
+        <label for="idCasaEditrice">Casa Editrice: </label>
+        <select name="idCasaEditrice">
+            <option value="">--Please choose an option--</option>
+            <?php
+                //Da migliorare con la ricerca
+                foreach($data["caseEditrici"] as $casaEditrice){
+                    $idCasaEditrice = $casaEditrice["idCasaEditrice"];
+                    $nomeCE = $casaEditrice["nome"];
+                    echo "<option value='$idCasaEditrice'>$nomeCE</option><br>";
+                }
+                ?>
+        </select></br>
+
+        <!-- Tipologia del libro-->
+        <label for="idTipologia">Tipologia: </label>
+        <select name="idTipologia">
+            <option value="">--Please choose an option--</option>
+            <?php
+                foreach($data["tipologie"] as $tipologia){
+                    $idTipologia = $tipologia["idTipologia"];
+                    $descrizione = $tipologia["descrizione"];
+                    echo "<option value='$idTipologia'>$descrizione</option><br>";
+                }
+                ?>
+        </select></br>
+
+        <!-- Data di pubblicazione -->
+        <label for="dataPubblicazione">Data di pubblicazione: </label>
+        <input type="date" name="dataPubblicazione">
+        <br>
+
+        <!-- Generi -->
+
+        <!-- Trama -->
+        <label for="trama">Trama: </label>
+        <input type="text" name="Trama"><br>
+
+        <!-- Argomenti -->
+
+        <!-- Parole chiave -->
+
+        <!-- Disponibilità in biblioteca -->
+        <label for="disponibilita">Disponibile in biblioteca: </label>
+        <input type="checkbox" name="disponibilita">
+        <br>
+
+        <input type="submit" value="Inserisci">
+    </form>
+    <br>
+    <?= (isset($data["failed"])) ? "Inserimento non riuscito" : ''; ?>
+    <a href="home">Torna indietro</a>
+</body>
+</html>

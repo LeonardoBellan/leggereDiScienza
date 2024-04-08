@@ -10,5 +10,14 @@ class book_controller extends controller{
         $book = $this->bookmanager->informazioniLibro($idLibro);
         $this->renderView("book_view.phtml",$book);
     }
-    
+
+    public function inserisciLibro($request){
+        $caseEditrici = $this->bookmanager->getAllCE();
+        $tipologie = $this->bookmanager->getAllTipologie();
+        $data = [
+            "caseEditrici"=> $caseEditrici,
+            "tipologie"=> $tipologie
+        ];
+        $this->renderView("insertBook_view.phtml",$data);
+    }
 }

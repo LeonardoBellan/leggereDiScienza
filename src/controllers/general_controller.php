@@ -7,7 +7,7 @@ class General_controller extends controller{
         parent::__construct($book_model, $account_model);
     }
 
-    public function homeAction($request) {
+    public function home($request) {
         //query
         $books = $this->bookmanager->getAllBooks();
 
