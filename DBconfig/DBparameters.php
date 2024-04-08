@@ -9,12 +9,12 @@ function getDBUser($userNameDB){
     $host = "localhost";
     $port = "3306";
     $dbName = "leggereDiScienza";
-    /*$password = match($userNameDB){
+    $password = match($userNameDB){
         "root" => "",
-        "insegnanteSupervisore" => "",
-        "insegnante" => "",
-        "user" => ""
-    };*/
+        "bibliotecaSupervisore" => "3Qj)<{3l}lh2eAn*",
+        "bibliotecaProfessore" => "19:4sa1WT|*pPb_R",
+        "bibliotecaOspite" => "2rq{6eqAV:2@>qx0"
+    };
 
     $password = "";
 

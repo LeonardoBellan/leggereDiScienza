@@ -140,3 +140,18 @@ CREATE TABLE account (
 --Non completato
 --Creazione di tutte le tabelle necessarie
 */
+
+CREATE USER IF NOT EXISTS bibliotecaOspite@% IDENTIFIED BY "2rq{6eqAV:2@>qx0";
+REVOKE ALL PRIVILEGES ON *.* TO bibliotecaOspite@localhost;
+GRANT SELECT ON biblioteca.* to bibliotecaOspite@localhost;
+
+CREATE USER IF NOT EXISTS bibliotecaProfessore@% IDENTIFIED BY "19:4sa1WT|*pPb_R";
+REVOKE ALL PRIVILEGES ON *.* TO bibliotecaProfessore@localhost;
+GRANT SELECT ON biblioteca.* to bibliotecaProfessore@localhost;
+REVOKE INSERT ON biblioteca.* to bibliotecaProfessore@localhost;
+GRANT INSERT ON biblioteca.recensioni to bibliotecaProfessore@localhost;
+
+CREATE USER IF NOT EXISTS bibliotecaSupervisore@localhost IDENTIFIED BY "3Qj)<{3l}lh2eAn*";
+REVOKE ALL PRIVILEGES ON *.* TO bibliotecaProfessore@localhost;
+GRANT SELECT ON biblioteca.* to bibliotecaProfessore@localhost;
+GRANT INSERT ON biblioteca.* to bibliotecaProfessore@localhost;
