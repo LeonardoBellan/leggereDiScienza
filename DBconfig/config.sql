@@ -191,9 +191,6 @@ CREATE TABLE recensioni(
     recensione text NOT NULL
 );
 
-<<<<<<< HEAD
-COMMIT;
-=======
 
 
 /*
@@ -221,4 +218,5 @@ CREATE USER IF NOT EXISTS bibliotecaSupervisore@localhost IDENTIFIED BY "3Qj)<{3
 REVOKE ALL PRIVILEGES ON *.* TO bibliotecaProfessore@localhost;
 GRANT SELECT ON biblioteca.* to bibliotecaProfessore@localhost;
 GRANT INSERT ON biblioteca.* to bibliotecaProfessore@localhost;
->>>>>>> 80cf6fe31b3028c49e69804e5df73341fa96ce41
+
+COMMIT;
