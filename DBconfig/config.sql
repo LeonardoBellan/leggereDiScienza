@@ -1,6 +1,5 @@
 START TRANSACTION;
 
-
 /*
 --Account
 --PK: idAccount
@@ -190,19 +189,6 @@ CREATE TABLE recensioni(
     PRIMARY KEY(libro, professore),
     recensione text NOT NULL
 );
-
-
-
-/*
---TODO
-DROP TABLE IF EXISTS account;
-CREATE TABLE account (
-
-);
-
---Non completato
---Creazione di tutte le tabelle necessarie
-*/
 
 CREATE USER IF NOT EXISTS bibliotecaOspite@% IDENTIFIED BY "2rq{6eqAV:2@>qx0";
 REVOKE ALL PRIVILEGES ON *.* TO bibliotecaOspite@localhost;
