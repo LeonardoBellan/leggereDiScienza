@@ -12,7 +12,7 @@ class tipologie_model extends model{
                     FROM tipologie";
         $result =  $this->query($query);
         $tipologie = array();
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $tipologie[] = $row;
         }
         return $tipologie;

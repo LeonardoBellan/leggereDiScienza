@@ -16,7 +16,7 @@ class account_model extends model{
                     AND attivo = 1";
         
         $result = $this->query($query);
-        $row = mysqli_fetch_array($result);
+        $row = mysqli_fetch_assoc($result);
         return ($result != NULL) ? $row["idAccount"] : false;
     }
     /*
@@ -38,7 +38,7 @@ class account_model extends model{
                     FROM account
                     WHERE username = '$username'";
         $result = $this->query($query);
-        $row = mysqli_fetch_array($result);
+        $row = mysqli_fetch_assoc($result);
         return $row["idAccount"];
     }
 
@@ -47,7 +47,7 @@ class account_model extends model{
                     FROM account
                     WHERE idAccount = '$idAccount'";
         $result = $this->query($query);
-        $row = mysqli_fetch_array($result);
+        $row = mysqli_fetch_assoc($result);
         return $row["supervisore"];
     }
 }

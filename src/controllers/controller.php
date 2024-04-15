@@ -7,6 +7,7 @@ class controller{
 
     private function renderView($template, $data = array()){
         //Seleziona la pagina HTML scelta da visualizzare
+        $data_JSON = 
         require_once "../src/views/$template.phtml";
     }
 

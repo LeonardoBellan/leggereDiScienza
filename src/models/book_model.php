@@ -13,7 +13,7 @@ class book_model extends model{
                     FROM libri";
         $result =  $this->query($query);
         $books = array();
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $books[] = $row;
         }
         return $books;
@@ -24,7 +24,7 @@ class book_model extends model{
                     FROM libri
                     WHERE idLibro = '$idLibro'";
         $result =  $this->query($query);
-        return mysqli_fetch_array($result);
+        return mysqli_fetch_assoc($result);
     }
 
     public function getIdByTitle($titolo){
@@ -32,7 +32,7 @@ class book_model extends model{
                     FROM libri
                     WHERE titolo = '$titolo'";
         $result =  $this->query($query);
-        return mysqli_fetch_array($result)["idLibro"];
+        return mysqli_fetch_assoc($result)["idLibro"];
     }
 
     public function insertBook($ISBN, $titolo, $copertina, $idCasaEditrice, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore){

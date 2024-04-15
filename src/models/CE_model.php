@@ -12,7 +12,7 @@ class CE_model extends model{
                     FROM caseEditrici";
         $result =  $this->query($query);
         $CE = array();
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $CE[] = $row;
         }
         return $CE;
