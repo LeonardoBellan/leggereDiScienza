@@ -8,18 +8,18 @@ class book_model extends model{
         parent::__construct($user);
     }
 
-    public function getAllBooks(){
+    public function getAllLibro(){
         $query = "SELECT *
                     FROM libri";
         $result =  $this->query($query);
-        $books = array();
+        $libri = array();
         while ($row = mysqli_fetch_array($result)) {
-            $books[] = $row;
+            $libri[] = $row;
         }
-        return $books;
+        return $libri;
     }
 
-    public function getBook($idLibro){
+    public function getLibro($idLibro){
         $query = "SELECT *
                     FROM libri
                     WHERE idLibro = '$idLibro'";
@@ -35,7 +35,7 @@ class book_model extends model{
         return mysqli_fetch_array($result)["idLibro"];
     }
 
-    public function insertBook($ISBN, $titolo, $copertina, $idCasaEditrice, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore){
+    public function insertLibro($ISBN, $titolo, $copertina, $idCasaEditrice, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore){
         $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
                 VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)";
         $result = $this->query($query);
