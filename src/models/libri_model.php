@@ -2,7 +2,7 @@
 
 require_once("model.php");
 
-class book_model extends model{
+class libri_model extends model{
 
     function __construct($user){
         parent::__construct($user);

@@ -36,10 +36,10 @@ class controller{
 
     public function home() {
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("book_model","root");//Cambiare utente
+        $bookmanager = $this->getModel("libri_model","root");//Cambiare utente
 
         //query
-        $books = $bookmanager->getAllBooks();
+        $books = $bookmanager->getAllLibro();
 
         //Preparazione array associativo
         $attributes = [
@@ -112,11 +112,11 @@ class controller{
 
     public function visualizzaLibro(){
             //Richiesta modelli necessari
-            $bookmanager = $this->getModel("book_model","root");        //Cambiare utenti
+            $bookmanager = $this->getModel("libri_model","root");        //Cambiare utenti
             $CEmanager = $this->getModel("CE_model","root");
 
             $idLibro = $_POST["idLibro"];
-            $book = $bookmanager->getBook($idLibro);
+            $book = $bookmanager->getLibro($idLibro);
             $this->renderView("book_view",$book);
         }
     
@@ -124,7 +124,7 @@ class controller{
         $this->checkAccountLevel(2);
 
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("book_model","root");    //Cambiare utenti
+        $bookmanager = $this->getModel("libri_model","root");    //Cambiare utenti
         $CEmanager = $this->getModel("CE_model","root");
         $tipologiemanager = $this->getModel("tipologie_model","root");
 

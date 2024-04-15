@@ -24,7 +24,7 @@ class account_model extends model{
         //Controlla se l'utente esiste già
         if(!$this->getIdByUsername($username)){
             //Utente esiste
-            $query = "INSERT INTO account ..."
+            $query = "INSERT INTO account ...";
             $this->query($query);
             return true;
         }else{
@@ -40,7 +40,6 @@ class account_model extends model{
         $result = $this->query($query);
         $row = mysqli_fetch_array($result);
         return $row["idAccount"];
-    }
     }
 
     function getAccountById($id){

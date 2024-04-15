@@ -4,70 +4,133 @@
 
 /* Color palette */
 /*
-#ECDFD1
-#DDBE9F
-#E0AB80
-#AE8165
-#7C5340
-*/
-.primary-color{
-    color:#ECDFD1;
+/* CSS HEX */
+:root{
+  --almond: #ede0d4ff;
+  --dun: #e6ccb2ff;
+  --tan: #ddb892ff;
+  --chamoisee: #b08968ff; /*Primario*/
+  --coffee: #7f5539ff;
+  --raw-umber: #9c6644ff;
 }
 
-
-
-/* NavBar */
-nav{
-    position:fixed;
-    margin-top:0px;
-      
-    display:block;
-    width:100%;
-    height: 60px;
+.text-almond{
+  color:var(--almond);
 }
+.text-dun{
+  color:var(--dun);
+}
+.text-tan{
+  color:var(--tan); 
+}
+.text-chamoisee{
+  color:var(--chamoisee);
+}
+.text-coffee{
+  color:var(--coffee);
+}
+.text-raw-umber{
+  color:var(--raw-umber);
+}
+
+.bg-almond{
+  background-color:var(--almond);
+}
+.bg-dun{
+  background-color:var(--dun);
+}
+.bg-tan{
+  background-color:var(--tan); 
+}
+.bg-chamoisee{
+  background-color:var(--chamoisee);
+}
+.bg-coffee{
+  background-color:var(--coffee);
+}
+.bg-raw-umber{
+  background-color:var(--raw-umber);
+}
+
+/* sideBar */
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 300px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: var(--tan); /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: var(--coffee);
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: var(--almond);
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+/* SearchBar */
+.inputs{
+  position: relative;
+}
+
 .searchBar{
-    width: 300px;
-    vertical-align: middle;
-    white-space:nowrap;
-    position:relative;
+  display:flex;
+  height: 45px;
+  justify-content: center;
+  background-color: inherit;
 }
-.searchBar input#search{
-  width: 50px;
-  height: 50px;
-  border:none;
-  font-size: 10pt;
-  float: left;
-  color: #262626;
-  padding-left: 35px;
-  border-radius: 5px;
-  color: #262626;
-  transition: width .55s ease;
+
+.search {
+  height: 100%;
+  width: 1005;
+  background-color: inherit;
+  text-indent: 30px;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 1px solid var(--raw-umber);
+ }
+
+.search:focus {
+  color: var(--dun);
+  outline: 0;
+  box-shadow: none;
+  border-bottom: 1px solid var(--almond);
 }
-.searchBar .icon{
+
+.search:focus  {
+  color: var(--coffee);
+}
+
+.inputs i{
+  
   position: absolute;
-  top: 50%;
-  margin-left: 17px;
-  margin-top: 17px;
-  z-index: 1;
-  color: #4f5b66;
+  top: 14px;
+  left: 4px;
+  color: var(--almond);
 }
-.searchBar input#search:focus, .searchBar input#search:active{
-  outline:none;
-  width: 300px;
-}
-.searchBar:hover input#search{
-  width: 300px;
-}
-.searchBar:hover .icon{
-  color: #93a2ad;
+.search:focus .inputs i{
+  color: var(--raw-umber);
 }
 
 /* Main */
-
-main{
-    margin-top:70px;
-
-    width:100%;
-    padding-right:10px;
+main {
+  margin-left: 160px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
 }
-
