@@ -1,0 +1,73 @@
+*{
+    font-size:20px;
+}
+
+/* Color palette */
+/*
+#ECDFD1
+#DDBE9F
+#E0AB80
+#AE8165
+#7C5340
+*/
+.primary-color{
+    color:#ECDFD1;
+}
+
+
+
+/* NavBar */
+nav{
+    position:fixed;
+    margin-top:0px;
+      
+    display:block;
+    width:100%;
+    height: 60px;
+}
+.searchBar{
+    width: 300px;
+    vertical-align: middle;
+    white-space:nowrap;
+    position:relative;
+}
+.searchBar input#search{
+  width: 50px;
+  height: 50px;
+  border:none;
+  font-size: 10pt;
+  float: left;
+  color: #262626;
+  padding-left: 35px;
+  border-radius: 5px;
+  color: #262626;
+  transition: width .55s ease;
+}
+.searchBar .icon{
+  position: absolute;
+  top: 50%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+}
+.searchBar input#search:focus, .searchBar input#search:active{
+  outline:none;
+  width: 300px;
+}
+.searchBar:hover input#search{
+  width: 300px;
+}
+.searchBar:hover .icon{
+  color: #93a2ad;
+}
+
+/* Main */
+
+main{
+    margin-top:70px;
+
+    width:100%;
+    padding-right:10px;
+}
+

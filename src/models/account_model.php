@@ -16,13 +16,13 @@ class account_model extends model{
                     AND attivo = 1";
         
         $result = $this->query($query);
-        $row = mysqli_fetch_array($result);
+        $row = mysqli_fetch_assoc($result);
         return ($result != NULL) ? $row["idAccount"] : false;
     }
-    /*
-    function register($username, $password, $nome, $cognome, $numeroTelefono){
+    
+    function register($username, $password, $email, $nome, $cognome, $numeroTelefono){
         //Controlla se l'utente esiste già
-        if($this->getIdByUsername($username)){
+        if(!$this->getIdByUsername($username)){
             //Utente esiste
             $query = "INSERT INTO account ..."
             $this->query($query);
@@ -31,14 +31,35 @@ class account_model extends model{
             //Utente non esiste
             return false;
         }
-    }*/
+    }
+
+    function getProfessoreById($id){
+        $query = "SELECT *
+                    FROM professori
+                    WHERE account = '$id'";
+        $result = $this->query($query);
+        $row = mysqli_fetch_array($result);
+        return $row["idAccount"];
+    }
+    }
+
+    function getAccountById($id){
+        $query = "SELECT *
+                    FROM account
+                    WHERE account.idAccount = '$id'";
+        $result = $this->query($query);
+        $row = mysqli_fetch_array($result);
+        return $row["idAccount"];
+    }
+
+
 
     public function getIdByUsername($username){
         $query = "SELECT idAccount
                     FROM account
                     WHERE username = '$username'";
         $result = $this->query($query);
-        $row = mysqli_fetch_array($result);
+        $row = mysqli_fetch_assoc($result);
         return $row["idAccount"];
     }
 
@@ -47,7 +68,7 @@ class account_model extends model{
                     FROM account
                     WHERE idAccount = '$idAccount'";
         $result = $this->query($query);
-        $row = mysqli_fetch_array($result);
+        $row = mysqli_fetch_assoc($result);
         return $row["supervisore"];
     }
 }

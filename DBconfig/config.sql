@@ -20,11 +20,8 @@ CREATE TABLE account (
 */
 DROP TABLE IF EXISTS professori;
 CREATE TABLE professori(
-    idAccount int PRIMARY KEY,
-        FOREIGN KEY (idAccount)
-        REFERENCES account(idAccount);
-    idAccount int,
-        FOREIGN KEY(idAccount) 
+    account int PRIMARY KEY,
+        FOREIGN KEY (account)
         REFERENCES account(idAccount),
     cognome varchar(20) NOT NULL,
     nome varchar(20) NOT NULL,
@@ -96,7 +93,7 @@ CREATE TABLE libri (
         REFERENCES caseEditrici(idCasaEditrice) 
         ON DELETE SET NULL
         ON UPDATE CASCADE,
-    trama text,
+    trama varchar(200),
     tipologia int, 
         FOREIGN KEY(tipologia) 
         REFERENCES tipologie(idTipologia) 
@@ -104,10 +101,9 @@ CREATE TABLE libri (
         ON UPDATE CASCADE,
     dataPubblicazione date,
     disponibilita bit NOT NULL,                /*disponibilità in biblioteca (Per la futura biblioteca del Kennedy)*/
-
     professore int,                            /*Professore che ha inserito il libro*/
         FOREIGN KEY(professore) 
-        REFERENCES professori(idProfessore)
+        REFERENCES professori(account)
         ON DELETE SET NULL
         ON UPDATE CASCADE
 );
@@ -183,26 +179,26 @@ CREATE TABLE recensioni(
         ON UPDATE CASCADE,
     professore int NOT NULL, 
         FOREIGN KEY(professore) 
-        REFERENCES professori(idProfessore)
+        REFERENCES professori(account)
         ON DELETE CASCADE 
         ON UPDATE CASCADE,
     PRIMARY KEY(libro, professore),
     recensione text NOT NULL
 );
 
-CREATE USER IF NOT EXISTS bibliotecaOspite@% IDENTIFIED BY "2rq{6eqAV:2@>qx0";
-REVOKE ALL PRIVILEGES ON *.* TO bibliotecaOspite@localhost;
-GRANT SELECT ON biblioteca.* to bibliotecaOspite@localhost;
+CREATE USER IF NOT EXISTS 'bibliotecaOspite'@'%' IDENTIFIED BY "2rq{6eqAV:2@>qx0";
+REVOKE ALL ON *.* FROM 'bibliotecaOspite'@'%';
+GRANT SELECT ON biblioteca.* to 'bibliotecaOspite'@'%';
 
-CREATE USER IF NOT EXISTS bibliotecaProfessore@% IDENTIFIED BY "19:4sa1WT|*pPb_R";
-REVOKE ALL PRIVILEGES ON *.* TO bibliotecaProfessore@localhost;
-GRANT SELECT ON biblioteca.* to bibliotecaProfessore@localhost;
-REVOKE INSERT ON biblioteca.* to bibliotecaProfessore@localhost;
-GRANT INSERT ON biblioteca.recensioni to bibliotecaProfessore@localhost;
+CREATE USER IF NOT EXISTS 'bibliotecaProfessore'@'%' IDENTIFIED BY "19:4sa1WT|*pPb_R";
+REVOKE ALL ON *.* FROM 'bibliotecaProfessore'@'%';
+GRANT SELECT ON biblioteca.* to 'bibliotecaProfessore'@'%';
+REVOKE INSERT ON biblioteca.* FROM 'bibliotecaProfessore'@'%';
+GRANT INSERT ON biblioteca.recensioni to 'bibliotecaProfessore'@'%';
 
-CREATE USER IF NOT EXISTS bibliotecaSupervisore@localhost IDENTIFIED BY "3Qj)<{3l}lh2eAn*";
-REVOKE ALL PRIVILEGES ON *.* TO bibliotecaProfessore@localhost;
-GRANT SELECT ON biblioteca.* to bibliotecaProfessore@localhost;
-GRANT INSERT ON biblioteca.* to bibliotecaProfessore@localhost;
+CREATE USER IF NOT EXISTS 'bibliotecaSupervisore'@'%' IDENTIFIED BY "3Qj)<{3l}lh2eAn*";
+REVOKE ALL ON *.* FROM 'bibliotecaProfessore'@'%';
+GRANT SELECT ON biblioteca.* to 'bibliotecaProfessore'@'%';
+GRANT INSERT ON biblioteca.* to 'bibliotecaProfessore'@'%';
 
 COMMIT;
