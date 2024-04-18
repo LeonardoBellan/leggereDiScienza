@@ -23,12 +23,16 @@ class account_model extends model{
     function register($username, $password, $email, $nome, $cognome, $numeroTelefono){
         //Controlla se l'utente esiste già
         if(!$this->getIdByUsername($username)){
-            //Utente esiste
-            $query = "INSERT INTO account ...";
+            //Utente non esiste
+            $query = "INSERT INTO account (username, pwd) VALUES ('$username', MD5('$password'))";
+            $this->query($query);
+
+            $query = "INSERT INTO professori (account, cognome, nome, numeroTelefono, email) 
+            VALUES ('$this->getIdByUsername($username)','$cognome', '$nome', '$numeroTelefono', '$email')";
             $this->query($query);
             return true;
         }else{
-            //Utente non esiste
+            //Utente esiste
             return false;
         }
     }
@@ -39,7 +43,7 @@ class account_model extends model{
                     WHERE account = '$id'";
         $result = $this->query($query);
         $row = mysqli_fetch_array($result);
-        return $row["idAccount"];
+        return $row;
     }
 
     function getAccountById($id){
@@ -48,7 +52,7 @@ class account_model extends model{
                     WHERE account.idAccount = '$id'";
         $result = $this->query($query);
         $row = mysqli_fetch_array($result);
-        return $row["idAccount"];
+        return $row;
     }
 
 

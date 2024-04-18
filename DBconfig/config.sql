@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS account;
 CREATE TABLE account (
     idAccount int primary key auto_increment,
     username varchar(30) NOT NULL,
-    password varchar(30) NOT NULL,
+    pwd varchar(30) NOT NULL,
     attivo bit NOT NULL default 0,
     supervisore bit NOT NULL default 0,
     dataCreazione date DEFAULT CURRENT_TIMESTAMP
@@ -25,7 +25,8 @@ CREATE TABLE professori(
         REFERENCES account(idAccount),
     cognome varchar(20) NOT NULL,
     nome varchar(20) NOT NULL,
-    numeroTelefono char(10)
+    numeroTelefono char(10),
+    email varchar(30)
 );
 
 /*
@@ -35,7 +36,8 @@ CREATE TABLE professori(
 DROP TABLE IF EXISTS autori;
 CREATE TABLE autori(
     idAutore int PRIMARY KEY AUTO_INCREMENT,
-    nome varchar(40)
+    nome varchar(40),
+    cognome varchar(40)
 );
 
 /*
@@ -55,7 +57,7 @@ CREATE TABLE caseEditrici (
 DROP TABLE IF EXISTS tipologie;
 CREATE TABLE tipologie(
     idTipologia int PRIMARY KEY AUTO_INCREMENT,
-    descrizione varchar(20) NOT NULL
+    tipologia varchar(20) NOT NULL
 );
 
 /*
@@ -65,7 +67,7 @@ CREATE TABLE tipologie(
 DROP TABLE IF EXISTS generi;
 CREATE TABLE generi(
     idGenere int PRIMARY KEY AUTO_INCREMENT,
-    descrizione varchar(20) NOT NULL
+    genere varchar(20) NOT NULL
 );
 
 /*

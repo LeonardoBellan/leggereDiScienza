@@ -7,6 +7,28 @@ class tipologie_model extends model{
         parent::__construct($user);
     }
 
+    public function getIdByName($tipologia){
+        $query = "SELECT *
+                    FROM tipologie
+                    WHERE tipologia = '$tipologia'";
+        $result = $this->query($query);
+        $row = mysqli_fetch_assoc($result);
+        return $row["idTipologia"];
+    }
+
+    function insertTipologia($tipologia){
+        //Controlla se la tipologia esiste già
+        if(!$this->getIdByName($tipologia)){
+            //tipologia non esiste
+            $query = "INSERT INTO tipologie (tipologia) VALUES ('$tipologia')";
+            $this->query($query);
+            return true;
+        }else{
+            //tipologia esiste
+            return false;
+        }
+    }
+
     public function getAllTipologie(){
         $query = "SELECT *
                     FROM tipologie";
@@ -16,5 +38,14 @@ class tipologie_model extends model{
             $tipologie[] = $row;
         }
         return $tipologie;
+    }
+
+    public function getTipologiaByLibro($idLibro){
+        $query = "SELECT *
+                    FROM tipologie
+                    WHERE idTipologia IN 
+                        (SELECT tipologia FROM libri WHERE idLibro='$idLibro')";
+        $result =  $this->query($query);
+        return $result;
     }
 }
