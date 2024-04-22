@@ -12,7 +12,7 @@ class account_model extends model{
         $query = "SELECT idAccount 
                     FROM account
                     WHERE username = '$username'
-                    AND password = '$password'
+                    AND pwd = '$password'
                     AND attivo = 1";
         
         $result = $this->query($query);
