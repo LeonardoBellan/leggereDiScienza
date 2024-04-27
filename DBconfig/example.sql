@@ -1,11 +1,7 @@
 START TRANSACTION;
-INSERT INTO account(username, password, attivo, supervisore)
+INSERT INTO account(username, pwd, attivo, supervisore)
 VALUES ('leonardo.bellan',md5('password'),1,1),
         ('gianni.rossi',md5('password'),1,0);
-
-INSERT INTO `professori` (idAccount, cognome, nome, numeroTelefono) 
-VALUES (1,'Bellan', 'Leonardo', NULL), 
-        (2,'Rossi', 'Gianni', NULL);
 
 INSERT INTO autori (nome)
 VALUES ('Dante Alighieri'),
