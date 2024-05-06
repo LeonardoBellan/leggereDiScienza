@@ -195,12 +195,11 @@ GRANT SELECT ON leggerediscienza.* to 'bibliotecaOspite'@'%';
 CREATE USER IF NOT EXISTS 'bibliotecaProfessore'@'%' IDENTIFIED BY "19:4sa1WT|*pPb_R";
 REVOKE ALL ON *.* FROM 'bibliotecaProfessore'@'%';
 GRANT SELECT ON leggerediscienza.* to 'bibliotecaProfessore'@'%';
-REVOKE INSERT ON leggerediscienza.* FROM 'bibliotecaProfessore'@'%';
 GRANT INSERT ON leggerediscienza.recensioni to 'bibliotecaProfessore'@'%';
 
 CREATE USER IF NOT EXISTS 'bibliotecaSupervisore'@'%' IDENTIFIED BY "3Qj)<{3l}lh2eAn*";
-REVOKE ALL ON *.* FROM 'bibliotecaProfessore'@'%';
-GRANT SELECT ON leggerediscienza.* to 'bibliotecaProfessore'@'%';
-GRANT INSERT ON leggerediscienza.* to 'bibliotecaProfessore'@'%';
+REVOKE ALL ON *.* FROM 'bibliotecaSupervisore'@'%';
+GRANT SELECT ON leggerediscienza.* to 'bibliotecaSupervisore'@'%';
+GRANT INSERT ON leggerediscienza.* to 'bibliotecaSupervisore'@'%';
 
 COMMIT;
