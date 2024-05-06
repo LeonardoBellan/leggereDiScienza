@@ -48,7 +48,7 @@ class Autori_model extends model{
         return $result;
     }
 
-    public function getAutoreByLibro($idLibro){
+    public function getAutoriByLibro($idLibro){
         $query = "SELECT *
                     FROM autori
                     WHERE idAutore IN 

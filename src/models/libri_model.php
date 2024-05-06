@@ -42,4 +42,40 @@ class libri_model extends model{
         
         return ($result) ? true : false;
     }
+
+    public function insertAutoriLibro($idLibro, $autori){
+        $query = "INSERT INTO autorilibro (libro, autore) VALUES ";
+        foreach($autori as &$idAutore){
+            $query.="($idLibro, $idAutore),";
+        }
+        $query=$query.rtrim(',');
+
+        $result = $this->query($query);
+        
+        return ($result) ? true : false;
+    }
+
+    public function insertGeneriLibro($idLibro, $generi){
+        $query = "INSERT INTO generilibro (libro, genere) VALUES ";
+        foreach($generi as &$idgenere){
+            $query.="($idLibro, $idgenere),";
+        }
+        $query=$query.rtrim(',');
+
+        $result = $this->query($query);
+        
+        return ($result) ? true : false;
+    }
+
+    public function insertParoleChiaveLibro($idLibro, $paroleChiave){
+        $query = "INSERT INTO paroleLibro (libro, parola) VALUES ";
+        foreach($paroleChiave as &$idParola){
+            $query.="($idLibro, $idParola),";
+        }
+        $query=$query.rtrim(',');
+
+        $result = $this->query($query);
+        
+        return ($result) ? true : false;
+    }
 }

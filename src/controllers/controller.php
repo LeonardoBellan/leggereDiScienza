@@ -157,7 +157,7 @@ class controller{
         $bookmanager->insertBook($ISBN,$titolo,$copertina,$idCE,$trama,$idTipologia,$dataPubblicazione,$disponibilita,$idProfessore);
         $bookmanager->insertAutoriLibro($idLibro, $autori);
         $bookmanager->insertGeneriLibro($idLibro, $generi);
-        $bookmanager->insertArgomentiLibro($idLibro, $argomenti);
+        $bookmanager->insertArgomentiLibro($idLibro, $argomenti); //non esiste piu?
         $bookmanager->insertParoleChiaveLibro($idLibro, $paroleChiave);
         */
     }

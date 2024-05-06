@@ -16,7 +16,7 @@ class Generi_model extends model{
         return $row["idGenere"];
     }
 
-    function insertAutore($genere){
+    function insertGenere($genere){
         //Controlla se l'utente esiste già
         if(!$this->getIdBygenere($genere)){
             //Genere non esiste

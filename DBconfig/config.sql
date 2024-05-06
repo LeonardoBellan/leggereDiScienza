@@ -185,7 +185,7 @@ CREATE TABLE recensioni(
         ON DELETE CASCADE 
         ON UPDATE CASCADE,
     PRIMARY KEY(libro, professore),
-    recensione text NOT NULL
+    testo text NOT NULL
 );
 
 CREATE USER IF NOT EXISTS 'bibliotecaOspite'@'%' IDENTIFIED BY "2rq{6eqAV:2@>qx0";
