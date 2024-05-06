@@ -38,16 +38,23 @@
                 </div>
                 <div class="sidebarFooter">
                     <div id="profilo">
-                        <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        <?php 
-                            if(!isset($_SESSION["logged"])){
-                                echo "<a href='login'>Effettua il login</a><br>";
-                            }else{
-                                echo "Benvenuto " . $_SESSION["idAccount"] . "</br>";
-                                echo "<a href='logout'>Effettua il logout</a><br>";
-                            }
-                        ?>
-                        
+                        <div class="row">
+                            <div class="col-2 align-middle">
+                                <i class="fa fa-user focus-input"></i>
+                            </div>
+                            <div class="col">
+                                <?php
+                                if (!isset($_SESSION["logged"])) {
+                                    echo "<a href='login'>Effettua il login</a><br>";
+                                } else {
+                                    echo "Benvenuto " . $_SESSION["idAccount"] . "</br>";
+                                    echo "<a href='logout'>Effettua il logout</a><br>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -68,31 +75,31 @@
                         </div>
                     </div>
                     <h1 class="text-coffee">Benvenuti nel sito</h1>
-                    <?php 
-                            if(!isset($_SESSION["logged"])){
-                                echo "<a href='login'>Effettua il login</a><br>";
-                            }else{
-                                echo "Benvenuto " . $_SESSION["idAccount"] . "</br>";
-                                echo "<a href='logout'>Effettua il logout</a><br>";
-                            }
-                        ?>
+                    <?php
+                    if (!isset($_SESSION["logged"])) {
+                        echo "<a href='login'>Effettua il login</a><br>";
+                    } else {
+                        echo "Benvenuto " . $_SESSION["idAccount"] . "</br>";
+                        echo "<a href='logout'>Effettua il logout</a><br>";
+                    }
+                    ?>
 
-<a href="CCC"> Ciao </a>
+                    <a href="CCC"> Ciao </a>
                     <p>Libri:</p>
 
                     <form method="post" action="visualizzaLibro">
                         <?php
-                        foreach($data["books"] as $book){
-            
+                        foreach ($data["books"] as $book) {
+
                             $idLibro = $book["idLibro"];
                             $titoloLibro = $book["titolo"];
-            
-                            echo "<input type='hidden' name='idLibro' value='$idLibro' />" ;
+
+                            echo "<input type='hidden' name='idLibro' value='$idLibro' />";
                             echo "<a onclick='this.parentNode.submit();'>$titoloLibro</a><br>";
                         }
-                    ?>
+                        ?>
                     </form>
-                    <?= json_encode($data);?>
+                    <?= json_encode($data); ?>
                 </main>
             </div>
         </div>

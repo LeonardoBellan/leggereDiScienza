@@ -128,6 +128,33 @@ iframe {
 	border: none !important;
 }
 
+.container-fullpage {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;
+}
+
+.container-fullpage::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
 /*//////////////////////////////////////////////////////////////////*/
 /* sideBar */
 .sidebar {
@@ -179,13 +206,12 @@ iframe {
 .sidebarFooter{
   width: 100%;
   height: auto;
-  position: absolute;
-  bottom:0;
+  margin-top: auto;
 }
 
 
 /* SearchBar */
-#searchbar{
+.searchbar{
   background-color: inherit;
 }
 #search {
@@ -200,7 +226,7 @@ iframe {
   outline: 0;
   box-shadow: none;
 }
-#searchbar i{
+.searchbar i{
   position: relative;
   top: 0;
   left: 0;
@@ -211,8 +237,8 @@ iframe {
 }
 
 /* Side bar footer */
-#sidebarFooter {
-  background-color: aqua;
+.sidebarFooter {
+  background-color: inherit;
   width:100%;
   height:auto;
   position:absolute;
@@ -235,33 +261,26 @@ main {
 }
 
 /*//////////////////////////////////////////////////////////////////
+/* Visualizzazione libro */
+.wrap-libro {
+  width: 75%;
+  height: 75%;
+  border-radius: 10px;
+  overflow: hidden;
+
+  background: var(--almond);
+  background: -o-linear-gradient(top, var(--tan), var(--dun));
+  background: -moz-linear-gradient(top, var(--tan), var(--dun));
+  background: linear-gradient(top, var(--tan), var(--dun));
+  background: -webkit-linear-gradient(top, var(--tan), var(--dun));
+}
+
+.wrap-copertina{
+  width:max-content
+}
+
+/*//////////////////////////////////////////////////////////////////
 /* Login */
-.container-login {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-  z-index: 1;  
-}
-
-.container-login::before {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
 
 .wrap-login {
   width: 500px;
