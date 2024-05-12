@@ -17,7 +17,7 @@ class account_model extends model{
         
         $result = $this->query($query);
         $row = mysqli_fetch_assoc($result);
-        return ($result != NULL) ? $row["idAccount"] : false;
+        return ($row != NULL) ? $row["idAccount"] : false;
     }
     
     function register($username, $password, $email, $nome, $cognome, $numeroTelefono){
@@ -54,8 +54,6 @@ class account_model extends model{
         $row = mysqli_fetch_array($result);
         return $row;
     }
-
-
 
     public function getIdByUsername($username){
         $query = "SELECT idAccount

@@ -1,17 +1,21 @@
 <?php
 
-class controller{
+class controller
+{
 
-    public function __construct(){
+    public function __construct()
+    {
     }
 
-    private function renderView($template, $data = array()){
+    private function renderView($template, $data = array())
+    {
         //Seleziona la pagina HTML scelta da visualizzare
-        $data_JSON = 
-        require_once "../src/views/$template.phtml";
+        $data_JSON =
+            require_once "../src/views/$template.phtml";
     }
 
-    private function getModel($model, $DBuser){
+    private function getModel($model, $DBuser)
+    {
         //Ritorna il modello
         require_once "../src/models/$model.php";
         $mdl = new $model($DBuser);
@@ -25,60 +29,73 @@ class controller{
     1 - Insegnante
     2 - Insegnante supervisore
     */
-    private function checkAccountLevel($level){
-        if($level == 2 && $_SESSION["accountLevel"] != 1){
+    private function checkAccountLevel($level)
+    {
+        if ($level == 2 && $_SESSION["accountLevel"] != 1) {
             header("Location: error");
         }
-        if($level != isset($_SESSION["logged"])){
+        if ($level != isset($_SESSION["logged"])) {
             header("Location: error");
         }
     }
 
-    public function home() {
+    public function home()
+    {
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("libri_model","root");//Cambiare utente
+        $bookmanager = $this->getModel("libri_model", "root");//Cambiare utente
 
         //query
         $books = $bookmanager->getAllLibro();
 
         //Preparazione array associativo
         $attributes = [
-            "books" => $books];
+            "books" => $books
+        ];
         $this->renderView("home_view", $attributes);
     }
 
-    public function error() {
+    public function error()
+    {
         $this->renderView("error_view", ["error" => 404, "message" => "Pagina non trovata"]);
     }
 
-    public function login(){
+    private function setAccount($idAccount)
+    {
+        $accountmanager = $this->getModel("account_model", "root"); //Cambiare utente
+
+        $_SESSION["logged"] = true;
+        $_SESSION["idAccount"] = $idAccount;
+        $_SESSION["accountLevel"] = $accountmanager->getLevel($idAccount);
+    }
+
+    public function login()
+    {
         $this->checkAccountLevel(0);
-        
+
         //Quando si arriva dalla home
-        if(!isset($_POST["login"])){
+        if (!isset($_POST["login"])) {
             $this->renderView("login_view", null);
             return;
         }
 
         //Richiesta modelli necessari
-        $accountmanager = $this->getModel("account_model","root"); //Cambiare utente
+        $accountmanager = $this->getModel("account_model", "root"); //Cambiare utente
         //Controllo credenziali
         $idAccount = $accountmanager->login($_POST["username"], $_POST["password"]);
-        if($idAccount){
+        if ($idAccount) {
             //Credenziali corrette
-            $_SESSION["logged"] = true;
-            $_SESSION["idAccount"] = $idAccount;
-            $_SESSION["accountLevel"] = $accountmanager->getLevel($idAccount);
+            $this->setAccount($idAccount);
             header("Location: home");
-        }else{
+        } else {
             //Credenziali errate
             $this->renderView("login_view", ["failed" => true]);
         }
     }
 
-    public function logout(){
+    public function logout()
+    {
         $this->checkAccountLevel(1);
-        session_unset();    
+        session_unset();
         header("Location: home");
     }
 
@@ -101,8 +118,7 @@ class controller{
         $numeroTelefono = $_POST["numTelefono"];
         if($accountmanager->register($username, $password, $nome, $cognome, $numeroTelefono)){
             //Registrazione avvenuta con successo
-            $_SESSION["logged"] = true;
-            $_SESSION["username"] = $_POST["username"];
+            setAccount($idAccount);
             header("Location: home");
         }else{
             //Errore nella registrazione
@@ -110,41 +126,43 @@ class controller{
         }
     }*/
 
-    public function visualizzaLibro(){
-            //Richiesta modelli necessari
-            $bookmanager = $this->getModel("libri_model","root");        //Cambiare utenti
-            $CEmanager = $this->getModel("CE_model","root");
+    public function visualizzaLibro()
+    {
+        //Richiesta modelli necessari
+        $bookmanager = $this->getModel("libri_model", "root");        //Cambiare utenti
+        $CEmanager = $this->getModel("CE_model", "root");
 
-            $idLibro = $_POST["idLibro"];
-            $book = $bookmanager->getLibro($idLibro);
-            $this->renderView("book_view",$book);
-        }
-    
-    public function inserisciLibro(){
+        $idLibro = $_POST["idLibro"];
+        $book = $bookmanager->getLibro($idLibro);
+        $this->renderView("book_view", $book);
+    }
+
+    public function inserisciLibro()
+    {
         $this->checkAccountLevel(2);
 
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("libri_model","root");    //Cambiare utenti
-        $CEmanager = $this->getModel("CE_model","root");
-        $tipologiemanager = $this->getModel("tipologie_model","root");
+        $bookmanager = $this->getModel("libri_model", "root");    //Cambiare utenti
+        $CEmanager = $this->getModel("CE_model", "root");
+        $tipologiemanager = $this->getModel("tipologie_model", "root");
 
         //Quando si arriva dalla home
-        if(!isset($_POST["insertBook"])){
+        if (!isset($_POST["insertBook"])) {
             $caseEditrici = $CEmanager->getAllCE();
             $tipologie = $tipologiemanager->getAllTipologie(); // Da cambiare con tipologiemanager
             $data = [
-                "caseEditrici"=> $caseEditrici,
-                "tipologie"=> $tipologie
+                "caseEditrici" => $caseEditrici,
+                "tipologie" => $tipologie
             ];
-            $this->renderView("insertBook_view",$data);
+            $this->renderView("insertBook_view", $data);
             return;
         }
 
         //Inserimento del libro
         $titolo = $_POST["titolo"];
         $ISBN = $_POST["ISBN"];
-        $idCE = (isset($_POST["idCasaEditrice"])) ? "'".$_POST["idCasaEditrice"] . "'" : NULL;
-        $trama = (isset($_POST["trama"])) ? "'" . $_POST["trama"] . "'": NULL;
+        $idCE = (isset($_POST["idCasaEditrice"])) ? "'" . $_POST["idCasaEditrice"] . "'" : NULL;
+        $trama = (isset($_POST["trama"])) ? "'" . $_POST["trama"] . "'" : NULL;
         $idTipologia = (isset($_POST["idTipologia"])) ? $_POST["idTipologia"] : NULL;
         $dataPubblicazione = $_POST["dataPubblicazione"];
         $disponibilita = (isset($_POST["disponibilita"])) ? 1 : 0;
