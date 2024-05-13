@@ -82,6 +82,7 @@ a:hover{
 /*---------------------------------------------*/
 h1,h2,h3,h4,h5,h6 {
 	margin: 0px;
+  color: var(--coffee);
 }
 p {
 	font-size: 14px;
@@ -263,8 +264,9 @@ main {
 /*//////////////////////////////////////////////////////////////////
 /* Visualizzazione libro */
 .wrap-libro {
-  width: 75%;
-  height: 75%;
+  width: 70vw;
+  height: 75vh;
+  padding: 2%; 
   border-radius: 10px;
   overflow: hidden;
 
@@ -276,7 +278,33 @@ main {
 }
 
 .wrap-copertina{
-  width:max-content
+  display:flex;
+
+  width:100%;
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.wrap-copertina img{
+  width: 100%;
+  height: 100%;
+  object-fit:cover;
+
+  border-radius: 10px;
+}
+
+.wrap-info{
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+
+  flex-direction: column;
 }
 
 /*//////////////////////////////////////////////////////////////////
