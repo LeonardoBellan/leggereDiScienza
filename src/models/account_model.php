@@ -24,7 +24,7 @@ class account_model extends model{
         //Controlla se l'utente esiste già
         if(!$this->getIdByUsername($username)){
             //Utente non esiste
-            $query = "INSERT INTO account (username, pwd) VALUES ('$username', MD5('$password'))";
+            $query = "INSERT INTO account (username, pwd, attivo) VALUES ('$username', MD5('$password'), 1)";
             $this->query($query);
 
             $query = "INSERT INTO professori (account, cognome, nome, numeroTelefono, email) 

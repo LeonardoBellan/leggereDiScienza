@@ -31,18 +31,20 @@ class controller
     */
     private function checkAccountLevel($level)
     {
+        $flag = true;
         if ($level == 2 && $_SESSION["accountLevel"] != 1) {
-            header("Location: error");
+            $flag = false;
         }
         if ($level != isset($_SESSION["logged"])) {
-            header("Location: error");
+            $flag = false;
         }
+        return $flag;
     }
 
     public function home()
     {
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("libri_model", "root");//Cambiare utente
+        $bookmanager = $this->getModel("libri_model", "bibliotecaOspite");//Cambiare utente
 
         //query
         $books = $bookmanager->getAllLibro();
@@ -61,7 +63,7 @@ class controller
 
     private function setAccount($idAccount)
     {
-        $accountmanager = $this->getModel("account_model", "root"); //Cambiare utente
+        $accountmanager = $this->getModel("account_model", "bibliotecaOspite"); //Cambiare utente
 
         $_SESSION["logged"] = true;
         $_SESSION["idAccount"] = $idAccount;
@@ -70,7 +72,9 @@ class controller
 
     public function login()
     {
-        $this->checkAccountLevel(0);
+        if (!$this->checkAccountLevel(0)){
+            header("Location: error");
+        }
 
         //Quando si arriva dalla home
         if (!isset($_POST["login"])) {
@@ -79,7 +83,7 @@ class controller
         }
 
         //Richiesta modelli necessari
-        $accountmanager = $this->getModel("account_model", "root"); //Cambiare utente
+        $accountmanager = $this->getModel("account_model", "bibliotecaOspite"); //Cambiare utente
         //Controllo credenziali
         $idAccount = $accountmanager->login($_POST["username"], $_POST["password"]);
         if ($idAccount) {
@@ -94,13 +98,17 @@ class controller
 
     public function logout()
     {
-        $this->checkAccountLevel(1);
+        if (!$this->checkAccountLevel(1)){
+            header("Location: error");
+        }
         session_unset();
         header("Location: home");
     }
 
-    /*public function register() {
-        $this->checkIfLogged(false);
+    public function register() {
+        if (!$this->checkAccountLevel(2)){
+            header("Location: error");
+        }
 
         //Quando si arriva dalla home
         if(!isset($_POST["register"])){
@@ -109,14 +117,15 @@ class controller
         }
         
         //Richiesta modelli necessari
-        $accountmanager = $this->getModel("account_model","user");  //Cambiare utente
+        $accountmanager = $this->getModel("account_model","bibliotecaSupervisore"); 
         //Registrazione
         $username = $_POST["username"];
         $password = $_POST["password"];
         $nome = $_POST["nomeProfessore"];
         $cognome = $_POST["cognomeProfessore"];
         $numeroTelefono = $_POST["numTelefono"];
-        if($accountmanager->register($username, $password, $nome, $cognome, $numeroTelefono)){
+        $email = $_POST["email"];
+        if($accountmanager->register($username, $password, $email, $nome, $cognome, $numeroTelefono)){
             //Registrazione avvenuta con successo
             setAccount($idAccount);
             header("Location: home");
@@ -124,13 +133,13 @@ class controller
             //Errore nella registrazione
             echo "Error"; //TODO
         }
-    }*/
+    }
 
     public function visualizzaLibro()
     {
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("libri_model", "root");        //Cambiare utenti
-        $CEmanager = $this->getModel("CE_model", "root");
+        $bookmanager = $this->getModel("libri_model", "bibliotecaOspite");        //Cambiare utenti
+        $CEmanager = $this->getModel("CE_model", "bibliotecaOspite");
 
         $idLibro = $_POST["idLibro"];
         $book = $bookmanager->getLibro($idLibro);
@@ -139,12 +148,14 @@ class controller
 
     public function inserisciLibro()
     {
-        $this->checkAccountLevel(2);
+        if (!$this->checkAccountLevel(2)){
+            header("Location: error");
+        }
 
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("libri_model", "root");    //Cambiare utenti
-        $CEmanager = $this->getModel("CE_model", "root");
-        $tipologiemanager = $this->getModel("tipologie_model", "root");
+        $bookmanager = $this->getModel("libri_model", "bibliotecaSupervisore");    //Cambiare utenti
+        $CEmanager = $this->getModel("CE_model", "bibliotecaSupervisore");
+        $tipologiemanager = $this->getModel("tipologie_model", "bibliotecaSupervisore");
 
         //Quando si arriva dalla home
         if (!isset($_POST["insertBook"])) {
