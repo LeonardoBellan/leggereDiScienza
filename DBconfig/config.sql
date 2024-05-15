@@ -201,5 +201,7 @@ CREATE USER IF NOT EXISTS 'bibliotecaSupervisore'@'%' IDENTIFIED BY "3Qj)<{3l}lh
 REVOKE ALL ON *.* FROM 'bibliotecaSupervisore'@'%';
 GRANT SELECT ON leggerediscienza.* to 'bibliotecaSupervisore'@'%';
 GRANT INSERT ON leggerediscienza.* to 'bibliotecaSupervisore'@'%';
+GRANT UPDATE on leggerediscienza.* to 'bibliotecaSupervisore'@'%';
+GRANT DELETE on leggerediscienza.* to 'bibliotecaSupervisore'@'%';
 
 COMMIT;

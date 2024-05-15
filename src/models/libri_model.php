@@ -11,6 +11,22 @@ class libri_model extends model{
     public function getAllLibro(){
         $query = "SELECT *
                     FROM libri";
+                    
+        $result =  $this->query($query);
+        $libri = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $libri[] = $row;
+        }
+        return $libri;
+    }
+
+    public function getLibriLimitedOffset($limit, $offset){
+        $offset=$offset*$limit;
+        $query="SELECT * 
+                FROM libri
+                LIMIT $limit
+                OFFSET $offset";
+
         $result =  $this->query($query);
         $libri = array();
         while ($row = mysqli_fetch_assoc($result)) {
@@ -73,6 +89,29 @@ class libri_model extends model{
             $query.="($idLibro, $idParola),";
         }
         $query=$query.rtrim(',');
+
+        $result = $this->query($query);
+        
+        return ($result) ? true : false;
+    }
+
+    public function getNumLibri(){
+        $query = "SELECT count(*) as c from libri";
+        
+        return (int)mysqli_fetch_assoc($this->query($query))["c"];
+    }
+
+    public function getNumProgImg(){
+        $query = "SELECT paramValue from params WHERE paramName='numProgImg'";
+        
+        return mysqli_fetch_assoc($this->query($query))["paramValue"];
+    }
+
+    public function incrementNumProgImg(){
+        $oldNum=$this->getNumProgImg();
+        $str = str_pad(strval((int)$oldNum+1),6,"0", STR_PAD_LEFT);
+        
+        $query = "UPDATE params SET paramValue='$str' where paramName='numProgImg'";
 
         $result = $this->query($query);
         

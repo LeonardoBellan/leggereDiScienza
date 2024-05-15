@@ -61,6 +61,8 @@
 
 body, html{
   height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: var(--almond);
 }
 /*---------------------------------------------*/
@@ -158,58 +160,40 @@ iframe {
 
 /*//////////////////////////////////////////////////////////////////*/
 /* sideBar */
+/* Estilos personalizados para la barra lateral */
 .sidebar {
+  position: fixed;
   display:flex;
   flex-direction:column;
-  width:var(--sidebarWidth);        /* Grandezza della barra */
-  position:fixed;     /* La barra laterale non scorre verso il basso */
-  top:0;
-  bottom: 0;
-  left:0;
-  z-index:99;         /* La barra rimane nel layer più alto */
-  padding:20px;
-  overflow-x:hidden;  /* Disattiva lo scorrimento laterale */
-  overflow-y: hidden;
-  background-color: var(--tan);
-}
-.sidebar .sidebarDivider{
-  margin: 20px 0;
-  color: var(--raw-umber);
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #343a40;
+  padding: 20px;
+  justify-content:space-between;
+  color: #fff;
 }
 
-/* The navigation menu links */
+/* Estilos para el contenido principal */
+.content {
+  margin-left: 250px; 
+  padding: 20px;
+  padding-right: 270px;
+}
+
+/* Estilos para el enlace del menú */
 .sidebar a {
-  padding: 6px 8px 6px 16px;
+  color: #fff;
   text-decoration: none;
-  font-size: 25px;
-  color: var(--chamoisee);
   display: block;
-}
-/* When you mouse over the navigation links, change their color */
-.sidebar a:hover {
-  color: var(--almond);
-}
-/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  .sidebar {padding-top: 15px;}
-  .sidebar a {font-size: 18px;}
+  margin-bottom: 10px;
 }
 
-.sidebarHeader{
-  width: 100%;
-  height: fit-content;
+/* Estilos para el enlace activo */
+.sidebar a.active {
+  font-weight: bold;
 }
-
-.sidebarContent{
-  width: 100%;
-  height: auto;
-}
-.sidebarFooter{
-  width: 100%;
-  height: auto;
-  margin-top: auto;
-}
-
 
 /* SearchBar */
 .searchbar{
@@ -237,18 +221,68 @@ iframe {
   color: var(--almond);
 }
 
+.sidebarHeader{
+  width: 100%;
+  height: auto;
+}
+
 /* Side bar footer */
 .sidebarFooter {
-  background-color: inherit;
-  width:100%;
+  /*background-color: inherit;*/
   height:auto;
-  position:absolute;
-  bottom:30px;
+  width:100%;
+}
+
+/*///////////////////////////////////////////////////////*/
+/* Page Bar */
+.pageBar-list{
+  text-align: center;
+}
+
+.pageBar-list{
+  height:30px;
+  display: flex;
+  justify-content: center;
+  /*border: 3px dotted red;*/
+  gap: 8px;
+}
+
+.pageBar-list > * {
+  /*border: 2px solid lime;*/
+  flex-shrink: 1;
+  flex-grow: 0;
+}
+
+.pageBar-num{
+  width: 30px;
+}
+
+.pageBar-ps{
+  flex-basis:5ch;
+}
+
+.pageBar-lbl{
+  flex-basis:8ch;
+}
+
+/*Search Results */
+.results{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #e2ded9;
+}
+
+.disabled{
+  color:#74797e;
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
 }
 
 /* Main */
 main {
-  margin-left: var(--sidebarWidth); /* Pari alla grandezza della sidebar */
+  /*margin-left: var(--sidebarWidth);  Pari alla grandezza della sidebar */
   padding: 0px 10px;
 }
 
@@ -259,6 +293,11 @@ main {
 
 .header .titolo{
   font-size:xx-large;
+}
+
+.book{
+  border-color:#343a40;
+  border:1px solid;
 }
 
 /*//////////////////////////////////////////////////////////////////

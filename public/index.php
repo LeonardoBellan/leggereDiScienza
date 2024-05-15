@@ -9,6 +9,7 @@ require ("../src/controllers/controller.php");
 */
 
 session_start();
+$_SESSION["requested_page"]=1;
 
 $resource = getResource($_SERVER['REQUEST_URI']);
 //echo "Resource: " . $resource . "</br>";

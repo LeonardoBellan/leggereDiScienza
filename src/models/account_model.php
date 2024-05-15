@@ -12,7 +12,7 @@ class account_model extends model{
         $query = "SELECT idAccount 
                     FROM account
                     WHERE username = '$username'
-                    AND pwd = '$password'
+                    AND pwd = MD5('$password')
                     AND attivo = 1";
         
         $result = $this->query($query);
@@ -27,10 +27,11 @@ class account_model extends model{
             $query = "INSERT INTO account (username, pwd, attivo) VALUES ('$username', MD5('$password'), 1)";
             $this->query($query);
 
+            $t=$this->getIdByUsername($username);
             $query = "INSERT INTO professori (account, cognome, nome, numeroTelefono, email) 
-            VALUES ('$this->getIdByUsername($username)','$cognome', '$nome', '$numeroTelefono', '$email')";
+            VALUES ('$t','$cognome', '$nome', '$numeroTelefono', '$email')";
             $this->query($query);
-            return true;
+            return $t;
         }else{
             //Utente esiste
             return false;
@@ -70,6 +71,6 @@ class account_model extends model{
                     WHERE idAccount = '$idAccount'";
         $result = $this->query($query);
         $row = mysqli_fetch_assoc($result);
-        return $row["supervisore"];
+        return ($row["supervisore"] != NULL) ? $row["supervisore"]+1 : 0;
     }
 }

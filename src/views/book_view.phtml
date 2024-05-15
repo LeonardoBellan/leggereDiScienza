@@ -21,12 +21,15 @@
             <div class="row h-100">
                 <div class="col-6 mh-100">
                     <div class="wrap-copertina">
-                        <img src="img/copertine/harry-potter.png">
+                        <?php
+                            echo "<img src=" . $data["copertina"] . ">";
+                        ?>
+                        
                     </div>
                 </div>
                 <div class="col">
                     <div class="wrap-info">
-                        <h1 id="titolo">Titolo</h1>
+                        <h1 id="titolo"><?php echo $data["titolo"]; ?></h1>
                         <p id="autori">Autori:</p>
                         <p id="CE">Casa editrice:</p>
 

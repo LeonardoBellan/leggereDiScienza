@@ -19,88 +19,200 @@
 </head>
 
 <body>
+    <!--
     <div class="container-fluid">
         <div class="row">
-            <div id="sidebar" class="sidebar">
-                <div class="sidebarHeader">
-                    <form id="searchbar">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                        <input type="search" id="search" placeholder="Cerca un libro">
-                    </form>
-                </div>
-                <hr class="sidebarDivider">
-                <div class="sidebarContent">
-                    <div class="vr">
-                        <a href="#">Services</a>
-                        <a href="#">Clients</a>
-                        <a href="#">Contact</a>
+            
+            <div  class="col" style="max-width:300px">
+                <div id="sidebar" class="sidebar">
+                    <div class="sidebarHeader">
+                        <form id="searchbar">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <input type="search" id="search" placeholder="Cerca un libro">
+                        </form>
+                    </div>
+                    <hr class="sidebarDivider">
+                    <div class="sidebarContent">
+                        <div class="vr">
+                            <a href="#">Services</a>
+                            <a href="#">Clients</a>
+                            <a href="#">Contact</a>
+                        </div>
+                    </div>
+                    <div class="sidebarFooter">
+                        <div id="profilo">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <?php
+                            if (!isset($_SESSION["logged"])) {
+                                echo "<a href='login'>Effettua il login</a><br>";
+                            } else {
+                                echo "Benvenuto " . ucfirst(strtolower($_SESSION["accountInfo"]["nome"])) . " " . ucfirst(strtolower($_SESSION["accountInfo"]["cognome"])) . "</br>";
+                                echo "<a href='logout'>Effettua il logout</a><br>";
+                            }
+                            ?>
+
+                        </div>
                     </div>
                 </div>
-                <div class="sidebarFooter">
-                    <div id="profilo">
+            </div>
+             Main body
+            
+            <div class="row">
+                <div class="col">
+                    Column
+                </div>
+                <div class="col">
+                    Column
+                </div>
+                <div class="col">
+                    Column
+                </div>
+                <div class="col">
+                    Column
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Barra lateral -->
+            <div class="col-md-3 col-lg-2 sidebar container">
+                <div style="align-items:start">
+                    <div class="sidebarHeader">
+                        <h2>Sidebar</h2>
+                        <form id="searchbar">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <input type="search" id="search" placeholder="Cerca un libro">
+                        </form>
+                    </div>
+                    <hr class="sidebarDivider">
+                    <div class="sidebarContent">
+                        <div class="vr">
+                            <a href="#">Services</a>
+                            <a href="#">Clients</a>
+                            <a href="#">Contact</a>
+                        </div>
+                    </div>
+                </div>
+                <div style="align-items:end">
+                    <?php
+                    if (isset($_SESSION["accountLevel"]) and $_SESSION["accountLevel"] == 2) {
+                        echo "<div>
+                        <a href='inserisciLibro'>Inserisci un nuovo libro</a>
+                    </div>";
+                    }
+                    ?>
+                    <div class="sidebarFooter">
+                        <div id="profilo">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <?php
+                            if (!isset($_SESSION["logged"])) {
+                                echo "<a href='login'>Effettua il login</a><br>";
+                            } else {
+                                echo "Benvenuto " . ucfirst(strtolower($_SESSION["accountInfo"]["nome"])) . " " . ucfirst(strtolower($_SESSION["accountInfo"]["cognome"])) . "</br>";
+                                echo "<a href='logout'>Effettua il logout</a>";
+                            }
+                            ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="container content">
+                <div class="row" style="margin-bottom: 10px;">
+                    <main role="main">
                         <div class="row">
-                            <div class="col-2 align-middle">
-                                <i class="fa fa-user focus-input"></i>
+                            <div class="column">
+                                <div class="header">
+                                    <h1 class="titolo">Leggere di scienza</h1>
+                                </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <h1 class="text-coffee">Benvenuti nel sito</h1>
+                        </div>
+                        <div class="row">
                             <div class="col">
                                 <?php
                                 if (!isset($_SESSION["logged"])) {
                                     echo "<a href='login'>Effettua il login</a><br>";
                                 } else {
-                                    echo "Benvenuto " . $_SESSION["idAccount"] . "</br>";
+                                    echo "Benvenuto " . ucfirst(strtolower($_SESSION["accountInfo"]["nome"])) . " " . ucfirst(strtolower($_SESSION["accountInfo"]["cognome"])) . "</br>";
                                     echo "<a href='logout'>Effettua il logout</a><br>";
                                 }
                                 ?>
                             </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main body-->
-            <div class="col">
-                <main role="main">
-                    <div class="row">
-                        <div class="column">
-                            <div class="header">
-                                <h1 class="titolo">Leggere di scienza</h1>
+                            <div class="col">
+                                <a href="CCC"> Ciao </a>
                             </div>
                         </div>
-                    </div>
+                    </main>
+                </div>
+                <div class="row">
+                    <h1>Search Results:</h1>
+                </div>
+                <div class="row results">
                     <div class="row">
-                        <div class="column">
-
-                        </div>
-                    </div>
-                    <h1 class="text-coffee">Benvenuti nel sito</h1>
-                    <?php
-                    if (!isset($_SESSION["logged"])) {
-                        echo "<a href='login'>Effettua il login</a><br>";
-                    } else {
-                        echo "Benvenuto " . $_SESSION["idAccount"] . "</br>";
-                        echo "<a href='logout'>Effettua il logout</a><br>";
-                    }
-                    ?>
-
-                    <a href="CCC"> Ciao </a>
-                    <p>Libri:</p>
-
-                    <form method="post" action="visualizzaLibro">
                         <?php
                         foreach ($data["books"] as $book) {
-
                             $idLibro = $book["idLibro"];
                             $titoloLibro = $book["titolo"];
-
+                            $path = $book["copertina"];
+                            echo "<div class='col-lg-3 col-md-4 book'>";
+                            echo "<div class='row container'> <img src='$path' style=''> </div>";
+                            echo "<div class='row container'>";
                             echo "<input type='hidden' name='idLibro' value='$idLibro' />";
-                            echo "<a onclick='this.parentNode.submit();'>$titoloLibro</a><br>";
+                            echo "<a href='visualizzaLibro?idLibro=$idLibro'>$titoloLibro</a>";
+                            echo "</div>";
+                            echo "</div>";
                         }
                         ?>
-                    </form>
-                    <?= json_encode($data); ?>
-                </main>
+                    </div>
+                </div>
+                <div class="pageBar-list">
+                    <div class="pageBar-lbl">
+                        <p>Pagina:</p>
+                    </div>
+                    <div class="pageBar-ps">
+                        <?php
+                        $p = intval($_SESSION["requested_page"] - 1);
+                        if ($p >= 1) {
+                            echo "<a href='home?p=$p'>Prec</a>";
+                        } else {
+                            echo "<a class='disabled' href='home?p=$p'>Prec</a>";
+                        }
+                        ?>
+                    </div>
+                    <?php
+                    $p = (int) $_SESSION["requested_page"];
+                    if ($p < 1)
+                        $p = 1;
+                    for ($i = $p - 2; $i <= $p + 2; $i++) {
+                        if ($i > 0 && $i <= $data["numPages"]) {
+                            echo "<div class='pageBar-num' style='max-width: 24.8px'>";
+                            if ((int) $_SESSION["requested_page"] != $i) {
+                                echo "<a href='home?p=$i'>$i</a>";
+                            } else {
+                                echo "<a class='pageBar-num disabled' href='home?p=$i'>$i</a>";
+                            }
+                            echo "</div>";
+                        }
+                    }
+                    ?>
+                    <div class="pageBar-ps">
+                        <?php
+                        $p = intval($_SESSION["requested_page"] + 1);
+                        if ($p <= $data["numPages"]) {
+                            echo "<a href='home?p=$p'>Succ</a>";
+                        } else {
+                            echo "<a class='disabled' href='home?p=$p'>Succ</a>";
+                        }
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

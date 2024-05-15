@@ -4,7 +4,13 @@
     <title>Inserimento di un nuovo libro</title>
 </head>
 <body>
-    <form method="post" action = "inserisciLibro">
+    <div class="container-fluid">
+
+    </div>
+
+
+
+    <form method="post" action = "inserisciLibro" enctype="multipart/form-data">
         <input type="hidden" name="insertBook" value="true">
         
         <!-- Titolo -->
@@ -45,7 +51,7 @@
             <?php
                 foreach($data["tipologie"] as $tipologia){
                     $idTipologia = $tipologia["idTipologia"];
-                    $descrizione = $tipologia["descrizione"];
+                    $descrizione = $tipologia["tipologia"];
                     echo "<option value='$idTipologia'>$descrizione</option><br>";
                 }
                 ?>
