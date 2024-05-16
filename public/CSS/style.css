@@ -254,7 +254,8 @@ iframe {
 }
 
 .pageBar-num{
-  width: 30px;
+  aspect-ratio: 1;
+  border: 1px solid var(--coffee);
 }
 
 .pageBar-ps{
@@ -270,7 +271,39 @@ iframe {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background-color: #e2ded9;
+}
+
+.results-img{
+  display: flex;
+  overflow: hidden;
+  /*align-items: center;*/
+  flex-grow: 1;
+}
+
+.results-img > img{
+  object-fit: fill;
+  
+}
+
+.results-text{
+  flex-basis: 80px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book{
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  background-color: var(--tan);
+  border-radius: 8px;
+  /*overflow: hidden*/
+}
+
+.book img{
+  border-radius: 8px 8px 0px 0px;
 }
 
 .disabled{
@@ -295,10 +328,27 @@ main {
   font-size:xx-large;
 }
 
-.book{
-  border-color:#343a40;
-  border:1px solid;
+/*//////////////////////////////////////////////////////////////////
+/* Inserimento Libro */
+
+.insert-header{
+  display: flex;
+  width:980px;
+  border-bottom: 1px var(--raw-umber) solid;
 }
+
+.insert-header-home{
+  display: flex;
+  flex: 1;
+  justify-content: left;
+}
+
+.insert-header-profile{
+  display: flex;
+  flex: 1;
+  justify-content: right;
+}
+
 
 /*//////////////////////////////////////////////////////////////////
 /* Visualizzazione libro */
@@ -571,11 +621,11 @@ main {
 /*------------------------------------------------------------------
 [ Responsive ]*/
 
-@media (max-width: 576px) {
+/*@media (max-width: 576px) {
   .wrap-login {
     padding: 55px 15px 37px 15px;
   }
-}
+}*/
 
 
 
@@ -639,9 +689,9 @@ main {
   opacity: 1;
 }
 
-@media (max-width: 992px) {
+/*@media (max-width: 992px) {
   .alert-validate::before {
     visibility: visible;
     opacity: 1;
   }
-}
+}*/

@@ -9,13 +9,14 @@
     <!-- Bootsrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/a0289c987d.js" crossorigin="anonymous"></script>
+
     <!-- Stylesheet -->
     <link rel="stylesheet" href="CSS/style.css">
-    <script>
 
-    </script>
+</head>
 </head>
 
 <body>
@@ -67,7 +68,7 @@
 
             <!-- Contenido principal -->
             <div class="container content">
-                <div class="row" style="margin-bottom: 10px;">
+                <div class="row">
                     <main role="main">
                         <div class="row">
                             <div class="column">
@@ -99,23 +100,24 @@
                 <div class="row">
                     <h1>Search Results:</h1>
                 </div>
-                <div class="row results">
-                    <div class="row">
-                        <?php
-                        foreach ($data["books"] as $book) {
-                            $idLibro = $book["idLibro"];
-                            $titoloLibro = $book["titolo"];
-                            $path = $book["copertina"];
-                            echo "<div class='col-lg-3 col-md-4 book'>";
-                            echo "<div class='row container'> <img src='$path' style=''> </div>";
-                            echo "<div class='row container'>";
-                            echo "<input type='hidden' name='idLibro' value='$idLibro' />";
-                            echo "<a href='visualizzaLibro?idLibro=$idLibro'>$titoloLibro</a>";
-                            echo "</div>";
-                            echo "</div>";
-                        }
-                        ?>
-                    </div>
+                <div class="row results g-3">
+                    <?php
+                    foreach ($data["books"] as $book) {
+                        $data["book"] = $book;
+                        $idLibro = $book["idLibro"];
+                        $titoloLibro = $book["titolo"];
+                        $path = $book["copertina"];
+                        echo "<div class='col-lg-2 col-md-3'>";
+                        echo "<div class='book'>";
+                        echo "<div class='row results-img'> <img src='$path' style=''> </div>";
+                        echo "<div class='row results-text'>";
+                        echo "<input type='hidden' name='idLibro' value='$idLibro' />";
+                        echo "<a style='width:auto' href='visualizzaLibro?idLibro=$idLibro'><p>$titoloLibro</p></a>";
+                        echo "</div>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                    ?>
                 </div>
                 <div class="pageBar-list">
                     <div class="pageBar-lbl">
@@ -137,11 +139,11 @@
                         $p = 1;
                     for ($i = $p - 2; $i <= $p + 2; $i++) {
                         if ($i > 0 && $i <= $data["numPages"]) {
-                            echo "<div class='pageBar-num' style='max-width: 24.8px'>";
+                            echo "<div class='pageBar-num'>";
                             if ((int) $_SESSION["requested_page"] != $i) {
                                 echo "<a href='home?p=$i'>$i</a>";
                             } else {
-                                echo "<a class='pageBar-num disabled' href='home?p=$i'>$i</a>";
+                                echo "<a class='disabled' href='home?p=$i'>$i</a>";
                             }
                             echo "</div>";
                         }
@@ -161,126 +163,8 @@
             </div>
         </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <h1>Ciao</h1>
-
 
     <!-- Footer -->
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
