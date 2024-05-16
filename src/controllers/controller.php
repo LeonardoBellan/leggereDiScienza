@@ -46,16 +46,16 @@ class controller
     public function home()
     {
         //Numero di articoli per pagina
-        $numBooksPage=16;
+        $numBooksPage=1;
 
         //Numero di pagina richiesta
-        $_SESSION["requested_page"] = (int)$_GET["p"];
+        if(isset($_GET["p"]))
+            $_SESSION["requested_page"] = (int)$_GET["p"];
         
         //Richiesta modelli necessari
         $bookmanager = $this->getModel("libri_model", "bibliotecaOspite");//Cambiare utente
 
         //query
-
         //Controllo per richiesta di pagina inesistente
         $numLibri = $bookmanager->getNumLibri();
         $numPages = ceil($numLibri/$numBooksPage);
@@ -91,9 +91,10 @@ class controller
 
     public function login()
     {
-
+        $_SESSION["check"]="A";
         if (!$this->checkAccountLevel(0)) {
             header("Location: error");
+            return;
         }
 
         //Quando si arriva dalla home
@@ -101,6 +102,7 @@ class controller
             $this->renderView("login_view", null);
             return;
         }
+        $_SESSION["check"]="B";
 
         //Richiesta modelli necessari
         $accountmanager = $this->getModel("account_model", "bibliotecaOspite"); //Cambiare utente
@@ -110,10 +112,13 @@ class controller
             //Credenziali corrette
             $this->setAccount($idAccount);
             header("Location: home");
+            $_SESSION["check"]="C";
         } else {
             //Credenziali errate
+            $_SESSION["check"]="D";
             $this->renderView("login_view", ["failed" => true]);
         }
+        
     }
 
     public function logout()

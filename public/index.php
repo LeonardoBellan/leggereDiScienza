@@ -33,5 +33,10 @@ function getResource($URI){
     $temp = explode("/",$url_parts["path"]);
     $resource = $temp[sizeof($temp)-1]; 
 
+    /*
+    $temp = explode("?",$resource);
+    $resource = $temp[0]; 
+    */
+    
     return $resource;
 }
