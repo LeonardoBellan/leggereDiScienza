@@ -210,17 +210,24 @@ class controller
         }
 
         //Richiesta modelli necessari
-        $bookmanager = $this->getModel("libri_model", "bibliotecaSupervisore");    //Cambiare utenti
+        $bookmanager = $this->getModel("libri_model", "bibliotecaSupervisore");    
         $CEmanager = $this->getModel("CE_model", "bibliotecaSupervisore");
         $tipologiemanager = $this->getModel("tipologie_model", "bibliotecaSupervisore");
+        $PCmanager  = $this->getModel("PC_model", "bibliotecaSupervisore");
+        $autorimanager = $this->getModel("autori_model", "bibliotecaSupervisore");
 
         //Quando si arriva dalla home
         if (!isset($_POST["insertBook"])) {
             $caseEditrici = $CEmanager->getAllCE();
             $tipologie = $tipologiemanager->getAllTipologie(); // Da cambiare con tipologiemanager
+            $PC  = $PCmanager->getAllParoleChiave();
+            $autori= $autorimanager->getAllAutori();
+
             $data = [
                 "caseEditrici" => $caseEditrici,
-                "tipologie" => $tipologie
+                "tipologie" => $tipologie,
+                "paroleChiave" => $PC,
+                "autori" => $autori
             ];
             $this->renderView("insertBook_view", $data);
             return;
