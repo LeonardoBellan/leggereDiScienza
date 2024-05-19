@@ -171,6 +171,10 @@ iframe {
   background-color: var(--almond);
 }
 
+.container-fluid{
+  height:100%;
+}
+
 /*//////////////////////////////////////////////////////////////////*/
 /* sideBar */
 /* Estilos personalizados para la barra lateral */
@@ -351,6 +355,7 @@ main {
 .insert {
   display: flex;
   flex-direction: column;
+  height:100%;
   align-items: center;
 }
 
@@ -378,6 +383,7 @@ main {
 .insert-content {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   width: 980px;
   background-color: var(--dun);
   padding-top: 35px;
@@ -470,7 +476,8 @@ main {
 .ce-block-input,
 .tp-block-input,
 .pc-block-input,
-.au-block-input{
+.au-block-input,
+.ge-block-input{
   display:flex; 
   flex-shrink: 0; 
   height:28px;
@@ -479,7 +486,8 @@ main {
 #ce-add,
 #tp-add,
 #pc-add,
-#au-add{
+#au-add,
+#ge-add{
   padding:0px 10px;
   color: var(--coffee);
 }

@@ -9,7 +9,7 @@ class CE_model extends model{
 
     public function getIdByName($nome){
         $query = "SELECT *
-                    FROM caseIditrici
+                    FROM caseEditrici
                     WHERE nome = '$nome'";
         $result = $this->query($query);
         $row = mysqli_fetch_assoc($result);

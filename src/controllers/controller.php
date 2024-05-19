@@ -215,6 +215,7 @@ class controller
         $tipologiemanager = $this->getModel("tipologie_model", "bibliotecaSupervisore");
         $PCmanager  = $this->getModel("PC_model", "bibliotecaSupervisore");
         $autorimanager = $this->getModel("autori_model", "bibliotecaSupervisore");
+        $generimanager = $this->getModel("generi_model", "bibliotecaSupervisore");
 
         //Quando si arriva dalla home
         if (!isset($_POST["insertBook"])) {
@@ -222,12 +223,14 @@ class controller
             $tipologie = $tipologiemanager->getAllTipologie(); // Da cambiare con tipologiemanager
             $PC  = $PCmanager->getAllParoleChiave();
             $autori= $autorimanager->getAllAutori();
+            $generi = $generimanager->getAllGeneri();
 
             $data = [
                 "caseEditrici" => $caseEditrici,
                 "tipologie" => $tipologie,
                 "paroleChiave" => $PC,
-                "autori" => $autori
+                "autori" => $autori,
+                "generi" => $generi
             ];
             $this->renderView("insertBook_view", $data);
             return;
@@ -236,14 +239,24 @@ class controller
         //Inserimento del libro
         $titolo = $_POST["titolo"];
         $ISBN = $_POST["ISBN"];
-        $idCE = (isset($_POST["idCasaEditrice"])) ? "'" . $_POST["idCasaEditrice"] . "'" : NULL;
         $trama = (isset($_POST["trama"])) ? "'" . $_POST["trama"] . "'" : NULL;
-        $idTipologia = (isset($_POST["idTipologia"])) ? $_POST["idTipologia"] : NULL;
         $dataPubblicazione = $_POST["dataPubblicazione"];
         $disponibilita = (isset($_POST["disponibilita"])) ? 1 : 0;
         $idProfessore = ($_SESSION["accountInfo"])["account"];
 
+        //Controllo presenza libro
+        if($bookmanager->getIdByISBN($ISBN)) {
+            echo "<h1>Libro già presente nel database</h1>";
+            return;
+        }
 
+        //Ricerca/salvataggio casa editrice
+        $CEmanager->insertCE($_POST["casaEditrice"]);
+        $idCE=$CEmanager->getIdByName($_POST["casaEditrice"]);
+        
+        //Ricerca/salvataggio tipologia
+        $tipologiemanager->insertTipologia($_POST["tipologia"]);
+        $idTipologia=$tipologiemanager->getIdByName($_POST["tipologia"]);
 
         $copertina = $this->salvaImmagine($bookmanager->getNumProgImg()); //Salvare l'immagine sul file server ed inserire il path nel database
         if ($copertina == null) {
@@ -253,13 +266,34 @@ class controller
             $bookmanager->incrementNumProgImg();
         }
 
-        //Ricevere anche gli autori, i generi, gli argomenti, le parole chiave
+        //Ricevere anche gli autori, i generi, le parole chiave
+        $autori=json_decode($_POST["autori"], 1);
+        $generi=json_decode($_POST["generi"], 1);
+        $PC=json_decode($_POST["paroleChiave"],1);
 
-        $bookmanager->insertLibro($ISBN, $titolo, $copertina, $idCE, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore);
-        //$bookmanager->insertAutoriLibro($idLibro, $autori);
-        //$bookmanager->insertGeneriLibro($idLibro, $generi);
-        //$bookmanager->insertArgomentiLibro($idLibro, $argomenti); //non esiste piu?
-        //$bookmanager->insertParoleChiaveLibro($idLibro, $paroleChiave);
+        $autorimanager->multiInsertAutori($autori);
+        $generimanager->multiInsertGeneri($generi);
+        $PCmanager->multiInsertPC($PC);
+
+        //Cercare gli id degli oggetti inseriti
+        $idAutori=[];
+        foreach($autori as $autore){
+            $fullname=$autorimanager->splitName($autore);
+            array_push($idAutori, $autorimanager->getIdByName($fullname[0], $fullname[1]));
+        }
+        $idGeneri=[];
+        foreach($generi as $genere){
+            array_push($idGeneri, $generimanager->getIdByGenere($genere));
+        }
+        $idPC=[];
+        foreach($PC as $parola){
+            array_push($idPC, $PCmanager->getIdByParola($parola));
+        }
+
+        $idLibro = $bookmanager->insertLibro($ISBN, $titolo, $copertina, $idCE, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore);
+        $autorimanager->insertAutoriLibro($idLibro, $idAutori);
+        $bookmanager->insertGeneriLibro($idLibro, $idGeneri);
+        $bookmanager->insertParoleChiaveLibro($idLibro, $idPC);
         header("Location: home");
     }
 }

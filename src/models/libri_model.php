@@ -43,20 +43,27 @@ class libri_model extends model{
         return mysqli_fetch_assoc($result);
     }
 
-    public function getIdByTitle($titolo){
+    public function getIdByISBN($ISBN){
         $query = "SELECT idLibro
                     FROM libri
-                    WHERE titolo = '$titolo'";
+                    WHERE ISBN = '$ISBN'";
         $result =  $this->query($query);
-        return mysqli_fetch_assoc($result)["idLibro"];
+        
+        return ($result) ? (mysqli_fetch_assoc($result))["idLibro"] : null;
     }
 
     public function insertLibro($ISBN, $titolo, $copertina, $idCasaEditrice, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore){
-        $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
-                VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)";
-        $result = $this->query($query);
-        
-        return ($result) ? true : false;
+        if(!$this->getIdByISBN($ISBN)){
+            //Libro non esiste
+            $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
+                VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)
+                RETURNING idLibro";
+            $result = $this->query($query);
+            return mysqli_fetch_assoc($result)["id"];
+        }else{
+            //Libro esiste
+            return null;
+        }
     }
 
     public function insertAutoriLibro($idLibro, $autori){

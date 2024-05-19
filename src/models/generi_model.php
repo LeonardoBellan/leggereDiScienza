@@ -29,6 +29,12 @@ class Generi_model extends model{
         }
     }
 
+    function multiInsertgeneri($generi){
+        foreach($generi as &$gen){
+            $this->insertGenere($gen);
+        }
+    }
+
     public function getAllGeneri(){
         $query = "SELECT *
                     FROM generi";
