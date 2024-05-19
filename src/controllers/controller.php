@@ -46,7 +46,7 @@ class controller
     public function home()
     {
         //Numero di articoli per pagina
-        $numBooksPage=24;
+        $numBooksPage=2;
 
         //Numero di pagina richiesta
         if(isset($_GET["p"]))

@@ -15,26 +15,28 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="CSS/style.css">
-    
+
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="insert">
             <!-- HEADER -->
-            <div class="insert-header">
-                <div class="insert-header-home">
-                    <a href="home"><img src="img/logo_JFK.png"></a>
-                </div>
-                <div class="insert-header-profile">
+            <a href="home">
+                <div class="insert-header">
+                    <div class="insert-header-home">
+                        <img src="img/logo_JFK.png">
+                    </div>
+                    <div class="insert-header-profile">
 
-                    <?php
-                    echo "<h3>" . $_SESSION["accountInfo"]["nome"] . " " . $_SESSION["accountInfo"]["cognome"] . "</h3>";
-                    ?>
+                        <?php
+                        echo "<h3>" . $_SESSION["accountInfo"]["nome"] . " " . $_SESSION["accountInfo"]["cognome"] . "</h3>";
+                        ?>
 
-                    <a href="home"><i class="fa fa-user-circle" style="font-size:48px" aria-hidden="true"></i></a>
+                        <a href="home"><i class="fa fa-user-circle" style="font-size:48px" aria-hidden="true"></i></a>
+                    </div>
                 </div>
-            </div>
+            </a>
             <!-- CONTENT -->
             <div class="insert-content">
                 <!-- FORM  -->
@@ -46,19 +48,19 @@
                         <!-- Titolo -->
                         <div class="insert-content-fields-row">
                             <label for="titolo">Titolo:</label>
-                            <input type="text" name="titolo" required>
+                            <input class="element-right" type="text" name="titolo" required>
                         </div>
 
                         <!-- ISBN -->
                         <div class="insert-content-fields-row">
                             <label for="ISBN">ISBN:</label>
-                            <input type="text" name="ISBN">
+                            <input class="element-right" type="text" name="ISBN">
                         </div>
 
                         <!-- Inserimento copertina-->
                         <div class="insert-content-fields-row">
                             <label for="copertina">Inserisci un'immagine di copertina:</label>
-                            <div class="insert-image">
+                            <div class="insert-image element-right">
                                 <label class="custom-file-upload" for="file-upload"><i
                                         class="fa-solid fa-camera"></i></label>
                             </div>
@@ -67,48 +69,75 @@
 
                         <!-- Casa editrice -->
                         <div class="insert-content-fields-row">
-                            <label for="idCasaEditrice">Casa Editrice: </label>
-                            <div class="autocomplete">
-                                <input class="input-text" type="text" id="ce-input"
-                                    placeholder="Inserisci una casa editrice..." />
+                            <label>Casa Editrice: </label>
+                            <div id="ce-block" class="element-right">
+                                <div class="ce-block-input">
+                                    <input class="input-text" type="text" id="ce-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="ce-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
                                 <ul class="ce-list"></ul>
                             </div>
                         </div>
 
                         <!-- Tipologia del libro-->
                         <div class="insert-content-fields-row">
-                            <label for="idTipologia">Tipologia: </label>
-                            <div class="autocomplete">
-                                <input class="input-text" type="text" id="tp-input"
-                                    placeholder="Inserisci una casa editrice..." />
+                            <label>Tipologia: </label>
+                            <div id="tp-block" class="element-right">
+                                <div class="tp-block-input">
+                                    <input class="input-text" type="text" id="tp-input" style="flex-grow:1" />
+                                    <button id="tp-add"><i class="fa-solid fa-plus"></i></button>
+                                </div>
                                 <ul class="tp-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Parole Chiave -->
+                        <div class="insert-content-fields-row">
+                            <label>Parole Chiave: </label>
+                            <div id="pc-block" class="element-right">
+                                <div class="pc-block-input">
+                                    <input class="input-text" type="text" id="pc-input" style="flex-grow:1" />
+                                    <button id="pc-add"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                                <ul class="pc-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- autori -->
+                        <div class="insert-content-fields-row">
+                            <label>Autori: </label>
+                            <div id="au-block" class="element-right">
+                                <div class="au-block-input">
+                                    <input class="input-text" type="text" id="au-input" style="flex-grow:1" />
+                                    <button id="au-add"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                                <ul class="au-list"></ul>
                             </div>
                         </div>
 
                         <!-- Data di pubblicazione -->
                         <div class="insert-content-fields-row">
                             <label for="dataPubblicazione">Data di pubblicazione: </label>
-                            <input type="date" name="dataPubblicazione">
+                            <input class="element-right" type="date" name="dataPubblicazione">
                         </div>
-
-                        <!-- Generi -->
 
                         <!-- Trama -->
                         <div class="insert-content-fields-row">
                             <label for="trama">Trama: </label>
-                            <input type="text" name="Trama">
+                            <input class="element-right" type="text" name="Trama">
                         </div>
 
                         <!-- Disponibilità in biblioteca -->
                         <div class="insert-content-fields-row">
                             <label for="disponibilita">Disponibile in biblioteca: </label>
-                            <input type="checkbox" name="disponibilita">
+                            <input class="element-right" type="checkbox" name="disponibilita">
                         </div>
-
                         <!-- Tasto  Submit -->
                         <div class="insert-content-fields-row">
                             <label></label>
-                            <input type="submit" value="Inserisci">
+                            <input class="element-right" type="submit" value="Inserisci">
                         </div>
                     </form>
                     <script src="JS/searchAutocomplete.js"></script>
