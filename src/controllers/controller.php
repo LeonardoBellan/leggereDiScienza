@@ -276,22 +276,22 @@ class controller
         $PCmanager->multiInsertPC($PC);
 
         //Cercare gli id degli oggetti inseriti
-        $idAutori=[];
+        $idAutori=array();
         foreach($autori as $autore){
             $fullname=$autorimanager->splitName($autore);
             array_push($idAutori, $autorimanager->getIdByName($fullname[0], $fullname[1]));
         }
-        $idGeneri=[];
+        $idGeneri=array();
         foreach($generi as $genere){
             array_push($idGeneri, $generimanager->getIdByGenere($genere));
         }
-        $idPC=[];
+        $idPC=array();
         foreach($PC as $parola){
             array_push($idPC, $PCmanager->getIdByParola($parola));
         }
 
         $idLibro = $bookmanager->insertLibro($ISBN, $titolo, $copertina, $idCE, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore);
-        $autorimanager->insertAutoriLibro($idLibro, $idAutori);
+        //$bookmanager->insertAutoriLibro($idLibro, $idAutori);
         $bookmanager->insertGeneriLibro($idLibro, $idGeneri);
         $bookmanager->insertParoleChiaveLibro($idLibro, $idPC);
         header("Location: home");

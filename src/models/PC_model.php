@@ -26,7 +26,7 @@ class PC_model extends model
         //Controlla se la parola esiste già
         if (!$this->getIdByParola($parola)) {
             //Genere non esiste
-            $query = "INSERT INTO generi (genere) VALUES ('$parola')";
+            $query = "INSERT INTO parolechiave (parolaChiave) VALUES ('$parola')";
             $this->query($query);
             return true;
         } else {

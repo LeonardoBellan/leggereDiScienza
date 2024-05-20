@@ -65,7 +65,7 @@ function getPropertyNameByType(type) {
         case "ce":
             return "nome";
         case "pc":
-            return "parola";
+            return "parolaChiave";
         case "au":
             return "nome";
         case "tp":

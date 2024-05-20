@@ -59,7 +59,7 @@ class libri_model extends model{
                 VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)
                 RETURNING idLibro";
             $result = $this->query($query);
-            return mysqli_fetch_assoc($result)["id"];
+            return mysqli_fetch_assoc($result)["idLibro"];
         }else{
             //Libro esiste
             return null;
@@ -69,10 +69,10 @@ class libri_model extends model{
     public function insertAutoriLibro($idLibro, $autori){
         $query = "INSERT INTO autorilibro (libro, autore) VALUES ";
         foreach($autori as &$idAutore){
-            $query.="($idLibro, $idAutore),";
+            $query=$query . "($idLibro, $idAutore),";
         }
-        $query=$query.rtrim(',');
-
+        $query=rtrim($query, ',');
+        
         $result = $this->query($query);
         
         return ($result) ? true : false;
@@ -83,8 +83,8 @@ class libri_model extends model{
         foreach($generi as &$idgenere){
             $query.="($idLibro, $idgenere),";
         }
-        $query=$query.rtrim(',');
-
+        $query=rtrim($query, ',');
+        echo "<script>alert('$query')</script>";
         $result = $this->query($query);
         
         return ($result) ? true : false;
@@ -95,7 +95,7 @@ class libri_model extends model{
         foreach($paroleChiave as &$idParola){
             $query.="($idLibro, $idParola),";
         }
-        $query=$query.rtrim(',');
+        $query=rtrim($query, ',');
 
         $result = $this->query($query);
         
