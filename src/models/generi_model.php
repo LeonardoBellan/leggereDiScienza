@@ -1,52 +1,56 @@
 <?php
-require_once("model.php");
+require_once ("model.php");
 
-class Generi_model extends model{
+class Generi_model extends model
+{
 
-    function __construct($user){
+    function __construct($user)
+    {
         parent::__construct($user);
     }
 
-    public function getIdByGenere($genere){
+    public function getIdByGenere($genere)
+    {
         $query = "SELECT *
                     FROM generi
                     WHERE genere = '$genere'";
         $result = $this->query($query);
 
-        if($result){
-            if(mysqli_num_rows($result)>0){
-                $row = mysqli_fetch_assoc($result);
-                return $row['idGenere'];
-            }
-        }else{
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['idGenere'];
+        } else {
             return null;
         }
     }
 
-    function insertGenere($genere){
+    function insertGenere($genere)
+    {
         //Controlla se l'utente esiste già
-        if(!$this->getIdBygenere($genere)){
+        if (!$this->getIdBygenere($genere)) {
             //Genere non esiste
-            $genere=ucfirst(strtolower($genere));
+            $genere = ucfirst(strtolower($genere));
             $query = "INSERT INTO generi (genere) VALUES ('$genere')";
             $this->query($query);
             return true;
-        }else{
+        } else {
             //Genere esiste
             return false;
         }
     }
 
-    function multiInsertgeneri($generi){
-        foreach($generi as &$gen){
+    function multiInsertgeneri($generi)
+    {
+        foreach ($generi as &$gen) {
             $this->insertGenere($gen);
         }
     }
 
-    public function getAllGeneri(){
+    public function getAllGeneri()
+    {
         $query = "SELECT *
                     FROM generi";
-        $result =  $this->query($query);
+        $result = $this->query($query);
         $generi = array();
         while ($row = mysqli_fetch_array($result)) {
             $generi[] = $row;
@@ -54,11 +58,12 @@ class Generi_model extends model{
         return $generi;
     }
 
-    public function getGeneriByLibro($idLibro){
+    public function getGeneriByLibro($idLibro)
+    {
         $query = "SELECT ge.genere
                     FROM generi as ge, generiLibro as gl
                     WHERE gl.libro='$idLibro' AND ge.idGenere=gl.genere";
-        $result =  $this->query($query);
+        $result = $this->query($query);
         $generi = array();
         while ($row = mysqli_fetch_array($result)) {
             $generi[] = $row;

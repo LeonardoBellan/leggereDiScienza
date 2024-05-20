@@ -143,11 +143,36 @@ function removeElements() {
     });
 }
 
+//Da miigliorare il Warning
 function submitForm() {
     var pcRow = document.querySelector("#pc-sel-row");
     var auRow = document.querySelector("#au-sel-row");
     var geRow = document.querySelector("#ge-sel-row");
+    
+    //Generazione  warning
+    var errstr = "";
+    if(document.querySelector("#titolo-in").value=="")
+        errstr+="Nessun titolo inserito! ";
+    if(document.querySelector("#ISBN-in").value=="")
+        errstr+="\nNessun ISBN inserito! ";
+    if(document.querySelector("#file-upload").files.length==0)
+        errstr+="\nNessuna copertina inserita! ";
+    if(document.querySelector("#ce-input").value=="")
+        errstr+="\nNessuna casa editrice inserita! ";
+    if(document.querySelector("#tp-input").value=="")
+        errstr+="\nNessuna tipologia inserita! ";
+    if(!pcRow || pcRow.childElementCount==0)
+        errstr+="\nNessuna parola chiave inserita! ";
+    if(!auRow || auRow.childElementCount==0)
+        errstr+="\nNessun autore inserito! ";
+    if(!geRow || geRow.childElementCount==0)
+        errstr+="\nNessun genere inserito! ";
+    if(errstr!=""){
+        alert(errstr);
+        return;
+    }
 
+    //raccoglimento dati multipli
     pcArr = [];
     for (let child of pcRow.children) {
         pcArr.push(child.querySelector("p").textContent);
@@ -163,9 +188,11 @@ function submitForm() {
         geArr.push(child.querySelector("p").textContent);
     }
     
+    //Assegnazione dei dati multipli come JSON a <input> nascosti da cui saranno ricavati nel  controller
     document.querySelector("#pc-form-item").setAttribute("value", JSON.stringify(pcArr));
     document.querySelector("#au-form-item").setAttribute("value", JSON.stringify(auArr));
     document.querySelector("#ge-form-item").setAttribute("value", JSON.stringify(geArr));
 
+    //submit del form
     document.querySelector("#insert-form").submit();
 }

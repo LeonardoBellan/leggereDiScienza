@@ -9,6 +9,21 @@ class PC_model extends model
         parent::__construct($user);
     }
 
+    function getIdByParola($parola)
+    {
+        $query = "SELECT *
+                    FROM parolechiave
+                    WHERE parolaChiave = '$parola'";
+        $result = $this->query($query);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['idParola'];
+        } else {
+            return null;
+        }
+    }
+
     public function getAllParoleChiave()
     {
         $query = "SELECT *
@@ -26,7 +41,7 @@ class PC_model extends model
         //Controlla se la parola esiste già
         if (!$this->getIdByParola($parola)) {
             //Genere non esiste
-            $parola=ucfirst(strtolower($parola));
+            $parola = ucfirst(strtolower($parola));
             $query = "INSERT INTO parolechiave (parolaChiave) VALUES ('$parola')";
             $this->query($query);
             return true;
@@ -40,23 +55,6 @@ class PC_model extends model
     {
         foreach ($PC as &$parola) {
             $this->insertParola($parola);
-        }
-    }
-
-    function getIdByParola($parola)
-    {
-        $query = "SELECT *
-                    FROM parolechiave
-                    WHERE parolaChiave = '$parola'";
-        $result = $this->query($query);
-        
-        if($result){
-            if(mysqli_num_rows($result)>0){
-                $row = mysqli_fetch_assoc($result);
-                return $row['idParola'];
-            }
-        }else{
-            return null;
         }
     }
 

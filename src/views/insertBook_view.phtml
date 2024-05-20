@@ -50,13 +50,13 @@
                         <!-- Titolo -->
                         <div class="insert-content-fields-row">
                             <label for="titolo">Titolo:</label>
-                            <input class="element-right" type="text" name="titolo" required>
+                            <input class="element-right" type="text" id="titolo-in" name="titolo" required>
                         </div>
 
                         <!-- ISBN -->
                         <div class="insert-content-fields-row">
                             <label for="ISBN">ISBN:</label>
-                            <input class="element-right" type="text" name="ISBN">
+                            <input class="element-right" type="text" id="ISBN-in" name="ISBN">
                         </div>
 
                         <!-- Inserimento copertina-->
@@ -132,25 +132,27 @@
                         <!-- Data di pubblicazione -->
                         <div class="insert-content-fields-row">
                             <label for="dataPubblicazione">Data di pubblicazione: </label>
-                            <input class="element-right" type="date" name="dataPubblicazione">
+                            <input class="element-right" type="date" id="data-in"  name="dataPubblicazione">
                         </div>
 
                         <!-- Trama -->
                         <div class="insert-content-fields-row">
                             <label for="trama">Trama: </label>
-                            <input class="element-right" type="text" name="Trama">
+                            <input class="element-right" type="text" id="trama-in" name="Trama">
                         </div>
 
                         <!-- Disponibilità in biblioteca -->
                         <div class="insert-content-fields-row">
                             <label for="disponibilita">Disponibile in biblioteca: </label>
-                            <input class="element-right" type="checkbox" name="disponibilita">
+                            <input class="element-right" type="checkbox" id="disp-in" name="disponibilita">
                         </div>
+
                         <!-- Tasto  Submit -->
                         <div class="insert-content-fields-row">
                             <label></label>
                             <button class="element-right" type="button" onclick="submitForm()">Inserisci</button>
                         </div>
+
                         <input type="hidden" id="pc-form-item" name="paroleChiave" value="">
                         <input type="hidden" id="au-form-item" name="autori" value="">
                         <input type="hidden" id="ge-form-item" name="generi" value="">

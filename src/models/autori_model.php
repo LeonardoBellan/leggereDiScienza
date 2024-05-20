@@ -16,12 +16,10 @@ class Autori_model extends model
                     WHERE nome = '$nome' AND cognome='$cognome'";
         $result = $this->query($query);
 
-        if($result){
-            if(mysqli_num_rows($result)>0){
-                $row = mysqli_fetch_assoc($result);
-                return $row['idAutore'];
-            }
-        }else{
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['idAutore'];
+        } else {
             return null;
         }
     }
@@ -43,7 +41,7 @@ class Autori_model extends model
     function multiInsertAutori($autori)
     {
         foreach ($autori as &$aut) {
-            $fullname=$this->splitName($aut);
+            $fullname = $this->splitName($aut);
             $this->insertAutore($fullname[0], $fullname[1]);
         }
     }

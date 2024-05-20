@@ -7,8 +7,6 @@
   /*Primario*/
   --coffee: #7f5539;
   --raw-umber: #9c6644;
-
-  --sidebarWidth: 300px;
 }
 
 .text-almond {
@@ -238,7 +236,7 @@ iframe {
   color: var(--coffee);
 }
 
-#search:focus + i {
+#search:focus+i {
   color: var(--almond);
 }
 
@@ -268,7 +266,7 @@ iframe {
   gap: 8px;
 }
 
-.pageBar-list > * {
+.pageBar-list>* {
   /*border: 2px solid lime;*/
   flex-shrink: 1;
   flex-grow: 0;
@@ -294,16 +292,36 @@ iframe {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
+  row-gap: 50px;
+  margin-bottom: 50px;
 }
 
 .results-item {
   display: flex;
   flex-direction: column;
   height: 500px;
-  width: 250px;
+  width: 15.5%;
   background-color: var(--tan);
   border-radius: 8px;
-  /*overflow: hidden*/
+  overflow: hidden
+}
+
+@media screen and (max-width: 1320px) {
+  .results-item {
+    width: 24%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .results-item {
+    width: 31%;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .results-item {
+    width: 48%;
+  }
 }
 
 .results-img {
@@ -313,7 +331,7 @@ iframe {
   flex-grow: 1;
 }
 
-.results-img > img {
+.results-img>img {
   object-fit: cover;
   border-radius: 8px 8px 0px 0px;
 }
@@ -395,7 +413,7 @@ main {
   padding: 5px;
 }
 
-.insert-content-fields-row > label {
+.insert-content-fields-row>label {
   flex-grow: 1;
   flex-basis: 5px;
   max-width: 200px;
@@ -419,7 +437,7 @@ main {
   padding-left: 10px;
 }
 
-.element-right > ul {
+.element-right>ul {
   list-style: none;
   padding: 0;
   width: 100%;
@@ -431,6 +449,7 @@ main {
 .list-items {
   padding: 10px 5px;
 }
+
 .list-items:hover {
   background-color: #dddddd;
 }
@@ -440,16 +459,16 @@ main {
   background-color: transparent;
 }
 
-.insert-content-fields-row > input[type="file"] {
+.insert-content-fields-row>input[type="file"] {
   display: none;
 }
 
-.insert-content-fields-row > input[type="checkbox"] {
+.insert-content-fields-row>input[type="checkbox"] {
   height: 1em;
 }
 
 .insert-image {
-  border: 1px var(--raw-umber) dashed;
+  border: 1px var(--coffee) dashed;
   border-radius: 3px;
   height: auto;
   display: flex;
@@ -681,7 +700,7 @@ main {
   transform: translateY(-50%);
 }
 
-.input-checkbox:checked + .label-checkbox100::before {
+.input-checkbox:checked+.label-checkbox100::before {
   color: #555555;
 }
 
