@@ -59,7 +59,6 @@
   background-color: var(--raw-umber);
 }
 
-
 /*//////////////////////////////////////////////////////////////////
 /* Restyling */
 * {
@@ -171,8 +170,8 @@ iframe {
   background-color: var(--almond);
 }
 
-.container-fluid{
-  height:100%;
+.container-fluid {
+  height: 100%;
 }
 
 /*//////////////////////////////////////////////////////////////////*/
@@ -239,7 +238,7 @@ iframe {
   color: var(--coffee);
 }
 
-#search:focus+i {
+#search:focus + i {
   color: var(--almond);
 }
 
@@ -269,7 +268,7 @@ iframe {
   gap: 8px;
 }
 
-.pageBar-list>* {
+.pageBar-list > * {
   /*border: 2px solid lime;*/
   flex-shrink: 1;
   flex-grow: 0;
@@ -288,11 +287,23 @@ iframe {
   flex-basis: 8ch;
 }
 
-/*Search Results */
-.results {
+/*Search Results/ */
+
+.results-row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 10px;
+}
+
+.results-item {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  width: 250px;
+  background-color: var(--tan);
+  border-radius: 8px;
+  /*overflow: hidden*/
 }
 
 .results-img {
@@ -302,9 +313,9 @@ iframe {
   flex-grow: 1;
 }
 
-.results-img>img {
-  object-fit: fill;
-
+.results-img > img {
+  object-fit: cover;
+  border-radius: 8px 8px 0px 0px;
 }
 
 .results-text {
@@ -313,19 +324,6 @@ iframe {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.book {
-  display: flex;
-  flex-direction: column;
-  height: 500px;
-  background-color: var(--tan);
-  border-radius: 8px;
-  /*overflow: hidden*/
-}
-
-.book img {
-  border-radius: 8px 8px 0px 0px;
 }
 
 .disabled {
@@ -355,7 +353,7 @@ main {
 .insert {
   display: flex;
   flex-direction: column;
-  height:100%;
+  height: 100%;
   align-items: center;
 }
 
@@ -394,10 +392,10 @@ main {
   flex-direction: row;
   gap: 1em;
   margin-top: 10px;
-  padding: 5px
+  padding: 5px;
 }
 
-.insert-content-fields-row>label {
+.insert-content-fields-row > label {
   flex-grow: 1;
   flex-basis: 5px;
   max-width: 200px;
@@ -407,9 +405,8 @@ main {
   text-wrap: wrap;
 }
 
-
 .element-right {
-  display:flex;
+  display: flex;
   flex-direction: column;
   flex-grow: 1;
   flex-basis: 10px;
@@ -422,9 +419,9 @@ main {
   padding-left: 10px;
 }
 
-.element-right>ul {
+.element-right > ul {
   list-style: none;
-  padding:0;
+  padding: 0;
   width: 100%;
   background-color: #ffffff;
   border-radius: 0 0 5px 5px;
@@ -443,11 +440,11 @@ main {
   background-color: transparent;
 }
 
-.insert-content-fields-row>input[type="file"] {
+.insert-content-fields-row > input[type="file"] {
   display: none;
 }
 
-.insert-content-fields-row>input[type="checkbox"] {
+.insert-content-fields-row > input[type="checkbox"] {
   height: 1em;
 }
 
@@ -470,25 +467,25 @@ main {
 }
 
 .insert-image:hover {
-  border:1px var(--coffee) solid;
+  border: 1px var(--coffee) solid;
 }
 
 .ce-block-input,
 .tp-block-input,
 .pc-block-input,
 .au-block-input,
-.ge-block-input{
-  display:flex; 
-  flex-shrink: 0; 
-  height:28px;
+.ge-block-input {
+  display: flex;
+  flex-shrink: 0;
+  height: 28px;
 }
 
 #ce-add,
 #tp-add,
 #pc-add,
 #au-add,
-#ge-add{
-  padding:0px 10px;
+#ge-add {
+  padding: 0px 10px;
   color: var(--coffee);
 }
 
@@ -553,7 +550,6 @@ main {
   background: -webkit-linear-gradient(top, var(--tan), var(--dun));
 }
 
-
 /*------------------------------------------------------------------
 [ Form ]*/
 
@@ -588,7 +584,6 @@ main {
   display: flex;
 }
 
-
 /*------------------------------------------------------------------
 [ Input ]*/
 
@@ -600,7 +595,6 @@ main {
   /* Bottom bar : before focus */
   margin-bottom: 30px;
 }
-
 
 .form-input {
   display: flex;
@@ -687,10 +681,9 @@ main {
   transform: translateY(-50%);
 }
 
-.input-checkbox:checked+.label-checkbox100::before {
+.input-checkbox:checked + .label-checkbox100::before {
   color: #555555;
 }
-
 
 /*------------------------------------------------------------------
 [ Button ]*/
@@ -763,7 +756,6 @@ main {
   opacity: 0;
 }
 
-
 /*------------------------------------------------------------------
 [ Responsive ]*/
 
@@ -772,8 +764,6 @@ main {
     padding: 55px 15px 37px 15px;
   }
 }*/
-
-
 
 /*------------------------------------------------------------------
 [ Alert validate ]*/

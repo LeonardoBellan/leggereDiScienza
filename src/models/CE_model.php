@@ -12,14 +12,22 @@ class CE_model extends model{
                     FROM caseEditrici
                     WHERE nome = '$nome'";
         $result = $this->query($query);
-        $row = mysqli_fetch_assoc($result);
-        return $row["idCasaEditrice"];
+
+        if($result){
+            if(mysqli_num_rows($result)>0){
+                $row = mysqli_fetch_assoc($result);
+                return $row['idCasaEditrice'];
+            }
+        }else{
+            return null;
+        }
     }
 
     function insertCE($nome){
         //Controlla se l'utente esiste già
         if(!$this->getIdByName($nome)){
             //CE non esiste
+            $nome=ucfirst(strtolower($nome));
             $query = "INSERT INTO caseEditrici (nome) VALUES ('$nome')";
             $this->query($query);
             return true;

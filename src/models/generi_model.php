@@ -12,14 +12,22 @@ class Generi_model extends model{
                     FROM generi
                     WHERE genere = '$genere'";
         $result = $this->query($query);
-        $row = mysqli_fetch_assoc($result);
-        return $row["idGenere"];
+
+        if($result){
+            if(mysqli_num_rows($result)>0){
+                $row = mysqli_fetch_assoc($result);
+                return $row['idGenere'];
+            }
+        }else{
+            return null;
+        }
     }
 
     function insertGenere($genere){
         //Controlla se l'utente esiste già
         if(!$this->getIdBygenere($genere)){
             //Genere non esiste
+            $genere=ucfirst(strtolower($genere));
             $query = "INSERT INTO generi (genere) VALUES ('$genere')";
             $this->query($query);
             return true;

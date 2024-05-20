@@ -15,7 +15,15 @@ class Autori_model extends model
                     FROM autori
                     WHERE nome = '$nome' AND cognome='$cognome'";
         $result = $this->query($query);
-        return ($result) ? (mysqli_fetch_assoc($result))["idAutore"] : null;
+
+        if($result){
+            if(mysqli_num_rows($result)>0){
+                $row = mysqli_fetch_assoc($result);
+                return $row['idAutore'];
+            }
+        }else{
+            return null;
+        }
     }
 
     function insertAutore($nome, $cognome)
@@ -42,13 +50,13 @@ class Autori_model extends model
 
     public function splitName($fullname)
     {
-        $str = explode(" ", strtolower($fullname));
+        $str = explode(" ", rtrim(strtolower($fullname)));
         $nome = "";
         for ($i = 0; $i < count($str) - 1; $i++) {
-            $nome .= $str[$i] . " ";
+            $nome .= ucfirst($str[$i]) . " ";
         }
-        $cognome = $str[count($str) - 1];
-        return $fullname = array($nome, $cognome);
+        $cognome = ucfirst($str[count($str) - 1]);
+        return array($nome, $cognome);
     }
 
     public function getAllAutori()

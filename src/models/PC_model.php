@@ -26,6 +26,7 @@ class PC_model extends model
         //Controlla se la parola esiste già
         if (!$this->getIdByParola($parola)) {
             //Genere non esiste
+            $parola=ucfirst(strtolower($parola));
             $query = "INSERT INTO parolechiave (parolaChiave) VALUES ('$parola')";
             $this->query($query);
             return true;
@@ -49,7 +50,14 @@ class PC_model extends model
                     WHERE parolaChiave = '$parola'";
         $result = $this->query($query);
         
-        return ($result) ? (mysqli_fetch_assoc($result))["idParola"] : null;
+        if($result){
+            if(mysqli_num_rows($result)>0){
+                $row = mysqli_fetch_assoc($result);
+                return $row['idParola'];
+            }
+        }else{
+            return null;
+        }
     }
 
     public function getParolaById($id)

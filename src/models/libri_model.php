@@ -46,10 +46,17 @@ class libri_model extends model{
     public function getIdByISBN($ISBN){
         $query = "SELECT idLibro
                     FROM libri
-                    WHERE ISBN = '$ISBN'";
+                    WHERE ISBN = '$ISBN';";
         $result =  $this->query($query);
         
-        return ($result) ? (mysqli_fetch_assoc($result))["idLibro"] : null;
+        if($result){
+            if(mysqli_num_rows($result)>0){
+                $row = mysqli_fetch_assoc($result);
+                return $row['idLibro'];
+            }
+        }else{
+            return null;
+        }
     }
 
     public function insertLibro($ISBN, $titolo, $copertina, $idCasaEditrice, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore){
@@ -58,6 +65,7 @@ class libri_model extends model{
             $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
                 VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)
                 RETURNING idLibro";
+            echo "<script> consle.log('" . $query ."')</script>";
             $result = $this->query($query);
             return mysqli_fetch_assoc($result)["idLibro"];
         }else{

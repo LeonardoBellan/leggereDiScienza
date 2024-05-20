@@ -12,14 +12,22 @@ class tipologie_model extends model{
                     FROM tipologie
                     WHERE tipologia = '$tipologia'";
         $result = $this->query($query);
-        $row = mysqli_fetch_assoc($result);
-        return $row["idTipologia"];
+
+        if($result){
+            if(mysqli_num_rows($result)>0){
+                $row = mysqli_fetch_assoc($result);
+                return $row['idTipologia'];
+            }
+        }else{
+            return null;
+        }
     }
 
     function insertTipologia($tipologia){
         //Controlla se la tipologia esiste già
         if(!$this->getIdByName($tipologia)){
             //tipologia non esiste
+            $tipologia=ucfirst(strtolower($tipologia));
             $query = "INSERT INTO tipologie (tipologia) VALUES ('$tipologia')";
             $this->query($query);
             return true;
