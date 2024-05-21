@@ -143,4 +143,118 @@ class libri_model extends model
 
         return ($result) ? true : false;
     }
+
+    //Funzioni per la ricerca
+
+    //Funzione principale
+    public function advancedSearch($filters)
+    {
+        $set=($filters["req"])?"INTERSECT ":"UNION ";
+        $query = "SELECT * 
+                    FROM libri";
+        foreach ($filters as $key => $value) {
+            $query .=$set . ($key . "AddFilter")($value);
+        }
+
+        $result = $this->query($query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['idLibro'];
+        } else {
+            return null;
+        }
+    }
+
+    private function titoloAddFilter($titolo)
+    {
+        $str = "SELECT * FROM libri where titolo='$titolo'";
+        return $str;
+    }
+
+    private function ISBNAddFilter($ISBN)
+    {
+        $str = "SELECT * FROM libri where ISBN='$ISBN'";
+        return $str;
+    }
+
+    private function casaEditriceAddFilter($casaEditrice)
+    {
+        $str = "SELECT * FROM libri where casaEditrice='$casaEditrice'";
+        return $str;
+    }
+
+    private function tipologiaAddFilter($tipologia)
+    {
+        $str = "SELECT * FROM libri where tipologia='$tipologia'";
+        return $str;
+    }
+
+    private function dataPubblicazioneAddFilter($dataPubblicazione)
+    {
+        $str = "SELECT * FROM libri where ";
+        if (isset($dataPubblicazione[0])) {
+            $str .= "dataPubblicazione>='" . $dataPubblicazione[0] . "'";
+            if (isset($dataPubblicazione[1])) {
+                $str .= " AND dataPubblicazione<='" . $dataPubblicazione[0] . "'";
+            }
+        } else if (isset($dataPubblicazione[1])) {
+            $str .= "dataPubblicazione<='" . $dataPubblicazione[0] . "'";
+        }
+        return $str;
+    }
+
+    private function disponibilitaAddFilter($disponibilita)
+    {
+        $str = "SELECT * FROM libri where disponibilita='$disponibilita'";
+        return $str;
+    }
+
+    private function autoriAddFilter($autori)
+    {
+        $str = "SELECT libri.*
+        FROM libri
+        JOIN autorilibro ON libri.idLibro = autorilibro.libro
+        JOIN autori ON autorilibro.autore = autori.idAutore
+        WHERE ";
+        foreach ($autori as &$id){
+            $str.="autori.idAutore='$id' OR ";
+        }
+
+        $str=rtrim($str,"OR");
+
+        return $str;
+    }
+
+    private function generiAddFilter($generi)
+    {
+        $str = "SELECT libri.*
+        FROM libri
+        JOIN generilibro ON libri.idLibro = generilibro.libro
+        JOIN generi ON generilibro.genere = generi.idGenere
+        WHERE ";
+        foreach ($generi as &$id){
+            $str.="generi.idGenere='$id' OR ";
+        }
+
+        $str=rtrim($str,"OR");
+
+        return $str;
+    }
+
+    private function PCAddFilter($PC)
+    {
+        $str = "SELECT libri.*
+        FROM libri
+        JOIN parolelibro ON libri.idLibro = parolelibro.libro
+        JOIN paroleChiave ON parolelibro.parola = paroleChiave.parolaChiave
+        WHERE ";
+        foreach ($PC as &$id){
+            $str.="paroleChiave.idParola='$id' OR ";
+        }
+
+        $str=rtrim($str,"OR");
+
+        return $str;
+    }
 }

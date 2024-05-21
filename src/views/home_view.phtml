@@ -23,26 +23,19 @@
 
 <body>
     <div class="container-fluid">
-        <div class="row">
-            <!-- Barra lateral -->
-            <div class="col-md-3 col-lg-2 sidebar container">
-                <div style="align-items:start">
-                    <div class="sidebarHeader">
-                        <h2>Sidebar</h2>
-                        <form id="searchbar">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                            <input type="search" id="search" placeholder="Cerca un libro">
-                        </form>
-                    </div>
-                    <hr class="sidebarDivider">
-                    <div class="sidebarContent">
-                        <div class="vr">
-                            <a href="#">Services</a>
-                            <a href="#">Clients</a>
-                            <a href="#">Contact</a>
-                        </div>
-                    </div>
+        <div>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Header -->
+                <div class="sidebar-header">
+                    <h2>Filtri</h2>
                 </div>
+                <hr class="sidebar-divider">
+                <!-- Sidebar Content -->
+                <div class="sidebar-content">
+
+                </div>
+                <!-- Sidebar Footer -->
                 <div style="align-items:end">
                     <?php
                     if (isset($_SESSION["accountLevel"]) and $_SESSION["accountLevel"] == 2) {
@@ -67,9 +60,8 @@
                     </div>
                 </div>
             </div>
-
             <!-- Contenido principal -->
-            <div class="container content">
+            <div class="content">
                 <div class="row">
                     <main role="main">
                         <div class="row">
@@ -113,7 +105,7 @@
                         echo "<div class='row results-img'> <img src='$path' style=''> </div>";
                         echo "<div class='row results-text'>";
                         echo "<input type='hidden' name='idLibro' value='$idLibro' />";
-                        echo "<a style='width:auto' href='visualizzaLibro?idLibro=$idLibro'><p>$titoloLibro</p></a>";
+                        echo "<a style='width:auto' href='visualizzaLibro?idLibro=$idLibro'><b>$titoloLibro</b></a>";
                         echo "</div>";
                         echo "</div>";
                     }
@@ -162,6 +154,9 @@
                 </div>
             </div>
         </div>
+
+
+    </div>
     </div>
 
     <!-- Footer -->
