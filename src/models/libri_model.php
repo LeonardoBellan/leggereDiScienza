@@ -147,28 +147,32 @@ class libri_model extends model
     //Funzioni per la ricerca
 
     //Funzione principale
-    public function advancedSearch($filters)
+    public function advancedSearch($filters,  $req)
     {
-        $set=($filters["req"])?"INTERSECT ":"UNION ";
+        $set = ($req) ? " INTERSECT " : " UNION ";
+        $query = "";
+        if($req){
         $query = "SELECT * 
                     FROM libri";
+        }
+
         foreach ($filters as $key => $value) {
-            $query .=$set . ($key . "AddFilter")($value);
+            $funcname=($key . "AddFilter");
+            $query .= $set . $this->$funcname($value, ($set) ? "AND" : "OR");
         }
 
+        echo "<p>$query</p>";
         $result = $this->query($query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            return $row['idLibro'];
-        } else {
-            return null;
+        $libri = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $libri[] = $row;
         }
+        return $libri;
     }
 
     private function titoloAddFilter($titolo)
     {
-        $str = "SELECT * FROM libri where titolo='$titolo'";
+        $str = "SELECT * FROM libri where titolo LIKE '%$titolo%'";
         return $str;
     }
 
@@ -180,13 +184,21 @@ class libri_model extends model
 
     private function casaEditriceAddFilter($casaEditrice)
     {
-        $str = "SELECT * FROM libri where casaEditrice='$casaEditrice'";
+        $str = "SELECT * FROM libri where casaEditrice=$casaEditrice";
+        /*foreach ($casaEditrice as &$id) {
+            $str .= "casaEditrice='$id' OR ";
+        }
+        $str = rtrim($str, "OR");*/
         return $str;
     }
 
     private function tipologiaAddFilter($tipologia)
     {
-        $str = "SELECT * FROM libri where tipologia='$tipologia'";
+        $str = "SELECT * FROM libri where tipologia=$tipologia";
+        /*foreach ($tipologia as &$id) {
+            $str .= "tipologia='$id' OR ";
+        }
+        $str = rtrim($str, "OR");*/
         return $str;
     }
 
@@ -206,54 +218,59 @@ class libri_model extends model
 
     private function disponibilitaAddFilter($disponibilita)
     {
-        $str = "SELECT * FROM libri where disponibilita='$disponibilita'";
+        if ($disponibilita == 1) {
+            $str = "SELECT * FROM libri where disponibilita='$disponibilita'";
+        } else
+            $str = "";
+
         return $str;
     }
 
-    private function autoriAddFilter($autori)
+    private function autoriAddFilter($autori, $set)
     {
         $str = "SELECT libri.*
         FROM libri
         JOIN autorilibro ON libri.idLibro = autorilibro.libro
         JOIN autori ON autorilibro.autore = autori.idAutore
         WHERE ";
-        foreach ($autori as &$id){
-            $str.="autori.idAutore='$id' OR ";
+        foreach ($autori as &$id) {
+            $str .= "autori.idAutore='$id' $set ";
         }
 
-        $str=rtrim($str,"OR");
+        $str = rtrim($str, $set);
 
         return $str;
     }
 
-    private function generiAddFilter($generi)
+    private function generiAddFilter($generi, $set)
     {
         $str = "SELECT libri.*
         FROM libri
         JOIN generilibro ON libri.idLibro = generilibro.libro
         JOIN generi ON generilibro.genere = generi.idGenere
         WHERE ";
-        foreach ($generi as &$id){
-            $str.="generi.idGenere='$id' OR ";
+        foreach ($generi as &$id) {
+            $str .= "generi.idGenere='$id' $set ";
         }
 
-        $str=rtrim($str,"OR");
+        $str = rtrim($str, $set);
 
         return $str;
     }
 
-    private function PCAddFilter($PC)
+    private function paroleChiaveAddFilter($PC, $set)
     {
         $str = "SELECT libri.*
         FROM libri
         JOIN parolelibro ON libri.idLibro = parolelibro.libro
-        JOIN paroleChiave ON parolelibro.parola = paroleChiave.parolaChiave
+        JOIN paroleChiave ON parolelibro.parola = paroleChiave.idParola
         WHERE ";
-        foreach ($PC as &$id){
-            $str.="paroleChiave.idParola='$id' OR ";
+        foreach ($PC as &$id) {
+            $str .= "paroleChiave.idParola='$id' $set";
         }
 
-        $str=rtrim($str,"OR");
+        $str = rtrim($str, "OR");
+        $str = rtrim($str, "AND");
 
         return $str;
     }

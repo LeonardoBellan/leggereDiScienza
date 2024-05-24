@@ -5,7 +5,8 @@
     <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="data" content='<?= json_encode($data); ?>'>
+    
     <!-- Bootsrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -18,7 +19,26 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="CSS/style.css">
 
-</head>
+    <!-- Sidebar toggle script -->
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector(".sidebar");
+            var root = document.documentElement;
+            var btnIcon = document.querySelector("#sideBarToggleBtn>*");
+
+            if (sidebar.classList.contains("toggled")) {
+                setTimeout(function () { sidebar.classList.remove("toggled") }, 500);
+                btnIcon.setAttribute("style", "transform: scale(1, 1)")
+                root.style.setProperty('--sideBarWidth', '400px');
+            } else {
+                sidebar.classList.add("toggled")
+                btnIcon.setAttribute("style", "transform: scale(-1, 1)")
+                root.style.setProperty('--sideBarWidth', '75px');
+            }
+            return;
+        }
+
+    </script>
 </head>
 
 <body>
@@ -29,12 +49,123 @@
                 <!-- Sidebar Header -->
                 <div class="sidebar-header">
                     <h2>Filtri</h2>
+                    <button id="sideBarToggleBtn" onclick="toggleSidebar()"><i
+                            class="fa-solid fa-arrow-left"></i></button>
                 </div>
                 <hr class="sidebar-divider">
                 <!-- Sidebar Content -->
                 <div class="sidebar-content">
+                    <form action="home" id="filter-form" method="get">
 
+                        <!-- Titolo -->
+                        <!-- 
+                    <div class="filter-item">
+                        <label for="titolo-fl">Titolo:</label>
+                        <input type="text" id="titolo-fl" />
+                    </div>
+                    -->
+                        <!-- Titolo -->
+                        <div class="filter-item">
+                            <label for="titolo">Titolo:</label>
+                            <input type="text" id="titolo-in" name="titolo" required>
+                        </div>
+
+                        <!-- ISBN -->
+                        <div class="filter-item">
+                            <label for="ISBN">ISBN:</label>
+                            <input type="text" id="ISBN-in" name="ISBN">
+                        </div>
+
+                        <!-- Casa editrice -->
+                        <div class="filter-item">
+                            <label>Casa Editrice: </label>
+                            <div id="ce-block">
+                                <input class="input-text" type="text" id="ce-input" name="casaEditrice"
+                                    style="flex-grow:1" required />
+                                <ul class="ce-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Tipologia del libro-->
+                        <div class="filter-item">
+                            <label>Tipologia: </label>
+                            <div id="tp-block">
+                                <input class="input-text" type="text" id="tp-input" name="tipologia" style="flex-grow:1"
+                                    required />
+                                <ul class="tp-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Generi -->
+                        <div class="filter-item">
+                            <label>Generi: </label>
+                            <div id="ge-block">
+                                <div class="ge-block-input">
+                                    <input class="input-text" type="text" id="ge-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="ge-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <ul class="ge-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Parole Chiave -->
+                        <div class="filter-item">
+                            <label>Parole Chiave: </label>
+                            <div id="pc-block">
+                                <div class="pc-block-input">
+                                    <input class="input-text" type="text" id="pc-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="pc-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <ul class="pc-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- autori -->
+                        <div class="filter-item">
+                            <label>Autori: </label>
+                            <div id="au-block">
+                                <div class="au-block-input">
+                                    <input class="input-text" type="text" id="au-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="au-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <ul class="au-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Data di pubblicazione -->
+                        <label for="dataPubblicazione">Data di pubblicazione: </label>
+                        <div class="filter-item">
+                            <label for="dataPubblicazione">Da: </label>
+                            <input type="date" id="data-in-da" name="dataPubblicazione-da">
+                        </div>
+                        <div class="filter-item">
+                            <label for="dataPubblicazione">A: </label>
+                            <input type="date" id="data-in-a" name="dataPubblicazione-a">
+                        </div>
+
+                        <!-- Disponibilità in biblioteca -->
+                        <div class="filter-item">
+                            <label for="disponibilita">Disponibile in biblioteca: </label>
+                            <input type="checkbox" id="disp-in" name="disponibilita">
+                        </div>
+
+                        <input type="hidden" id="pc-form-item" name="paroleChiave" value="">
+                        <input type="hidden" id="au-form-item" name="autori" value="">
+                        <input type="hidden" id="ge-form-item" name="generi" value="">
+
+                        <!-- Tasto  Submit -->
+                        <div class="filter-item">
+                            <button type="button" onclick="submitFilterForm()">Inserisci</button>
+                        </div>
+                    </form>
                 </div>
+                <script src="JS/searchAutocomplete.js"></script>
                 <!-- Sidebar Footer -->
                 <div style="align-items:end">
                     <?php
