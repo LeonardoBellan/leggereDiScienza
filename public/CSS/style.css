@@ -8,7 +8,7 @@
   --coffee: #7f5539;
   --raw-umber: #9c6644;
 
-  --sideBarWidth:400px;
+  --sideBarWidth: 400px;
 }
 
 .text-almond {
@@ -192,15 +192,17 @@ iframe {
   transition: all 0.5s ease;
 }
 
-.toggled div > *{
+.toggled div>* {
   display: none;
   transition: all 0.5s ease;
 }
-.toggled .sidebar-header{
+
+.toggled .sidebar-header {
   justify-content: center;
 }
 
-.sidebar-header button,i{
+.sidebar-header button,
+i {
   display: inline;
 }
 
@@ -224,14 +226,14 @@ iframe {
   font-weight: bold;
 }
 
-.filter-item{
+.filter-item {
   display: flex;
   align-items: center;
 }
 
-.filter-item > input,
-.filter-item > button,
-.filter-item > div{
+.filter-item>input,
+.filter-item>button,
+.filter-item>div {
   flex-grow: 1;
   height: 28px;
   background-color: transparent;
@@ -243,71 +245,80 @@ iframe {
   color: white;
 }
 
-.filter-item input{
+.filter-item input {
   color: white;
 }
 
-.filter-item > input[type="checkbox"]{
+.filter-item>input[type="checkbox"] {
   height: 16px;
 }
 
-.filter-item > label{
-  flex-basis: 75px; 
-  flex-grow: 1; 
+.filter-item>label {
+  flex-basis: 75px;
+  flex-grow: 1;
 }
 
-.filter-item  ul{
-  margin:0px;
+.filter-item ul {
+  margin: 0px;
   list-style: none;
   padding: 0px;
   width: 100%;
   background-color: #ffffff;
   border-radius: 0 0 5px 5px;
   z-index: 100;
-  color:#343a40;
+  color: #343a40;
+}
+
+#apply-btn {
+  transition: all 0.2s ease;
+}
+
+#apply-btn:hover {
+  background-color: white;
+  color: #343a40;
 }
 
 .ge-selected-row,
 .pc-selected-row,
-.au-selected-row{
+.au-selected-row {
   display: flex;
   flex-wrap: wrap;
-  gap:10px;
+  gap: 10px;
 }
 
 .sidebar-content .ge-selected-row,
 .sidebar-content .pc-selected-row,
-.sidebar-content .au-selected-row{
-  padding:0px;
+.sidebar-content .au-selected-row {
+  padding: 0px;
   width: 100%;
 }
 
 .ge-selected-item,
 .pc-selected-item,
-.au-selected-item{
-  display:flex; 
-  flex-basis:10px; 
-  flex-shrink:1; 
-  gap:5px; 
+.au-selected-item {
+  display: flex;
+  flex-basis: 10px;
+  flex-shrink: 1;
+  gap: 5px;
   padding: 0px 5px;
 }
 
 
 .sidebar-content .ge-selected-item,
 .sidebar-content .pc-selected-item,
-.sidebar-content .au-selected-item{
-  border: 1px white solid;  
-  border-radius:13px; 
+.sidebar-content .au-selected-item {
+  border: 1px white solid;
+  border-radius: 13px;
 }
 
-.sidebar-content .ge-selected-item >*,
-.sidebar-content .pc-selected-item >*,
-.sidebar-content .au-selected-item >*{
+.sidebar-content .ge-selected-item>*,
+.sidebar-content .pc-selected-item>*,
+.sidebar-content .au-selected-item>* {
   color: white;
 }
 
 
-.filter-item i{
+.filter-item i {
   color: white;
   font-size: 16px;
 }
@@ -344,17 +355,17 @@ iframe {
 }
 
 .sidebar-header {
-  display:  flex;
+  display: flex;
   justify-content: space-between;
   width: 100%;
   flex-shrink: 1;
 }
 
-.sidebar-header > * {
-  color:white;
+.sidebar-header>* {
+  color: white;
 }
 
-.sidebar-content{
+.sidebar-content {
   flex-grow: 1;
 }
 
@@ -472,6 +483,10 @@ iframe {
   pointer-events: none;
   cursor: default;
   text-decoration: none;
+}
+
+.enabled {
+  color: var(--coffee);
 }
 
 /* Main */
@@ -592,17 +607,17 @@ main {
 
 .insert-content .ge-selected-row,
 .insert-content .pc-selected-row,
-.insert-content .au-selected-row{
+.insert-content .au-selected-row {
   width: 80%;
-  padding: 0px 100px; 
+  padding: 0px 100px;
   gap: 10px
 }
 
 .insert-content .ge-selected-item,
 .insert-content .pc-selected-item,
-.insert-content .au-selected-item{
-  border: 1px var(--raw-umber) solid;  
-  border-radius:13px; 
+.insert-content .au-selected-item {
+  border: 1px var(--raw-umber) solid;
+  border-radius: 13px;
 }
 
 .insert-image {
@@ -650,6 +665,7 @@ main {
 /*//////////////////////////////////////////////////////////////////
 /* Visualizzazione libro */
 .wrap-libro {
+  display: flex;
   width: 70vw;
   height: 75vh;
   padding: 2%;
@@ -663,26 +679,28 @@ main {
   background: -webkit-linear-gradient(top, var(--tan), var(--dun));
 }
 
+.wrap-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 45%;
+  overflow: hidden;
+}
+
 .wrap-copertina {
   display: flex;
-
-  width: 100%;
-  height: 100%;
-
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
   overflow: hidden;
 }
 
 .wrap-copertina img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-
+  object-fit: contain;
+  flex-grow: 1;
   border-radius: 10px;
 }
 
-.wrap-info {
+.wrap-right {
   display: flex;
   align-items: center;
 

@@ -69,6 +69,14 @@ class Autori_model extends model
         return $autori;
     }
 
+    public function formatAutori($autori){
+        $arr = array();
+        foreach ($autori as &$autore) {
+            $arr[] = array("idAutore"=> $autore["idAutore"],"nome"=> $autore["nome"] . " " . $autore["cognome"]);
+        }
+        return $arr;
+    }
+
     public function getAutoreById($id)
     {
         $query = "SELECT *

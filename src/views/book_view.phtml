@@ -18,23 +18,24 @@
 <body>
     <div class="container-fluid container-fullpage">
         <div class="wrap-libro">
-            <div class="row h-100">
-                <div class="col-6 mh-100">
-                    <div class="wrap-copertina">
-                        <?php
-                            echo "<img src=" . $data["copertina"] . ">";
-                        ?>
-                        
-                    </div>
+            <div class="wrap-left">
+                <div class="wrap-copertina">
+                    <?php
+                    echo "<img src=" . $data["copertina"] . ">";
+                    ?>
                 </div>
-                <div class="col">
-                    <div class="wrap-info">
-                        <h1 id="titolo"><?php echo $data["titolo"]; ?></h1>
-                        <p id="autori">Autori:</p>
-                        <p id="CE">Casa editrice:</p>
+                <?php
+                    if(isset($_SESSION["accountLevel"]) && $_SESSION["accountLevel"]==2){
+                        echo "<button>Elimina</button>";
+                    }
+                ?>
+            </div>
+            <div class="wrap-right">
+                <h1 id="titolo"><?php echo $data["titolo"]; ?></h1>
+                <p id="autori">Autori:</p>
 
-                    </div>
-                </div>
+                <p id="CE">Casa editrice:</p>
+
             </div>
         </div>
     </div>

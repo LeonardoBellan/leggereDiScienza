@@ -70,7 +70,7 @@ class libri_model extends model
             $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
                 VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)
                 RETURNING idLibro";
-            echo "<script> consle.log('" . $query . "')</script>";
+            echo "<p> consle.log('" . $query . "')</p>";
             $result = $this->query($query);
             return mysqli_fetch_assoc($result)["idLibro"];
         } else {
@@ -99,7 +99,6 @@ class libri_model extends model
             $query .= "($idLibro, $idgenere),";
         }
         $query = rtrim($query, ',');
-        echo "<script>alert('$query')</script>";
         $result = $this->query($query);
 
         return ($result) ? true : false;
@@ -147,27 +146,36 @@ class libri_model extends model
     //Funzioni per la ricerca
 
     //Funzione principale
-    public function advancedSearch($filters,  $req)
+    public function advancedSearch($filters, $req, $limit, $offset)
     {
         $set = ($req) ? " INTERSECT " : " UNION ";
         $query = "";
-        if($req){
-        $query = "SELECT * 
+        if ($req) {
+            $query = "SELECT * 
                     FROM libri";
         }
 
         foreach ($filters as $key => $value) {
-            $funcname=($key . "AddFilter");
+            $funcname = ($key . "AddFilter");
             $query .= $set . $this->$funcname($value, ($set) ? "AND" : "OR");
         }
 
-        echo "<p>$query</p>";
+        $offset = $offset * $limit;
+        
         $result = $this->query($query);
+        
+        $numRows = mysqli_num_rows($result);
         $libri = array();
-        while ($row = mysqli_fetch_assoc($result)) {
-            $libri[] = $row;
+        if (mysqli_data_seek($result, $offset)) {
+            $row = array();
+            while (($row = mysqli_fetch_assoc($result)) && $limit > 0) {
+                $libri[] = $row;
+                $limit--;
+            }
+            return array($libri, $numRows);
+        } else {
+            return null;
         }
-        return $libri;
     }
 
     private function titoloAddFilter($titolo)
@@ -184,7 +192,7 @@ class libri_model extends model
 
     private function casaEditriceAddFilter($casaEditrice)
     {
-        $str = "SELECT * FROM libri where casaEditrice=$casaEditrice";
+        $str = "SELECT * FROM libri where casaEditrice='$casaEditrice'";
         /*foreach ($casaEditrice as &$id) {
             $str .= "casaEditrice='$id' OR ";
         }
@@ -194,7 +202,7 @@ class libri_model extends model
 
     private function tipologiaAddFilter($tipologia)
     {
-        $str = "SELECT * FROM libri where tipologia=$tipologia";
+        $str = "SELECT * FROM libri where tipologia='$tipologia'";
         /*foreach ($tipologia as &$id) {
             $str .= "tipologia='$id' OR ";
         }
@@ -219,7 +227,7 @@ class libri_model extends model
     private function disponibilitaAddFilter($disponibilita)
     {
         if ($disponibilita == 1) {
-            $str = "SELECT * FROM libri where disponibilita='$disponibilita'";
+            $str = "SELECT * FROM libri where disponibilita=$disponibilita";
         } else
             $str = "";
 
@@ -228,17 +236,30 @@ class libri_model extends model
 
     private function autoriAddFilter($autori, $set)
     {
+        /*
+        SELECT libri.* FROM libri
+        JOIN parolelibro pl1 ON libri.idLibro = pl1.libro 
+        JOIN paroleChiave pc1 ON pl1.parola = pc1.idParola 
+        and pc1.idParola in (1, 5) 
+        group by libri.idLibro 
+        having count(distinct pc1.idParola) = 2; 
+        */
         $str = "SELECT libri.*
         FROM libri
         JOIN autorilibro ON libri.idLibro = autorilibro.libro
         JOIN autori ON autorilibro.autore = autori.idAutore
-        WHERE ";
+        and autori.idAutore in (";
         foreach ($autori as &$id) {
-            $str .= "autori.idAutore='$id' $set ";
+            $str .= $id . ", ";
         }
 
-        $str = rtrim($str, $set);
+        //$str = rtrim($str, ",");
+        $str .= ") ";
 
+        $str .= "group by libri.idLibro ";
+        if ($set == "AND")
+            $str .= "having count(distinct autori.idAutore) = " . sizeof($autori);
+        setcookie("query1", (string) $str, time() + 60,);
         return $str;
     }
 
@@ -250,9 +271,9 @@ class libri_model extends model
         JOIN generi ON generilibro.genere = generi.idGenere
         WHERE ";
         foreach ($generi as &$id) {
-            $str .= "generi.idGenere='$id' $set ";
+            $str .= "generi.idGenere=$id $set ";
         }
-
+        $str = rtrim($str);
         $str = rtrim($str, $set);
 
         return $str;
@@ -266,11 +287,10 @@ class libri_model extends model
         JOIN paroleChiave ON parolelibro.parola = paroleChiave.idParola
         WHERE ";
         foreach ($PC as &$id) {
-            $str .= "paroleChiave.idParola='$id' $set";
+            $str .= "paroleChiave.idParola=$id $set ";
         }
-
-        $str = rtrim($str, "OR");
-        $str = rtrim($str, "AND");
+        $str = rtrim($str);
+        $str = rtrim($str, $set);
 
         return $str;
     }

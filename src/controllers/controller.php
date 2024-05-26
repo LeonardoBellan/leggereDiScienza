@@ -46,7 +46,7 @@ class controller
     public function home()
     {
         //Numero di articoli per pagina
-        $numBooksPage = 24;
+        $numBooksPage = 4;
 
         //Numero di pagina richiesta
         if (isset($_GET["p"]))
@@ -61,28 +61,32 @@ class controller
         $generimanager = $this->getModel("generi_model", "bibliotecaSupervisore");
 
         //query
-        //Controllo per richiesta di pagina inesistente
-        $numLibri = $bookmanager->getNumLibri();
-        $numPages = ceil($numLibri / $numBooksPage);
-        if ((int) $_SESSION["requested_page"] > $numPages) {
-            header("location: home?p=1");
-            return;
-        }
 
         //Creazione array  associativo per i filtri
         $filters = [];
-        if (isset($_GET["titolo"]) && $_GET["titolo"] != "")
+        if (isset($_GET["titolo"]) && $_GET["titolo"] != "") {
             $filters["titolo"] = $_GET["titolo"];
-        if (isset($_GET["ISBN"]) && $_GET["ISBN"] != "")
+        }
+        if (isset($_GET["ISBN"]) && $_GET["ISBN"] != "") {
             $filters["ISBN"] = $_GET["ISBN"];
-        if (isset($_GET["casaEditrice"]) && $_GET["casaEditrice"] != "")
-            $filters["casaEditrice"] = $CEmanager->getIdByName($_GET["casaEditrice"]);
-        if (isset($_GET["tipologia"]) && $_GET["tipologia"] != "")
-            $filters["tipologia"] = $tipologiemanager->getIdByTipologia($_GET["tipologia"]);
-        if (isset($_GET["dataPubblicazione-da"]) && $_GET["dataPubblicazione-da"] != "")
+        }
+        if (isset($_GET["casaEditrice"]) && $_GET["casaEditrice"] != "") {
+            $t = $CEmanager->getIdByName($_GET["casaEditrice"]);
+            $filters["casaEditrice"] = ($t) ? $t : -1;
+        }
+        if (isset($_GET["tipologia"]) && $_GET["tipologia"] != "") {
+            $t=$tipologiemanager->getIdByTipologia($_GET["tipologia"]);
+            $filters["tipologia"] =  $t ? $t : -1;
+        }
+        if (isset($_GET["dataPubblicazione-da"]) && $_GET["dataPubblicazione-da"] != "") {
             $filters["dataPubblicazione"][0] = $_GET["dataPubblicazione-da"];
-        if (isset($_GET["dataPubblicazione-a"]) && $_GET["dataPubblicazione-a"] != "")
+        }
+        if (isset($_GET["dataPubblicazione-a"]) && $_GET["dataPubblicazione-a"] != "") {
             $filters["dataPubblicazione"][1] = $_GET["dataPubblicazione-a"];
+        }
+        if (isset($_GET["disponibilita"]) && $_GET["disponibilita"] == "on") {
+            $filters["disponibilita"] = 1;
+        }
         if (isset($_GET["paroleChiave"]) && array_count_values(json_decode($_GET["paroleChiave"]))) {
             $arr = array();
             foreach (json_decode($_GET["paroleChiave"]) as $value) {
@@ -93,7 +97,8 @@ class controller
         if (isset($_GET["autori"]) && array_count_values(json_decode($_GET["autori"]))) {
             $arr = array();
             foreach (json_decode($_GET["autori"]) as $value) {
-                $arr[] = $autorimanager->getIdByName($autorimanager->splitName($value));
+                $t=$autorimanager->splitName($value);
+                $arr[] = $autorimanager->getIdByName($t[0], $t[1]);
             }
             $filters["autori"] = $arr;
         }
@@ -108,23 +113,29 @@ class controller
 
         //Richiesta libri per la pagina
         //$books = $bookmanager->getLibriLimitedOffset($numBooksPage, (int) $_SESSION["requested_page"] - 1);
-        $books = $bookmanager->advancedSearch($filters, 1);
+        $res = $bookmanager->advancedSearch($filters, 1, $numBooksPage, (int) $_SESSION["requested_page"] - 1);
         $caseEditrici = $CEmanager->getAllCE();
         $tipologie = $tipologiemanager->getAllTipologie();
         $PC = $PCmanager->getAllParoleChiave();
-        $autori = $autorimanager->getAllAutori();
+        $autori = $autorimanager->formatAutori($autorimanager->getAllAutori());
         $generi = $generimanager->getAllGeneri();
+
+        //Controllo per richiesta di pagina inesistente
+        $numPages = ($res) ? ceil($res[1] / $numBooksPage) : 0;
+        /*if ((int) $_SESSION["requested_page"] > $numPages) {
+            header("location: home?p=1");
+            return;
+        }*/
 
         //Preparazione array associativo
         $attributes = [
-            "books" => $books,
+            "books" => ($res) ? $res[0] : array(),
             "numPages" => $numPages,
             "caseEditrici" => $caseEditrici,
             "tipologie" => $tipologie,
             "paroleChiave" => $PC,
             "autori" => $autori,
-            "generi" => $generi,
-            "req" => 1
+            "generi" => $generi
         ];
 
         $this->renderView("home_view", $attributes);
@@ -147,7 +158,6 @@ class controller
 
     public function login()
     {
-        $_SESSION["check"] = "A";
         if (!$this->checkAccountLevel(0)) {
             header("Location: error");
             return;
@@ -158,7 +168,6 @@ class controller
             $this->renderView("login_view", null);
             return;
         }
-        $_SESSION["check"] = "B";
 
         //Richiesta modelli necessari
         $accountmanager = $this->getModel("account_model", "bibliotecaOspite"); //Cambiare utente
@@ -168,10 +177,8 @@ class controller
             //Credenziali corrette
             $this->setAccount($idAccount);
             header("Location: home");
-            $_SESSION["check"] = "C";
         } else {
             //Credenziali errate
-            $_SESSION["check"] = "D";
             $this->renderView("login_view", ["failed" => true]);
         }
 
@@ -278,7 +285,7 @@ class controller
             $caseEditrici = $CEmanager->getAllCE();
             $tipologie = $tipologiemanager->getAllTipologie(); // Da cambiare con tipologiemanager
             $PC = $PCmanager->getAllParoleChiave();
-            $autori = $autorimanager->getAllAutori();
+            $autori = $autorimanager->formatAutori($autorimanager->getAllAutori());
             $generi = $generimanager->getAllGeneri();
 
             $data = [
@@ -302,7 +309,7 @@ class controller
 
         //Controllo presenza libro
         if ($bookmanager->getIdByISBN($ISBN)) {
-            echo "<h1>Libro già presente nel database</h1>";
+            echo "<script>alert('Libro già presente nel database')</script>";
             return;
         }
 
@@ -312,7 +319,7 @@ class controller
 
         //Ricerca/salvataggio tipologia
         $tipologiemanager->insertTipologia($_POST["tipologia"]);
-        $idTipologia = $tipologiemanager->getIdByName($_POST["tipologia"]);
+        $idTipologia = $tipologiemanager->getIdByTipologia($_POST["tipologia"]);
 
         $copertina = $this->salvaImmagine($bookmanager->getNumProgImg()); //Salvare l'immagine sul file server ed inserire il path nel database
         if ($copertina == null) {
@@ -347,7 +354,7 @@ class controller
         }
 
         $idLibro = $bookmanager->insertLibro($ISBN, $titolo, $copertina, $idCE, $trama, $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore);
-        //$bookmanager->insertAutoriLibro($idLibro, $idAutori);
+        $bookmanager->insertAutoriLibro($idLibro, $idAutori);
         $bookmanager->insertGeneriLibro($idLibro, $idGeneri);
         $bookmanager->insertParoleChiaveLibro($idLibro, $idPC);
         header("Location: home");

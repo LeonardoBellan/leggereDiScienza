@@ -55,25 +55,19 @@
                 <hr class="sidebar-divider">
                 <!-- Sidebar Content -->
                 <div class="sidebar-content">
-                    <form action="home" id="filter-form" method="get">
+                    <form action="home" id="filter-form" method="get"  autocomplete="off">
+                        <input type="hidden" id="page-param" name="p" value="1">
 
-                        <!-- Titolo -->
-                        <!-- 
-                    <div class="filter-item">
-                        <label for="titolo-fl">Titolo:</label>
-                        <input type="text" id="titolo-fl" />
-                    </div>
-                    -->
                         <!-- Titolo -->
                         <div class="filter-item">
                             <label for="titolo">Titolo:</label>
-                            <input type="text" id="titolo-in" name="titolo" required>
+                            <input type="text" id="titolo-in" name="titolo" value="<?php echo isset($_GET["titolo"])  ? $_GET["titolo"]  :  ""; ?>">
                         </div>
 
                         <!-- ISBN -->
                         <div class="filter-item">
                             <label for="ISBN">ISBN:</label>
-                            <input type="text" id="ISBN-in" name="ISBN">
+                            <input type="text" id="ISBN-in" name="ISBN" value="<?php echo isset($_GET["ISBN"])  ? $_GET["ISBN"]  :  ""; ?>">
                         </div>
 
                         <!-- Casa editrice -->
@@ -81,7 +75,7 @@
                             <label>Casa Editrice: </label>
                             <div id="ce-block">
                                 <input class="input-text" type="text" id="ce-input" name="casaEditrice"
-                                    style="flex-grow:1" required />
+                                    style="flex-grow:1" value="<?php echo isset($_GET["casaEditrice"])  ? $_GET["casaEditrice"]  :  ""; ?>" />
                                 <ul class="ce-list"></ul>
                             </div>
                         </div>
@@ -91,7 +85,7 @@
                             <label>Tipologia: </label>
                             <div id="tp-block">
                                 <input class="input-text" type="text" id="tp-input" name="tipologia" style="flex-grow:1"
-                                    required />
+                                value="<?php echo isset($_GET["tipologia"])  ? $_GET["tipologia"]  :  ""; ?>" />
                                 <ul class="tp-list"></ul>
                             </div>
                         </div>
@@ -141,11 +135,11 @@
                         <!-- Data di pubblicazione -->
                         <label for="dataPubblicazione">Data di pubblicazione: </label>
                         <div class="filter-item">
-                            <label for="dataPubblicazione">Da: </label>
+                            <label for="dataPubblicazione-da">Da: </label>
                             <input type="date" id="data-in-da" name="dataPubblicazione-da">
                         </div>
                         <div class="filter-item">
-                            <label for="dataPubblicazione">A: </label>
+                            <label for="dataPubblicazione-a">A: </label>
                             <input type="date" id="data-in-a" name="dataPubblicazione-a">
                         </div>
 
@@ -161,7 +155,7 @@
 
                         <!-- Tasto  Submit -->
                         <div class="filter-item">
-                            <button type="button" onclick="submitFilterForm()">Inserisci</button>
+                            <button type="button" id="apply-btn" onclick="submitFilterForm()">Applica Filtri</button>
                         </div>
                     </form>
                 </div>
@@ -250,9 +244,9 @@
                         <?php
                         $p = intval($_SESSION["requested_page"] - 1);
                         if ($p >= 1) {
-                            echo "<a href='home?p=$p'>Prec</a>";
+                            echo "<button class='enabled' onclick='setPageNum(this)' value='$p'>Prec</a>";
                         } else {
-                            echo "<a class='disabled' href='home?p=$p'>Prec</a>";
+                            echo "<button class='disabled' onclick='setPageNum(this)' value='$p'>Prec</a>";
                         }
                         ?>
                     </div>
@@ -264,9 +258,11 @@
                         if ($i > 0 && $i <= $data["numPages"]) {
                             echo "<div class='pageBar-num'>";
                             if ((int) $_SESSION["requested_page"] != $i) {
-                                echo "<a href='home?p=$i'>$i</a>";
+                                //echo "<a href='home?p=$i'>$i</a>";
+                                echo "<button class='enabled' onclick='setPageNum(this)' value='$i'>$i</a>";
                             } else {
-                                echo "<a class='disabled' href='home?p=$i'>$i</a>";
+                                //echo "<a class='disabled' href='home?p=$i'>$i</a>";
+                                echo "<button class='disabled' onclick='setPageNum(this)' value='$i'>$i</a>";
                             }
                             echo "</div>";
                         }
@@ -276,9 +272,9 @@
                         <?php
                         $p = intval($_SESSION["requested_page"] + 1);
                         if ($p <= $data["numPages"]) {
-                            echo "<a href='home?p=$p'>Succ</a>";
+                            echo "<button class='enabled' onclick='setPageNum(this)' value='$p'>Succ</a>";
                         } else {
-                            echo "<a class='disabled' href='home?p=$p'>Succ</a>";
+                            echo "<button class='disabled' onclick='setPageNum(this)' value='$p'>Succ</a>";
                         }
                         ?>
                     </div>

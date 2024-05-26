@@ -9,7 +9,7 @@ class tipologie_model extends model
         parent::__construct($user);
     }
 
-    public function getIdByName($tipologia)
+    public function getIdByTipologia($tipologia)
     {
         $query = "SELECT *
                     FROM tipologie
@@ -27,7 +27,7 @@ class tipologie_model extends model
     function insertTipologia($tipologia)
     {
         //Controlla se la tipologia esiste già
-        if (!$this->getIdByName($tipologia)) {
+        if (!$this->getIdByTipologia($tipologia)) {
             //tipologia non esiste
             $tipologia = ucfirst(strtolower($tipologia));
             $query = "INSERT INTO tipologie (tipologia) VALUES ('$tipologia')";
