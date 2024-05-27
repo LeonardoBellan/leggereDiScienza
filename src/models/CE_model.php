@@ -57,6 +57,6 @@ class CE_model extends model
                     FROM caseEditrici
                     WHERE idCasaEditrice='$id'";
         $result = $this->query($query);
-        return $result;
+        return mysqli_fetch_assoc($result);
     }
 }

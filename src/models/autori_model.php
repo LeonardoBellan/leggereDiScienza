@@ -90,8 +90,8 @@ class Autori_model extends model
     {
         $query = "SELECT *
                     FROM autori
-                    WHERE idAutore IN 
-                        (SELECT autore FROM libri WHERE idLibro='$idLibro')";
+                    JOIN autoriLibro on autoriLibro.autore = autori.idAutore
+                    WHERE autoriLibro.libro = $idLibro";
         $result = $this->query($query);
         return $result;
     }

@@ -58,6 +58,6 @@ class tipologie_model extends model
                     WHERE idTipologia IN 
                         (SELECT tipologia FROM libri WHERE idLibro='$idLibro')";
         $result = $this->query($query);
-        return $result;
+        return mysqli_fetch_assoc($result);
     }
 }

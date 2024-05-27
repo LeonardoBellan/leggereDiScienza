@@ -70,9 +70,10 @@ class PC_model extends model
 
     public function getParoleChiaveByLibro($idLibro)
     {
-        $query = "SELECT pc.parolaChiave
-                    FROM paroleChiave as pc, paroleLibro as pl
-                    WHERE pc.libro='$idLibro' AND pc.idParola=pl.parola";
+        $query = "SELECT *
+                    FROM paroleChiave
+                    JOIN paroleLibro on paroleLibro.parola = paroleChiave.idParola
+                    WHERE paroleLibro.libro = $idLibro";
         $result = $this->query($query);
         $pc = array();
         while ($row = mysqli_fetch_array($result)) {

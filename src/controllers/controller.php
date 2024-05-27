@@ -46,7 +46,7 @@ class controller
     public function home()
     {
         //Numero di articoli per pagina
-        $numBooksPage = 4;
+        $numBooksPage = 18;
 
         //Numero di pagina richiesta
         if (isset($_GET["p"]))
@@ -232,11 +232,30 @@ class controller
     {
         //Richiesta modelli necessari
         $bookmanager = $this->getModel("libri_model", "bibliotecaOspite");        //Cambiare utenti
-        $CEmanager = $this->getModel("CE_model", "bibliotecaOspite");
+        $CEmanager = $this->getModel("CE_model", "bibliotecaSupervisore");
+        $tipologiemanager = $this->getModel("tipologie_model", "bibliotecaSupervisore");
+        $PCmanager = $this->getModel("PC_model", "bibliotecaSupervisore");
+        $autorimanager = $this->getModel("autori_model", "bibliotecaSupervisore");
+        $generimanager = $this->getModel("generi_model", "bibliotecaSupervisore");
 
         $idLibro = (int) $_GET["idLibro"];
         $book = $bookmanager->getLibro($idLibro);
-        $this->renderView("book_view", $book);
+        $autori = $autorimanager->getAutoriByLibro($idLibro);
+        $casaEditrice = $CEmanager->getCEById($book["casaEditrice"]);
+        $tipologia = $tipologiemanager->getTipologiaBylibro($idLibro);
+        $PC = $PCmanager->getParoleChiaveByLibro($idLibro);
+        $generi = $generimanager->getGeneriByLibro($idLibro);
+
+        $data = [
+                "book" => $book,
+                "casaEditrice" => $casaEditrice,
+                "tipologia" => $tipologia,
+                "paroleChiave" => $PC,
+                "autori" => $autori,
+                "generi" => $generi
+            ];
+
+        $this->renderView("book_view", $data);
     }
 
     public function salvaImmagine($numProg)
@@ -286,7 +305,7 @@ class controller
         //Quando si arriva dalla home
         if (!isset($_POST["insertBook"])) {
             $caseEditrici = $CEmanager->getAllCE();
-            $tipologie = $tipologiemanager->getAllTipologie(); // Da cambiare con tipologiemanager
+            $tipologie = $tipologiemanager->getAllTipologie();
             $PC = $PCmanager->getAllParoleChiave();
             $autori = $autorimanager->formatAutori($autorimanager->getAllAutori());
             $generi = $generimanager->getAllGeneri();

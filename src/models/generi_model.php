@@ -60,12 +60,13 @@ class Generi_model extends model
 
     public function getGeneriByLibro($idLibro)
     {
-        $query = "SELECT ge.genere
-                    FROM generi as ge, generiLibro as gl
-                    WHERE gl.libro='$idLibro' AND ge.idGenere=gl.genere";
+        $query = "SELECT generi.*
+                    FROM generi
+                    JOIN generiLibro on generiLibro.genere = generi.idGenere
+                    WHERE generiLibro.libro = $idLibro";
         $result = $this->query($query);
         $generi = array();
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $generi[] = $row;
         }
         return $generi;

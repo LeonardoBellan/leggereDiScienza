@@ -21,7 +21,11 @@
             <div class="wrap-left">
                 <div class="wrap-copertina">
                     <?php
-                    echo "<img src=" . $data["copertina"] . ">";
+                    if(file_exists($data["book"]["copertina"])){
+                            echo "<img src=" . $data["book"]["copertina"] . ">";
+                        } else{
+                            echo "<img src='img/copertine/default-img.jpg'>";
+                        }
                     ?>
                 </div>
                 <?php
@@ -30,12 +34,60 @@
                     }
                 ?>
             </div>
-            <div class="wrap-right">
-                <h1 id="titolo"><?php echo $data["titolo"]; ?></h1>
-                <p id="autori">Autori:</p>
-
-                <p id="CE">Casa editrice:</p>
-
+            <div class="wrap-right" style="gap:15px">
+                <h1 id="titolo"><?php echo $data["book"]["titolo"]; ?></h1>
+                <div class="au-selected-row" >
+                    <p><b>Autori: </b></p>
+                    <?php 
+                        foreach($data["autori"] as $aut){
+                            echo "<div class='au-selected-item' style='border: 1px var(--raw-umber) solid; border-radius: 13px'>";
+                            echo "<p>". $aut["nome"] ." " . $aut["cognome"] . "</p>";
+                            echo "</div>";
+                        }
+                    ?>
+                </div>
+                <div class="ce-selected-row" >
+                    <p><b>Casa editrice: </b></p>
+                    <?php 
+                        echo "<div class='au-selected-item' style='border: 1px var(--raw-umber) solid; border-radius: 13px'>";
+                        echo "<p>". $data["casaEditrice"]["nome"] . "</p>";
+                        echo "</div>";
+                    ?>
+                </div>
+                <div class="tp-selected-row" >
+                    <p><b>Tipologia: </b></p>
+                    <?php 
+                        echo "<div class='tp-selected-item' style='border: 1px var(--raw-umber) solid; border-radius: 13px'>";
+                        echo "<p>". $data["tipologia"]["tipologia"] . "</p>";
+                        echo "</div>";
+                    ?>
+                </div>
+                <div class="pc-selected-row" >
+                    <p><b>Parole Chiave: </b></p>
+                    <?php 
+                        foreach($data["paroleChiave"] as $pc){
+                            echo "<div class='pc-selected-item' style='border: 1px var(--raw-umber) solid; border-radius: 13px'>";
+                            echo "<p>". $pc["parolaChiave"] . "</p>";
+                            echo "</div>";
+                        }
+                    ?>
+                </div>
+                <div class="ge-selected-row" >
+                    <p><b>Generi: </b></p>
+                    <?php 
+                        foreach($data["generi"] as $gen){
+                            echo "<div class='ge-selected-item' style='border: 1px var(--raw-umber) solid; border-radius: 13px'>";
+                            echo "<p>". $gen["genere"] . "</p>";
+                            echo "</div>";
+                        }
+                    ?>
+                </div>
+                <div style="width: 80%" >
+                    <p><b>Trama: </b></p>
+                    <?php 
+                            echo "<p>". $data["book"]["trama"] . "</p>";
+                    ?>
+                </div>
             </div>
         </div>
     </div>
