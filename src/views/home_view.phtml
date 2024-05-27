@@ -222,28 +222,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <h1 class="text-coffee">Benvenuti nel sito</h1>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <?php
-                                if (!isset($_SESSION["logged"])) {
-                                    echo "<a href='login'>Effettua il login</a><br>";
-                                } else {
-                                    echo "Benvenuto " . ucfirst(strtolower($_SESSION["accountInfo"]["nome"])) . " " . ucfirst(strtolower($_SESSION["accountInfo"]["cognome"])) . "</br>";
-                                    echo "<a href='logout'>Effettua il logout</a><br>";
-                                }
-                                ?>
-                            </div>
-                            <div class="col">
-                                <a href="CCC"> Ciao </a>
-                            </div>
-                        </div>
                     </main>
                 </div>
                 <div class="row">
-                    <h1>Search Results:</h1>
+                    <h1>Risultati della ricerca:</h1>
                 </div>
                 <div class="results-row">
                     <?php
@@ -253,7 +235,13 @@
                         $titoloLibro = $book["titolo"];
                         $path = $book["copertina"];
                         echo "<div class='results-item'>";
-                        echo "<div class='row results-img'> <img src='$path' style=''> </div>";
+                        echo "<div class='row results-img'> <img src='";
+                        if(file_exists($path)){
+                            echo $path;
+                        } else{
+                            echo "img/copertine/default-img.jpg";
+                        }
+                        echo "' style=''> </div>";
                         echo "<div class='row results-text'>";
                         echo "<input type='hidden' name='idLibro' value='$idLibro' />";
                         echo "<a style='width:auto' href='visualizzaLibro?idLibro=$idLibro'><b>$titoloLibro</b></a>";

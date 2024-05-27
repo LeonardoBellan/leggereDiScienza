@@ -70,7 +70,7 @@ class libri_model extends model
             $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
                 VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, '$dataPubblicazione', $disponibilita, $idProfessore)
                 RETURNING idLibro";
-            print_r($query);
+
             $result = $this->query($query);
             return mysqli_fetch_assoc($result)["idLibro"];
         } else {
@@ -170,7 +170,6 @@ class libri_model extends model
         }
 
         $offset = $offset * $limit;
-        print_r($query);
         $result = $this->query($query);
         
         $numRows = mysqli_num_rows($result);
