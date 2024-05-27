@@ -68,9 +68,9 @@ class libri_model extends model
         if (!$this->getIdByISBN($ISBN)) {
             //Libro non esiste
             $query = "INSERT INTO libri (ISBN, titolo, copertina, casaEditrice, trama, tipologia, dataPubblicazione, disponibilita, professore) 
-                VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, $dataPubblicazione, $disponibilita, $idProfessore)
+                VALUES ('$ISBN', '$titolo', '$copertina', $idCasaEditrice, '$trama', $idTipologia, '$dataPubblicazione', $disponibilita, $idProfessore)
                 RETURNING idLibro";
-            echo "<p> consle.log('" . $query . "')</p>";
+            print_r($query);
             $result = $this->query($query);
             return mysqli_fetch_assoc($result)["idLibro"];
         } else {
@@ -154,14 +154,23 @@ class libri_model extends model
             $query = "SELECT * 
                     FROM libri";
         }
-
+        
         foreach ($filters as $key => $value) {
             $funcname = ($key . "AddFilter");
-            $query .= $set . $this->$funcname($value, ($set) ? "AND" : "OR");
+            $query .= $set . $this->$funcname($value, ($req) ? "AND" : "OR");
+        }
+
+        if(!$req){
+            $query = trim($query, $set);
+        }
+
+        if ($query==""){
+            $query = "SELECT * 
+            FROM libri";
         }
 
         $offset = $offset * $limit;
-        
+        print_r($query);
         $result = $this->query($query);
         
         $numRows = mysqli_num_rows($result);
@@ -216,10 +225,10 @@ class libri_model extends model
         if (isset($dataPubblicazione[0])) {
             $str .= "dataPubblicazione>='" . $dataPubblicazione[0] . "'";
             if (isset($dataPubblicazione[1])) {
-                $str .= " AND dataPubblicazione<='" . $dataPubblicazione[0] . "'";
+                $str .= " AND dataPubblicazione<='" . $dataPubblicazione[1] . "'";
             }
         } else if (isset($dataPubblicazione[1])) {
-            $str .= "dataPubblicazione<='" . $dataPubblicazione[0] . "'";
+            $str .= "dataPubblicazione<='" . $dataPubblicazione[1] . "'";
         }
         return $str;
     }
@@ -236,14 +245,6 @@ class libri_model extends model
 
     private function autoriAddFilter($autori, $set)
     {
-        /*
-        SELECT libri.* FROM libri
-        JOIN parolelibro pl1 ON libri.idLibro = pl1.libro 
-        JOIN paroleChiave pc1 ON pl1.parola = pc1.idParola 
-        and pc1.idParola in (1, 5) 
-        group by libri.idLibro 
-        having count(distinct pc1.idParola) = 2; 
-        */
         $str = "SELECT libri.*
         FROM libri
         JOIN autorilibro ON libri.idLibro = autorilibro.libro
@@ -253,13 +254,12 @@ class libri_model extends model
             $str .= $id . ", ";
         }
 
-        //$str = rtrim($str, ",");
+        $str = rtrim($str, ", ");
         $str .= ") ";
 
         $str .= "group by libri.idLibro ";
         if ($set == "AND")
             $str .= "having count(distinct autori.idAutore) = " . sizeof($autori);
-        setcookie("query1", (string) $str, time() + 60,);
         return $str;
     }
 
@@ -269,13 +269,17 @@ class libri_model extends model
         FROM libri
         JOIN generilibro ON libri.idLibro = generilibro.libro
         JOIN generi ON generilibro.genere = generi.idGenere
-        WHERE ";
+        and generi.idGenere in (";
         foreach ($generi as &$id) {
-            $str .= "generi.idGenere=$id $set ";
+            $str .= $id . ", ";
         }
-        $str = rtrim($str);
-        $str = rtrim($str, $set);
 
+        $str = rtrim($str, ", ");
+        $str .= ") ";
+
+        $str .= "group by libri.idLibro ";
+        if ($set == "AND")
+            $str .= "having count(distinct generi.idGenere) = " . sizeof($generi);
         return $str;
     }
 
@@ -285,13 +289,17 @@ class libri_model extends model
         FROM libri
         JOIN parolelibro ON libri.idLibro = parolelibro.libro
         JOIN paroleChiave ON parolelibro.parola = paroleChiave.idParola
-        WHERE ";
+        and paroleChiave.idParola in (";
         foreach ($PC as &$id) {
-            $str .= "paroleChiave.idParola=$id $set ";
+            $str .= $id . ", ";
         }
-        $str = rtrim($str);
-        $str = rtrim($str, $set);
 
+        $str = rtrim($str, ", ");
+        $str .= ") ";
+
+        $str .= "group by libri.idLibro ";
+        if ($set == "AND")
+            $str .= "having count(distinct paroleChiave.idParola) = " . sizeof($PC);
         return $str;
     }
 }

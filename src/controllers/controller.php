@@ -75,8 +75,8 @@ class controller
             $filters["casaEditrice"] = ($t) ? $t : -1;
         }
         if (isset($_GET["tipologia"]) && $_GET["tipologia"] != "") {
-            $t=$tipologiemanager->getIdByTipologia($_GET["tipologia"]);
-            $filters["tipologia"] =  $t ? $t : -1;
+            $t = $tipologiemanager->getIdByTipologia($_GET["tipologia"]);
+            $filters["tipologia"] = $t ? $t : -1;
         }
         if (isset($_GET["dataPubblicazione-da"]) && $_GET["dataPubblicazione-da"] != "") {
             $filters["dataPubblicazione"][0] = $_GET["dataPubblicazione-da"];
@@ -90,30 +90,33 @@ class controller
         if (isset($_GET["paroleChiave"]) && array_count_values(json_decode($_GET["paroleChiave"]))) {
             $arr = array();
             foreach (json_decode($_GET["paroleChiave"]) as $value) {
-                $arr[] = $PCmanager->getIdByParola($value);
+                $t = $PCmanager->getIdByParola($value);
+                $t ? $arr[] = $t : $arr[] = -1;
             }
+
             $filters["paroleChiave"] = $arr;
         }
         if (isset($_GET["autori"]) && array_count_values(json_decode($_GET["autori"]))) {
             $arr = array();
             foreach (json_decode($_GET["autori"]) as $value) {
-                $t=$autorimanager->splitName($value);
-                $arr[] = $autorimanager->getIdByName($t[0], $t[1]);
+                $t = $autorimanager->splitName($value);
+                $t = $autorimanager->getIdByName($t[0], $t[1]);
+                $t ? $arr[] = $t : $arr[] = -1;
             }
             $filters["autori"] = $arr;
         }
         if (isset($_GET["generi"]) && array_count_values(json_decode($_GET["generi"]))) {
             $arr = array();
             foreach (json_decode($_GET["generi"]) as $value) {
-                $arr[] = $generimanager->getIdByGenere($value);
+                $t = $generimanager->getIdByGenere($value);
+                $t ? $arr[] = $t : $arr[] = -1;
             }
             $filters["generi"] = $arr;
         }
-
-
+        $req = isset($_GET["req"]) ? 1 : 0;
         //Richiesta libri per la pagina
         //$books = $bookmanager->getLibriLimitedOffset($numBooksPage, (int) $_SESSION["requested_page"] - 1);
-        $res = $bookmanager->advancedSearch($filters, 1, $numBooksPage, (int) $_SESSION["requested_page"] - 1);
+        $res = $bookmanager->advancedSearch($filters, $req, $numBooksPage, (int) $_SESSION["requested_page"] - 1);
         $caseEditrici = $CEmanager->getAllCE();
         $tipologie = $tipologiemanager->getAllTipologie();
         $PC = $PCmanager->getAllParoleChiave();
@@ -302,8 +305,8 @@ class controller
         //Inserimento del libro
         $titolo = $_POST["titolo"];
         $ISBN = $_POST["ISBN"];
-        $trama = (isset($_POST["trama"])) ? "'" . $_POST["trama"] . "'" : NULL;
-        $dataPubblicazione = $_POST["dataPubblicazione"];
+        $trama =$_POST["trama"];
+        $dataPubblicazione = date('Y-m-d', strtotime($_POST['dataPubblicazione']));
         $disponibilita = (isset($_POST["disponibilita"])) ? 1 : 0;
         $idProfessore = ($_SESSION["accountInfo"])["account"];
 

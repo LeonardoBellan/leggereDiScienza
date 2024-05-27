@@ -233,3 +233,26 @@ function setPageNum(element){
     document.querySelector("#page-param").value=element.value;
     submitFilterForm();
 }
+
+function loadFilters(){
+    let filters = JSON.parse(document.querySelector('meta[name="filters"]').content);
+    var geInput=document.querySelector("#ge-input");
+
+    for(let genere of JSON.parse(filters.generi)){
+        geInput.value=genere;
+        saveOption(geInput.parentElement.querySelector("button"));
+    }
+
+    var auInput=document.querySelector("#au-input");
+    for(let autore of JSON.parse(filters.autori)){
+        auInput.value=autore;
+        saveOption(auInput.parentElement.querySelector("button"));
+    }
+
+    var pcInput=document.querySelector("#pc-input");
+    for(let parola of JSON.parse(filters.paroleChiave)){
+        pcInput.value=parola;
+        saveOption(pcInput.parentElement.querySelector("button"));
+    }
+
+}
