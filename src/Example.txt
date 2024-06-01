@@ -1,0 +1,33 @@
+<?php
+
+class modelName extends model{
+    public function getAllBooks(){
+        $sql = "SELECT * FROM libri";
+        $this->$query($sql);
+    }
+}
+
+class controllerName {
+    constructor($modelName){
+        $this->modelName = $modelName;
+    }
+
+    function actionName($request = array()){
+        $result = $this->modelName->getAllBooks();
+        
+        //Preparazione array
+        $books = array();
+        $i = 0;
+        while($row = mysqli_fetch_array($result)){
+            $books[$i] = $row;
+            $i++;
+        }
+
+        $attributes = [
+            "books" => $books,
+            "otherParameters" => $otherParameter
+        ]
+
+        renderView("pathName", $attributes),
+    }
+}

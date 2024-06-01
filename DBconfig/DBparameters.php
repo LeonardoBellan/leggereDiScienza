@@ -1,6 +1,6 @@
 <?php
 
-/* Configurazione degi parametri per la connessione al DB
+/* Configurazione dei parametri per la connessione al DB
 *   e dei dati degli utenti del DB
 *
 * @return: array["host","port","dbName","user","password"]
@@ -11,9 +11,9 @@ function getDBUser($userNameDB){
     $dbName = "leggereDiScienza";
     $password = match($userNameDB){
         "root" => "",
-        "insegnanteSupervisore" => "",
-        "insegnante" => "",
-        "user" => ""
+        "bibliotecaSupervisore" => "3Qj)<{3l}lh2eAn*",
+        "bibliotecaProfessore" => "19:4sa1WT|*pPb_R",
+        "bibliotecaOspite" => "2rq{6eqAV:2@>qx0"
     };
 
     return [

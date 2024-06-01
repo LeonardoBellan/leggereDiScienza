@@ -1,21 +1,309 @@
-<html>
+<!DOCTYPE html>
+<html lang="it">
 
 <head>
     <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="data" content='<?= json_encode($data); ?>'>
+    <meta name="filters" content='<?= json_encode($_GET); ?>'>
+
+    <!-- Bootsrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="CSS/style.css">
+
+    <!-- Sidebar toggle script -->
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector(".sidebar");
+            var root = document.documentElement;
+            var btnIcon = document.querySelector("#sideBarToggleBtn>*");
+
+            if (sidebar.classList.contains("toggled")) {
+                setTimeout(function () { sidebar.classList.remove("toggled") }, 500);
+                btnIcon.setAttribute("style", "transform: scale(1, 1)")
+                root.style.setProperty('--sideBarWidth', '400px');
+            } else {
+                sidebar.classList.add("toggled")
+                btnIcon.setAttribute("style", "transform: scale(-1, 1)")
+                root.style.setProperty('--sideBarWidth', '75px');
+            }
+            return;
+        }
+
+    </script>
 </head>
 
-<body>
-    <h1>Benvenuti nel sito</h1>
-    <a href="login">Effettua il login</a>
-    <br>
+<body onload="loadFilters()">
+    <div class="container-fluid">
+        <div>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Header -->
+                <div class="sidebar-header">
+                    <h2>Filtri</h2>
+                    <button id="sideBarToggleBtn" onclick="toggleSidebar()"><i
+                            class="fa-solid fa-arrow-left"></i></button>
+                </div>
+                <hr class="sidebar-divider">
+                <!-- Sidebar Content -->
+                <div class="sidebar-content">
+                    <form action="home" id="filter-form" method="get" autocomplete="off">
+                        <input type="hidden" id="page-param" name="p" value="1">
 
-    <p>Libri:</p>
+                        <!-- Titolo -->
+                        <div class="filter-item">
+                            <label for="titolo">Titolo:</label>
+                            <input type="text" id="titolo-in" name="titolo"
+                                value="<?php echo isset($_GET["titolo"]) ? $_GET["titolo"] : ""; ?>">
+                        </div>
 
-    <?php
-        //Esempio
-        $row = mysqli_fetch_array($vars["queryResult"]);
-        print_r($row["titolo"]);
-    ?>
+                        <!-- ISBN -->
+                        <div class="filter-item">
+                            <label for="ISBN">ISBN:</label>
+                            <input type="text" id="ISBN-in" name="ISBN"
+                                value="<?php echo isset($_GET["ISBN"]) ? $_GET["ISBN"] : ""; ?>">
+                        </div>
+
+                        <!-- Casa editrice -->
+                        <div class="filter-item">
+                            <label>Casa Editrice: </label>
+                            <div id="ce-block">
+                                <input class="input-text" type="text" id="ce-input" name="casaEditrice"
+                                    style="flex-grow:1"
+                                    value="<?php echo isset($_GET["casaEditrice"]) ? $_GET["casaEditrice"] : ""; ?>" />
+                                <ul class="ce-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Tipologia del libro-->
+                        <div class="filter-item">
+                            <label>Tipologia: </label>
+                            <div id="tp-block">
+                                <input class="input-text" type="text" id="tp-input" name="tipologia" style="flex-grow:1"
+                                    value="<?php echo isset($_GET["tipologia"]) ? $_GET["tipologia"] : ""; ?>" />
+                                <ul class="tp-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Generi -->
+                        <div class="filter-item">
+                            <label>Generi: </label>
+                            <div id="ge-block">
+                                <div class="ge-block-input">
+                                    <input class="input-text" type="text" id="ge-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="ge-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <ul class="ge-list"></ul>
+                            </div>
+                        </div>
+                        <!-- Inseriti -->
+                        <div class="ge-selected-row" id="ge-sel-row">
+                        </div>
+
+
+                        <!-- Parole Chiave -->
+                        <div class="filter-item">
+                            <label>Parole Chiave: </label>
+                            <div id="pc-block">
+                                <div class="pc-block-input">
+                                    <input class="input-text" type="text" id="pc-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="pc-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <ul class="pc-list"></ul>
+                            </div>
+                        </div>
+                        <!-- Inseriti -->
+                        <div class="pc-selected-row" id="ge-sel-row">
+
+                        </div>
+
+                        <!-- autori -->
+                        <div class="filter-item">
+                            <label>Autori: </label>
+                            <div id="au-block">
+                                <div class="au-block-input">
+                                    <input class="input-text" type="text" id="au-input" style="flex-grow:1" />
+                                    <button type="button" onclick="saveOption(this)" id="au-add">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <ul class="au-list"></ul>
+                            </div>
+                        </div>
+                        <!-- Inseriti -->
+                        <div class="au-selected-row" id="ge-sel-row">
+
+                        </div>
+
+                        <!-- Data di pubblicazione -->
+                        <label class="filter-item" for="dataPubblicazione">Data di pubblicazione: </label>
+                        <div class="filter-item">
+                            <label for="dataPubblicazione-da">Da: </label>
+                            <input type="date" id="data-in-da" name="dataPubblicazione-da" 
+                            <?php if(isset($_GET["dataPubblicazione-da"])) echo "value=".$_GET["dataPubblicazione-da"];?>>
+                        </div>
+                        <div class="filter-item">
+                            <label for="dataPubblicazione-a">A: </label>
+                            <input type="date" id="data-in-a" name="dataPubblicazione-a"
+                            <?php if(isset($_GET["dataPubblicazione-a"])) echo "value=".$_GET["dataPubblicazione-a"];?>>
+                        </div>
+
+                        <!-- Disponibilità in biblioteca -->
+                        <div class="filter-item">
+                            <label for="disp-in">Disponibile in biblioteca: </label>
+                            <input type="checkbox" id="disp-in" name="disponibilita"
+                                <?php if(isset($_GET["disponibilita"])) echo "checked='true'";?>>
+                        </div>
+
+                        <!-- Modalità filtraggio -->
+                        <div class="filter-item">
+                            <label for="req-in">Tutti i campi sono richiesti: </label>
+                            <input type="checkbox" id="req-in" name="req"
+                            <?php if(isset($_GET["req"])) echo "checked='true'";?>>
+                        </div>
+
+                        <input type="hidden" id="pc-form-item" name="paroleChiave" value="">
+                        <input type="hidden" id="au-form-item" name="autori" value="">
+                        <input type="hidden" id="ge-form-item" name="generi" value="">
+
+                        <!-- Tasto  Submit -->
+                        <div class="filter-item">
+                            <button type="button" id="apply-btn" onclick="submitFilterForm()">Applica Filtri</button>
+                        </div>
+                    </form>
+                </div>
+                <script src="JS/searchAutocomplete.js"></script>
+                <!-- Sidebar Footer -->
+                <div style="align-items:end">
+                    <?php
+                    if (isset($_SESSION["accountLevel"]) and $_SESSION["accountLevel"] == 2) {
+                        echo "<div>
+                        <a href='inserisciLibro'>Inserisci un nuovo libro</a>
+                    </div>";
+                    }
+                    ?>
+                    <div class="sidebarFooter">
+                        <div id="profilo">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <?php
+                            if (!isset($_SESSION["logged"])) {
+                                echo "<a href='login'>Effettua il login</a><br>";
+                            } else {
+                                echo "Benvenuto " . ucfirst(strtolower($_SESSION["accountInfo"]["nome"])) . " " . ucfirst(strtolower($_SESSION["accountInfo"]["cognome"])) . "</br>";
+                                echo "<a href='logout'>Effettua il logout</a>";
+                            }
+                            ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Contenido principal -->
+            <div class="content">
+                <div class="row">
+                    <main role="main">
+                        <div class="row">
+                            <div class="column">
+                                <div class="header">
+                                    <h1 class="titolo">Leggere di scienza</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <div class="row">
+                    <h1>Risultati della ricerca:</h1>
+                </div>
+                <div class="results-row">
+                    <?php
+                    foreach ($data["books"] as $book) {
+                        $data["book"] = $book;
+                        $idLibro = $book["idLibro"];
+                        $titoloLibro = $book["titolo"];
+                        $path = $book["copertina"];
+                        echo "<div class='results-item'>";
+                        echo "<div class='row results-img'> <img src='";
+                        if(file_exists($path)){
+                            echo $path;
+                        } else{
+                            echo "img/copertine/default-img.jpg";
+                        }
+                        echo "' style=''> </div>";
+                        echo "<div class='row results-text'>";
+                        echo "<input type='hidden' name='idLibro' value='$idLibro' />";
+                        echo "<a style='width:auto' href='visualizzaLibro?idLibro=$idLibro'><b>$titoloLibro</b></a>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                    ?>
+                </div>
+                <div class="pageBar-list">
+                    <div class="pageBar-lbl">
+                        <p>Pagina:</p>
+                    </div>
+                    <div class="pageBar-ps">
+                        <?php
+                        $p = intval($_SESSION["requested_page"] - 1);
+                        if ($p >= 1) {
+                            echo "<button class='enabled' onclick='setPageNum(this)' value='$p'>Prec</a>";
+                        } else {
+                            echo "<button class='disabled' onclick='setPageNum(this)' value='$p'>Prec</a>";
+                        }
+                        ?>
+                    </div>
+                    <?php
+                    $p = (int) $_SESSION["requested_page"];
+                    if ($p < 1)
+                        $p = 1;
+                    for ($i = $p - 2; $i <= $p + 2; $i++) {
+                        if ($i > 0 && $i <= $data["numPages"]) {
+                            echo "<div class='pageBar-num'>";
+                            if ((int) $_SESSION["requested_page"] != $i) {
+                                //echo "<a href='home?p=$i'>$i</a>";
+                                echo "<button class='enabled' onclick='setPageNum(this)' value='$i'>$i</a>";
+                            } else {
+                                //echo "<a class='disabled' href='home?p=$i'>$i</a>";
+                                echo "<button class='disabled' onclick='setPageNum(this)' value='$i'>$i</a>";
+                            }
+                            echo "</div>";
+                        }
+                    }
+                    ?>
+                    <div class="pageBar-ps">
+                        <?php
+                        $p = intval($_SESSION["requested_page"] + 1);
+                        if ($p <= $data["numPages"]) {
+                            echo "<button class='enabled' onclick='setPageNum(this)' value='$p'>Succ</a>";
+                        } else {
+                            echo "<button class='disabled' onclick='setPageNum(this)' value='$p'>Succ</a>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+
+    <!-- Footer -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
