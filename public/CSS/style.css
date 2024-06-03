@@ -260,6 +260,7 @@ i {
 }
 
 .filter-item ul {
+  position: absolute;
   margin: 0px;
   list-style: none;
   padding: 0px;
@@ -268,6 +269,7 @@ i {
   border-radius: 0 0 5px 5px;
   z-index: 100;
   color: #343a40;
+  
 }
 
 #apply-btn {

@@ -36,6 +36,10 @@ for (let inputField of inputs) {
             }
         });
     });
+    inputField.addEventListener("blur", function(e) {
+        removeElements();
+    });
+
 };
 
 function findType(input) {
